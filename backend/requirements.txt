@@ -1,17 +1,18 @@
 # --- Web Framework ---
-fastapi==0.115.0
-uvicorn[standard]==0.30.1
+fastapi
+uvicorn[standard]
 
 # --- Async HTTP client ---
-httpx==0.27.0
+httpx
 
 # --- Data Processing ---
-pandas==2.2.2
-numpy==1.26.4
-scipy==1.13.1
+pandas
+numpy
+scipy
 
 # --- Statistical & Quantitative Models ---
-statsmodels==0.14.2
-arch==6.3.0  # For GARCH models
-
+statsmodels
+arch
+requests
 # --- Environment variable management ---
+python-dotenv
