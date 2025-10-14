@@ -1,18 +1,16 @@
-# --- Web Framework ---
+
 fastapi
 uvicorn[standard]
 
-# --- Async HTTP client ---
 httpx
 
-# --- Data Processing ---
 pandas
 numpy
 scipy
 
-# --- Statistical & Quantitative Models ---
+
 statsmodels
 arch
 requests
-# --- Environment variable management ---
+
 python-dotenv
