@@ -102,23 +102,18 @@ export default function Home() {
         }
     };
 
-    // Find the currently selected model's information
     const currentModel = MODEL_INFO.find(m => m.id === state.model) || MODEL_INFO[0];
 
     return (
-        // Root container is now full width, and its children are constrained
         <div className="bg-neutral-950 min-h-screen flex flex-col w-full">
             <div className="section-padding max-w-7xl mx-auto flex-grow w-full"> 
             
-                {/* Title and Tagline */}
                 <header className="text-center mb-10 pt-10">
                     <h1 className="text-6xl md:text-7xl font-extrabold mb-2 tracking-tight leading-tight">
-                        {/* Title changed to Crypseer */}
                         <span className="gradient-text-modern">Crypseer</span> 
                     </h1>
                     <p className="text-xl md:text-2xl text-neutral-400 font-light max-w-3xl mx-auto">
-                        {/* Tagline updated */}
-                        See the future, one stochastic path at a time.
+                        Be the future
                     </p>
                 </header>
 
