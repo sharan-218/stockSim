@@ -7,21 +7,15 @@ def simulate_garch(historical, horizon_days=30, steps=30, num_paths=10):
     """
     prices = np.array(historical, dtype=float)
     log_returns = np.diff(np.log(prices))
-
     if len(log_returns) < 2:
         raise ValueError("Not enough historical data for GARCH estimation.")
-
-    # Fit GARCH(1,1) model
     model = arch_model(log_returns * 100, vol='Garch', p=1, q=1)
     fitted = model.fit(disp="off")
-
     last_price = prices[-1]
     dt = horizon_days / steps
     forecasts = fitted.forecast(horizon=steps, reindex=False)
     sigma_forecast = np.sqrt(forecasts.variance.values[-1] / 10000)  # decimal volatility
-
     all_paths = []
-
     for _ in range(num_paths):
         path = [last_price]
         for step in range(steps):

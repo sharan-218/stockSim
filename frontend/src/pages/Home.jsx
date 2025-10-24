@@ -190,7 +190,7 @@ export default function Home() {
                         <div 
                             key={m.id} 
                             className="card-subtle flex flex-col h-full" 
-                            style={{ borderLeft: m.id === state.model ? '4px solid var(--color-border-active)' : '4px solid transparent' }}
+                            style={{ borderLeft: m.id === state.model ? '3px solid var(--color-border-active)' : '3px solid transparent' }}
                         >
                             <h3 className="text-lg font-semibold mb-2">{m.name}</h3>
                             <p className="text-sm text-neutral-400 flex-grow">{m.description}</p>
@@ -207,7 +207,7 @@ export default function Home() {
                 <div className="pb-4 pt-2"> {/* Added padding for separation */}
                     <p className="text-center text-xs text-neutral-600">
                         Developed by <a 
-                            href="https://yskfolio.vercel.app" 
+                            href="https://yskfolio.netlify.app" 
                             target="_blank" 
                             rel="noopener noreferrer" 
                             className="text-neutral-400 hover:text-white transition-colors duration-200 font-semibold"

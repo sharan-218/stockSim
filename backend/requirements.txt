@@ -1,16 +1,10 @@
-
 fastapi
 uvicorn[standard]
-
 httpx
-
 pandas
 numpy
 scipy
-
-
 statsmodels
 arch
 requests
-
 python-dotenv

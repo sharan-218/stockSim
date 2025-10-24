@@ -10,7 +10,6 @@ def simulate_jump_diffusion(historical=None, last_price=None, mu=0.0, sigma=0.0,
         if historical is None or len(historical) == 0:
             raise ValueError("Historical data or last_price required")
         last_price = historical[-1]
-
     dt = horizon_days / steps
     all_paths = []
 
