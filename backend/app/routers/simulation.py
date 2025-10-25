@@ -10,12 +10,13 @@ MODELS = {
     "ou": {"module": "app.models.ou", "func": "simulate_ou"},
     "garch": {"module": "app.models.garch", "func": "simulate_garch"},
     "jump_diffusion": {"module": "app.models.jump_diffusion", "func": "simulate_jump_diffusion"},
+    "arima": {"module": "app.models.arima", "func": "simulate_arima"},
 }
 
 
-# @router.get("/models")
-# def get_models():
-#     return [{"id": k, "name": v["func"].replace("_", " ").title()} for k, v in MODELS.items()]
+@router.get("/models")
+def get_models():
+    return [{"id": k, "name": v["func"].replace("_", " ").title()} for k, v in MODELS.items()]
 
 
 # @router.post("/")
@@ -108,7 +109,6 @@ def run_simulation(payload: dict = Body(...)):
     horizon_days = int(payload.get("horizon_days", 30))
     steps = int(payload.get("steps", 30))
 
-    # ✅ make sure to handle both 'paths' and 'num_paths' and convert to int
     num_paths = int(payload.get("paths") or payload.get("num_paths") or 3)
 
     if not historical:
@@ -151,6 +151,14 @@ def run_simulation(payload: dict = Body(...)):
             )
 
         elif model == "garch":
+            result = simulate_func(
+                historical=list(prices),
+                horizon_days=horizon_days,
+                steps=steps,
+                num_paths=num_paths
+            )
+            simulated_paths = result["paths"] if isinstance(result, dict) else result
+        elif model == "arima":
             result = simulate_func(
                 historical=list(prices),
                 horizon_days=horizon_days,
