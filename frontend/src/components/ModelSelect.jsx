@@ -6,13 +6,12 @@ export default function ModelSelect({ model, setModel }) {
     { id: "ou", name: "Ornstein–Uhlenbeck" },
     { id: "garch", name: "GARCH (1,1)" },
     { id: "jump_diffusion", name: "Jump Diffusion" },
+    { id: "arima", name: "Arima" },
+
   ];
 
   return (
-    // Replacing DaisyUI 'form-control' with custom 'form-control-modern'
     <div className="form-control-modern w-full"> 
-      
-      {/* Replacing DaisyUI 'label' and 'label-text' with custom 'label-modern' */}
       <label className="label-modern">
         Select Model
       </label>

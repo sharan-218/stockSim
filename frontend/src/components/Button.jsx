@@ -1,27 +1,20 @@
-// Button.jsx
-
 export default function Button({
   children,
   onClick,
-  // Redefining variants to align with your custom classes
-  variant = "solid", // Maps to btn-modern (default)
+ 
+  variant = "solid",
   className = "",
   type = "button",
   ...props
 }) {
   
-  let baseClasses = "btn-modern"; // Your default solid white button
-
-  // Logic to apply the custom variant classes
+  let baseClasses = "btn-modern"; 
   if (variant === "outline") {
-    // Overrides the default solid style
     baseClasses = "btn-modern-outline"; 
   } else if (variant === "ghost") {
-    // Overrides the default solid style
+    
     baseClasses = "btn-modern-ghost";
   } 
-  // NOTE: If variant is "solid" or anything else, it remains "btn-modern"
-
   return (
     <button
       type={type}

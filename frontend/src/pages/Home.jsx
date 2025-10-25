@@ -38,6 +38,14 @@ const MODEL_INFO = [
         working:
             "Simulates paths using GBM with added random jumps determined by a Poisson process.",
     },
+    {
+        id: "arima",
+        name: "Arima",
+        description:
+            "ARIMA models are primarily used for short-term forecasting of financial time series data and economic indicators",
+        working:
+            "ARIMA quant model forecasts future values in a time series by modeling its dependence on its own past values, the number of times it has been differenced to achieve stationarity, and past forecast errors.",
+    },
 ];
 
 export default function Home() {
@@ -58,16 +66,11 @@ export default function Home() {
      */
     const fetchData = async (symbol) => {
         setState((prev) => ({ ...prev, loading: true, error: null }));
-
-        // Note: These URLs are placeholders and rely on a running backend service (e.g., Python FastAPI)
         const dataUrl = `http://127.0.0.1:8000/data/${symbol}?interval=1d&limit=30`;
         const simUrl = "http://127.0.0.1:8000/simulate/";
 
         try {
-            // 1. Fetch historical data (e.g., last 30 days)
             const dataResp = await axios.get(dataUrl);
-
-            // 2. Request simulation from the backend
             const simResp = await axios.post(simUrl, {
                 model: state.model,
                 historical: dataResp.data,
@@ -75,13 +78,10 @@ export default function Home() {
                 steps: 30,
                 num_paths: Number(state.paths) || 1,
             });
-
-            // 3. Normalize and extract simulated paths from the response
             let simulatedPaths = [];
             if (Array.isArray(simResp.data.paths)) {
                 simulatedPaths = simResp.data.paths;
             } else if (simResp.data.paths?.paths) {
-                // Handle nested structures if the backend returns specific model output
                 simulatedPaths = simResp.data.paths.paths;
             }
 
@@ -97,7 +97,7 @@ export default function Home() {
             setState((prev) => ({
                 ...prev,
                 loading: false,
-                error: "Failed to fetch data or run simulation. Ensure the backend service is running on 127.0.0.1:8000.",
+                error: "Failed to fetch data or run simulation.",
             }));
         }
     };
@@ -116,28 +116,19 @@ export default function Home() {
                         Be the future
                     </p>
                 </header>
-
-
-                {/* FORM INPUT CARD (Uses custom card-elevated class for modern look) */}
                 <div className="card-elevated p-8 mb-6 glow">
                     <div className="flex flex-col sm:flex-row gap-6">
-                        
-                        {/* Symbol Input with submit action */}
                         <div className="form-control-modern flex-1"> 
                             <label className="label-modern">Enter Symbol (e.g., BTCUSDT)</label>
-                            {/* SymbolInput component is assumed to handle the input field and button */}
                             <SymbolInput onSubmit={(sym) => fetchData(sym)} />
                         </div>
 
-                        {/* Model Select component */}
                         <div className="form-control-modern flex-1 sm:max-w-xs">
                             <ModelSelect
                                 model={state.model}
                                 setModel={(model) => setState((prev) => ({ ...prev, model }))}
                             />
                         </div>
-
-                        {/* Number of Paths Input */}
                         <div className="form-control-modern flex-1 sm:max-w-xs">
                             <label className="label-modern">Number of Paths (1-50)</label>
                             <input
@@ -199,8 +190,6 @@ export default function Home() {
                     ))}
                 </div>
             </div>
-
-            {/* FOOTER - Moved outside the max-width container and adjusted for extreme bottom */}
             <footer className="w-full bg-neutral-950">
                 {/* A simple divider can remain inside the max-width for aesthetic centering */}
                 <div className="divider-modern mb-4 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12"></div> 

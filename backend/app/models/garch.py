@@ -14,12 +14,12 @@ def simulate_garch(historical, horizon_days=30, steps=30, num_paths=10):
     last_price = prices[-1]
     dt = horizon_days / steps
     forecasts = fitted.forecast(horizon=steps, reindex=False)
-    sigma_forecast = np.sqrt(forecasts.variance.values[-1] / 10000)  # decimal volatility
+    sigma_forecast = np.sqrt(forecasts.variance.values[-1] / 10000) 
     all_paths = []
     for _ in range(num_paths):
         path = [last_price]
         for step in range(steps):
-            sigma_step = sigma_forecast[step]  # take the sigma for this step
+            sigma_step = sigma_forecast[step]  
             ret = np.random.normal(0, sigma_step * np.sqrt(dt))
             price_next = path[-1] * np.exp(ret)
             path.append(price_next)
