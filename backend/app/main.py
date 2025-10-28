@@ -8,7 +8,7 @@ from app.routers import health, data, simulation
 load_dotenv()
 
 APP_NAME = "Crypto Quant API"
-APP_PORT = os.getenv("APP_PORT")
+APP_PORT = os.getenv(8000)
 
 origins = [
     "http://localhost:5173",
