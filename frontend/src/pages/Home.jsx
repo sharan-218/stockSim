@@ -66,9 +66,8 @@ export default function Home() {
      */
     const fetchData = async (symbol) => {
         setState((prev) => ({ ...prev, loading: true, error: null }));
-        const dataUrl = `http://127.0.0.1:8000/data/${symbol}?interval=1d&limit=30`;
-        const simUrl = "http://127.0.0.1:8000/simulate/";
-
+        const dataUrl = `https://stocksim-4zqk.onrender.com/data/${symbol}?interval=1d&limit=30`;
+        const simUrl = "https://stocksim-4zqk.onrender.com/simulate/";
         try {
             const dataResp = await axios.get(dataUrl);
             const simResp = await axios.post(simUrl, {

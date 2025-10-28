@@ -1,21 +1,18 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
-
 export default function Chart({ historical, simulatedPaths }) {
   if (!historical || historical.length === 0) return null;
-
-  // Dark mode vibrant colors
   const baseColors = [
-    "#60A5FA", // blue-400
-    "#34D399", // emerald-400
-    "#FBBF24", // amber-400
-    "#F87171", // red-400
-    "#A78BFA", // violet-400
-    "#FB923C", // orange-400
-    "#F472B6", // pink-400
-    "#2DD4BF", // teal-400
-    "#818CF8", // indigo-400
-    "#FCD34D"  // yellow-400
+    "#60A5FA", 
+    "#34D399", 
+    "#FBBF24", 
+    "#F87171",
+    "#A78BFA",
+    "#FB923C", 
+    "#F472B6", 
+    "#2DD4BF",
+    "#818CF8", 
+    "#FCD34D" 
   ];
 
   simulatedPaths = Array.isArray(simulatedPaths) ? simulatedPaths : [];
