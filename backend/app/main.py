@@ -13,6 +13,7 @@ APP_PORT = os.getenv("APP_PORT")
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "https://crypseer.vercel.app/"
 ]
 
 app = FastAPI(
