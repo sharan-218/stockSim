@@ -4,7 +4,6 @@ import ModelSelect from "../components/ModelSelect";
 import Chart from "../components/Chart";
 import axios from "axios";
 
-// Defines the models used for simulation and provides descriptions for the UI
 const MODEL_INFO = [
     {
         id: "gbm",
@@ -86,7 +85,7 @@ export default function Home() {
 
             setState((prev) => ({
                 ...prev,
-                symbol: symbol.toUpperCase(),
+                symbol: symbol,
                 historical: dataResp.data,
                 simulated: simulatedPaths,
                 loading: false,
@@ -132,7 +131,7 @@ export default function Home() {
                             <label className="label-modern">Number of Paths (1-50)</label>
                             <input
                                 type="number"
-                                min="1"
+                                min="0"
                                 max="50"
                                 value={state.paths}
                                 onChange={(e) =>
@@ -148,8 +147,6 @@ export default function Home() {
                     </p>
 
                 </div>
-                
-                {/* Loading & Error Alerts */}
                 {state.loading && (
                     <div className="p-4 rounded-xl border border-neutral-700 bg-neutral-900 flex items-center gap-3 mb-4 text-sm text-neutral-300 shimmer">
                         <span className="animate-spin h-5 w-5 border-2 border-r-transparent border-white rounded-full"></span>

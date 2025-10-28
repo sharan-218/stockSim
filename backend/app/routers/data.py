@@ -21,7 +21,7 @@ async def get_symbol_data(
     Fetch OHLC (Open, High, Low, Close) data for a crypto symbol from Binance.
     """
     params = {
-        "symbol": symbol.upper(),
+        "symbol": symbol,
         "interval": interval,
         "limit": limit
     }

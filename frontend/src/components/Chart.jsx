@@ -82,11 +82,14 @@ export default function Chart({ historical, simulatedPaths }) {
       crosshairs: { show: true, stroke: { color: "#4B5563" } },
     },
     yaxis: {
-      labels: { 
-        style: { 
-          colors: "#A6ADBB", 
-          fontSize: "12px" 
-        } 
+      labels: {
+        formatter: function (value) {
+          return parseFloat(value)
+        },
+        style: {
+          colors: "#A6ADBB",
+          fontSize: "12px",
+        },
       },
       axisBorder: { show: true, color: "#374151" },
       axisTicks: { show: true, color: "#374151" },
@@ -97,7 +100,7 @@ export default function Chart({ historical, simulatedPaths }) {
       intersect: true,
       x: { format: "yyyy-MM-dd" },
       y: {
-        formatter: (val) => val.toFixed(2),
+        formatter: (val) => val.toFixed(3),
       },
       marker: { show: true },
       style: { fontSize: "13px", fontFamily: "Inter, sans-serif" },
