@@ -10,11 +10,6 @@ load_dotenv()
 APP_NAME = "Crypto Quant API"
 APP_PORT = 8000
 
-# origins = [
-#     "http://localhost:5173",
-#     "http://127.0.0.1:5173",
-#     "https://crypseer.vercel.app"
-# ]
 
 app = FastAPI(
     title=APP_NAME,
