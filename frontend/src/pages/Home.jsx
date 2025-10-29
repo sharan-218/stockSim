@@ -107,11 +107,11 @@ export default function Home() {
             <div className="section-padding max-w-7xl mx-auto flex-grow w-full"> 
             
                 <header className="text-center mb-10 pt-10">
-                    <h1 className="text-6xl md:text-7xl font-extrabold mb-2 tracking-tight leading-tight">
-                        <span className="gradient-text-modern">Crypseer</span> 
+                    <h1 className="text-6xl md:text-8xl font-extrabold mb-2 tracking-tight leading-tight">
+                        <span className="color-bg-secondary gradient-text-modern">Crypseer</span> 
                     </h1>
                     <p className="text-xl md:text-2xl text-neutral-400 font-light max-w-3xl mx-auto">
-                        Be the future
+                        It is in Data, Reveal it.
                     </p>
                 </header>
                 <div className="card-elevated p-8 mb-6 glow">
@@ -142,8 +142,8 @@ export default function Home() {
                         </div>
                     </div>
                     
-                    <p className="mt-4 text-center text-sm text-neutral-500">
-                        Current Model: <span className="font-semibold text-neutral-300">{currentModel.name}</span>
+                    <p className="mt-4 text-center text-sm text-color-primary">
+                        Current Model: <span className="font-semibold">{currentModel.name}</span>
                     </p>
 
                 </div>
@@ -163,7 +163,7 @@ export default function Home() {
 
                 {/* Chart Card (Visible only when data is available) */}
                 {state.historical.length > 0 && (
-                    <div className="card-elevated p-8 mb-6">
+                    <div className="card-elevated p-6 mb-6">
                         <Chart
                             historical={state.historical}
                             simulatedPaths={state.simulated}
@@ -177,11 +177,11 @@ export default function Home() {
                         <div 
                             key={m.id} 
                             className="card-subtle flex flex-col h-full" 
-                            style={{ borderLeft: m.id === state.model ? '3px solid var(--color-border-active)' : '3px solid transparent' }}
+                            style={{ borderLeft: m.id === state.model ? '4px solid var(--color-accent)' : '3px solid transparent' }}
                         >
                             <h3 className="text-lg font-semibold mb-2">{m.name}</h3>
-                            <p className="text-sm text-neutral-400 flex-grow">{m.description}</p>
-                            <p className="text-xs italic text-neutral-500 mt-2">{m.working}</p>
+                            <p className="text-sm color-text-secondary flex-grow">{m.description}</p>
+                            <p className="text-xs italic color-accent mt-2">{m.working}</p>
                         </div>
                     ))}
                 </div>

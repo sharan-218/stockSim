@@ -1,43 +1,39 @@
-/* * Neon Cyberpunk Global Styles 
- * Palette: Dark Violet/Black base with Neon Magenta and Electric Cyan accents.
- * Effects: Glass Morphism applied to all card classes, now with subtle gradients.
- */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  /* --- MODERN NEON / CYBERPUNK PALETTE --- */
-  /* Base colors are a dark violet/black for maximum neon contrast */
-  --color-bg-primary: #0A001A; /* Primary dark background (Dark Violet/Black) (RGB: 10, 0, 26) */
-  --color-bg-secondary: #150B2D; /* Card/Component background (RGB: 21, 11, 45) */
-  --color-bg-tertiary: #241840; /* Hover/Elevated background (RGB: 36, 24, 64) */
-  --color-bg-elevated: #33255C; /* Header/Modal background (RGB: 51, 37, 92) */
+  /* Base colors are light and professional */
+  --color-bg-primary: #F8FAFC; /* Primary light background (Soft Off-White) */
+  --color-bg-secondary: #FFFFFF; /* Card/Component background (Pure White) */
+  --color-bg-tertiary: #E2E8F0; /* Hover/Tertiary background (Light Gray-Blue) */
+  --color-bg-elevated: #CBD5E1; /* Header/Modal background (Muted Blue/Gray) */
   
-  /* TEXT COLORS (Near White and Muted Violet) */
-  --color-text-primary: #ebe6ff; /* High-contrast Near White/Pale Blue */
-  --color-text-secondary: #A396C7; /* Muted light violet for paragraphs */
-  --color-text-tertiary: #6E618A; /* Darker, muted violet for labels */
-  --color-text-muted: #4A3E61; /* Input placeholders/lowest contrast elements */
+  /* TEXT COLORS (UPDATED: Near-Black for Maximum Contrast) */
+  --color-text-primary: #111827; /* High-contrast Near Black */
+  --color-text-secondary: #374151; /* Darker Neutral Gray for paragraphs */
+  --color-text-tertiary: #64748B; /* Darker muted gray for labels/helper text */
+  --color-text-muted: #94A3B8; /* Input placeholders/lowest contrast elements */
   
-  /* BORDERS (Slightly Neon-tinted) */
-  --color-border-primary: #2D204A; /* Subtle border */
-  --color-border-secondary: #403263; /* Stronger border */
+  /* BORDERS (Toned down light grays) */
+  --color-border-primary: #E2E8F0; /* Subtle border */
+  --color-border-secondary: #CBD5E1; /* Stronger border */
   --color-border-active: var(--color-accent); /* Focus ring/Active border */
   
-  /* NEON ACCENTS */
-  --color-accent: #ff61d8; /* Primary interactive color (Neon Magenta) (RGB: 255, 51, 204) */
-  --color-accent-muted: #cd6cb9; /* Darker accent for states */
-  --color-info: #f5cfff; /* Electric Cyan for secondary data/info */
+  /* ACCENTS (UPDATED: Near-Black/Monochrome Accent) */
+  --color-accent: #111827; /* Primary interactive color (Matches Primary Text) */
+  --color-accent-muted: #374151; /* Darker Gray for hover/active states (Matches Secondary Text) */
+  --color-info: #64748B; /* Secondary Accent/Info Color changed to neutral gray */
   
   /* Interactive States */
-  --color-hover: #241840; 
-  --color-active: #150B2D;
+  --color-hover: #E2E8F0; /* Use Tertiary BG for hover */
+  --color-active: #F1F5F9; /* Very light gray for active state */
   
-  /* Semantic Colors - NEONIZED */
-  --color-success: #00FF7F; /* Neon Green for growth */
-  --color-error: #FF4D4D; /* Electric Red for loss */
-  --color-warning: #FFD700;
+  /* Semantic Colors - Kept as they convey essential status, exceptions to monochrome */
+  --color-success: #10B981; /* Emerald Green */
+  --color-error: #EF4444; /* Strong Red */
+  --color-warning: #FBBF24; /* Amber Yellow */
 }
 
 @layer base {
@@ -45,6 +41,7 @@
     @apply bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] antialiased;
     scroll-behavior: smooth;
     box-sizing: border-box;
+    overflow-x: hidden;
   }
 
   *,
@@ -65,7 +62,7 @@
     line-height: 1.6;
   }
   
-  /* Inter Font Definition (for environments without direct access to Google Fonts) */
+
   @font-face {
     font-family: 'Inter';
     font-style: normal;
@@ -74,7 +71,6 @@
     src: url('https://fonts.gstatic.com/s/inter/v12/UcC73FpYtYqK9Qk.woff2') format('woff2');
   }
 
-  /* Headings */
   h1, h2, h3, h4, h5, h6 {
     @apply font-semibold text-[var(--color-text-primary)] tracking-tight;
     line-height: 1.2;
@@ -87,24 +83,21 @@
   h5 { @apply text-xl md:text-2xl mb-3; }
   h6 { @apply text-lg md:text-xl mb-3; }
 
-  /* Paragraphs */
   p {
-    @apply text-[var(--color-text-secondary)] mb-4;
+    @apply text-base lg:text-lg text-[var(--color-text-secondary)] mb-5;
   }
 
-  /* Links */
   a {
     @apply text-[var(--color-accent)] hover:text-[var(--color-accent-muted)] transition-colors duration-200;
     text-decoration: none;
   }
 
-  /* Code Blocks */
   code {
-    @apply bg-[var(--color-bg-tertiary)] text-[var(--color-text-primary)] px-2 py-1 rounded text-sm font-mono border border-[var(--color-border-primary)];
+    @apply bg-[var(--color-bg-tertiary)] text-[var(--color-text-primary)] px-2 py-1 rounded-md text-sm font-mono border border-[var(--color-border-primary)];
   }
 
   pre {
-    @apply bg-[var(--color-bg-tertiary)] text-[var(--color-text-primary)] p-6 rounded-xl overflow-x-auto border border-[var(--color-border-primary)] mb-4;
+    @apply bg-[var(--color-bg-tertiary)] text-[var(--color-text-primary)] p-6 rounded-xl overflow-x-auto border border-[var(--color-border-secondary)] mb-6;
   }
 
   pre code {
@@ -136,27 +129,26 @@
     @apply bg-[var(--color-border-secondary)] rounded-full hover:bg-[var(--color-border-primary)];
   }
 
-  /* Selection */
+  /* Selection - Changed to text-primary on accent selection */
   ::selection {
-    @apply bg-[var(--color-accent)] text-[var(--color-text-primary)];
+    @apply bg-[var(--color-accent)] text-[var(--color-bg-secondary)]; 
   }
 
   ::-moz-selection {
-    @apply bg-[var(--color-accent)] text-[var(--color-text-primary)];
+    @apply bg-[var(--color-accent)] text-[var(--color-bg-secondary)];
   }
 }
 
 @layer components {
-  /* --- CUSTOM DROPDOWN / SELECT STYLES --- */
   .custom-option {
     @apply text-[var(--color-text-secondary)] font-medium px-4 py-3 cursor-pointer transition-colors duration-150 rounded-lg;
-    @apply hover:bg-[var(--color-bg-tertiary)] hover:text-[var(--color-text-primary)];
+    @apply hover:bg-[var(--color-hover)] hover:text-[var(--color-text-primary)];
   }
 
   .custom-option-active {
-    @apply !bg-[var(--color-accent)] !text-[var(--color-text-primary)] font-semibold;
-    /* Neon glow for active state */
-    box-shadow: 0 0 10px rgba(255, 51, 204, 0.6); 
+    @apply !bg-[var(--color-accent)] !text-[var(--color-bg-secondary)] font-semibold;
+    /* Clean shadow for active state, using monochrome accent */
+    box-shadow: 0 0 8px rgba(30, 41, 59, 0.2); 
   }
   
   .select-button-modern {
@@ -165,31 +157,29 @@
     @apply transition-all duration-200 cursor-pointer;
   }
 
-  /* --- CARD CLASSES (GLASS MORPHISM with GRADIENT) --- */
-  
-  /* Modern Card */
   .card-modern {
-    /* Background: Sleek diagonal gradient with glass morphism (RGB: 21, 11, 45, 0.5 to 36, 24, 64, 0.4) */
-    background: linear-gradient(135deg, rgba(21, 11, 45, 0.5), rgba(36, 24, 64, 0.4)); 
+    /* Background: Subtle light glass morphism with soft white gradient */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(248, 250, 252, 0.8)); 
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     @apply border border-[var(--color-border-primary)] rounded-2xl p-8 transition-all duration-300;
-    @apply hover:border-[var(--color-accent)] hover:bg-[var(--color-hover)];
+    /* Soft, darker shadow on hover for elevation against light BG */
+    @apply hover:border-[var(--color-accent)] hover:shadow-xl shadow-[rgba(15,23,42,0.08)];
   }
 
-  /* Elevated Card */
+  /* Elevated Card - LIGHT MODE ADJUSTMENTS */
   .card-elevated {
-    /* Background: Deeper, more noticeable diagonal gradient for elevated components (RGB: 36, 24, 64, 0.6 to 51, 37, 92, 0.5) */
-    background: linear-gradient(135deg, rgba(36, 24, 64, 0.6), rgba(51, 37, 92, 0.5)); 
+    /* Background: Pure white, slightly opaque gradient for stronger separation */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(241, 245, 249, 0.9)); 
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    @apply border border-[var(--color-border-primary)] rounded-2xl p-8;
+    @apply border border-[var(--color-border-secondary)] rounded-2xl p-8 shadow-lg shadow-[rgba(15,23,42,0.05)];
   }
 
-  /* Subtle Card */
+  /* Subtle Card - LIGHT MODE ADJUSTMENTS */
   .card-subtle {
-    /* Background: Very subtle gradient for background components (RGB: 10, 0, 26, 0.4 to 21, 11, 45, 0.3) */
-    background: linear-gradient(135deg, rgba(10, 0, 26, 0.4), rgba(21, 11, 45, 0.3)); 
+    /* Background: Very subtle gradient for background components */
+    background: linear-gradient(135deg, rgba(248, 250, 252, 0.7), rgba(241, 245, 249, 0.6)); 
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     @apply border border-[var(--color-border-primary)] rounded-xl p-6 transition-all duration-200;
@@ -208,7 +198,7 @@
     box-shadow: none !important;
   }
 
-  /* Select Modern (native style) */
+  /* Select Modern (native style) - SVG remains high contrast gray */
   .select-modern {
     @apply bg-[var(--color-bg-secondary)] text-[var(--color-text-primary)] border border-[var(--color-border-secondary)] rounded-xl px-5 py-3.5 text-base;
     @apply focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:border-[var(--color-accent)];
@@ -216,8 +206,8 @@
     appearance: none;
     -webkit-appearance: none;
     box-shadow: none !important;
-    /* Muted violet SVG arrow */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23A396C7'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    /* Deep Slate SVG arrow - Using high contrast tertiary color: #475569 */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23475569'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 1rem center;
     background-size: 1.25rem;
@@ -238,17 +228,16 @@
   .form-control-modern {
     @apply flex flex-col gap-2 mb-6;
   }
+  /* Labels - Using new tertiary color */
   .label-modern {
     @apply text-sm font-medium text-[var(--color-text-tertiary)] mb-1;
   }
 
-  /* --- BUTTONS --- */
-  
-  /* Button Modern (Primary Action) */
+
   .btn-modern {
-    @apply bg-[var(--color-accent)] text-[var(--color-text-primary)] font-semibold px-8 py-4 rounded-xl text-base;
-    /* Neon Magenta Shadow */
-    box-shadow: 0 5px 15px rgba(255, 51, 204, 0.2); 
+    @apply bg-[var(--color-accent)] text-[var(--color-bg-secondary)] font-semibold px-8 py-4 rounded-xl text-base;
+    /* Clean Shadow using monochrome accent color (Deep Slate Gray) */
+    box-shadow: 0 5px 15px rgba(30, 41, 59, 0.2); 
     @apply hover:bg-[var(--color-accent-muted)] active:scale-[0.98] transition-all duration-200;
     @apply disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none;
   }
@@ -263,9 +252,9 @@
     @apply hover:bg-[var(--color-hover)] active:scale-[0.98] transition-all duration-200;
   }
 
-  /* Compact Button Variants */
+
   .btn-modern-sm {
-    @apply bg-[var(--color-accent)] text-[var(--color-text-primary)] font-semibold px-5 py-2.5 rounded-lg text-sm;
+    @apply bg-[var(--color-accent)] text-[var(--color-bg-secondary)] font-semibold px-6 py-3 rounded-lg text-sm;
     @apply hover:bg-[var(--color-accent-muted)] active:scale-[0.98] transition-all duration-200;
   }
 
@@ -274,29 +263,30 @@
   /* Badge */
   .badge-modern {
     @apply inline-flex items-center px-4 py-2 rounded-full text-sm font-medium;
-    @apply bg-[var(--color-bg-tertiary)] text-[var(--color-text-secondary)] border border-[var(--color-border-primary)];
+    /* Darker background for visibility */
+    @apply bg-[var(--color-bg-tertiary)] text-[var(--color-text-secondary)] border border-[var(--color-border-secondary)];
   }
 
   /* Divider */
   .divider-modern {
-    @apply border-t border-[var(--color-border-primary)] my-8;
+    @apply border-t border-[var(--color-border-secondary)] my-8;
   }
 
-  /* Glass Effect (standalone utility) */
+  /* Glass Effect (standalone utility) - LIGHT MODE ADJUSTMENTS */
   .glass-modern {
-    /* Background: Subtle Neon Magenta tint on the glass effect for a utility class (RGB: 255, 51, 204, 0.1 to 10, 0, 26, 0.6) */
-    background: linear-gradient(135deg, rgba(255, 51, 204, 0.1), rgba(10, 0, 26, 0.6)); 
+    /* Background: Subtle light gray tint on the glass effect for a utility class */
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.05), rgba(255, 255, 255, 0.8)); 
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    @apply border border-[var(--color-border-primary)] rounded-2xl p-8;
+    @apply border border-[var(--color-border-primary)] rounded-2xl p-8 shadow-lg shadow-[rgba(15,23,42,0.05)];
   }
 
-  /* Gradient Text (Neon Magenta/Electric Cyan gradient) */
+  /* Gradient Text (Monochrome gradient: Dark Text to Accent) */
   .gradient-text-modern {
-    @apply bg-gradient-to-r from-[var(--color-accent)] via-[var(--color-info)] to-[var(--color-text-primary)] bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-[var(--color-bg-elevated)] via-[var(--color-active)] to-[var(--color-text-secondary)] bg-clip-text text-transparent;
   }
 
-  /* Shimmer Loading Effect */
+  /* Shimmer Loading Effect - Adjusted for light background */
   .shimmer {
     position: relative;
     overflow: hidden;
@@ -312,8 +302,8 @@
     background: linear-gradient(
       90deg,
       transparent,
-      /* Pale Blue Shimmer */
-      rgba(230, 240, 255, 0.2)
+      /* Subtle dark shimmer for light BG */
+      rgba(15, 23, 42, 0.1) 
     );
     animation: shimmer 2s infinite;
   }
@@ -324,10 +314,9 @@
     }
   }
 
-  /* Neon Glow Utility */
+  /* Soft Shadow Utility - Replaced with Soft Gray Shadow */
   .glow {
-    /* Neon Magenta Glow */
-    box-shadow: 0 0 20px rgba(255, 51, 204, 0.2);
+    box-shadow: 0 0 15px rgba(30, 41, 59, 0.1);
   }
 
   .glow-hover {
@@ -335,8 +324,8 @@
   }
 
   .glow-hover:hover {
-    /* Stronger Neon Magenta Glow on hover */
-    box-shadow: 0 0 30px rgba(255, 51, 204, 0.4);
+    /* Stronger Soft Gray Glow on hover */
+    box-shadow: 0 0 25px rgba(30, 41, 59, 0.2);
   }
 }
 
