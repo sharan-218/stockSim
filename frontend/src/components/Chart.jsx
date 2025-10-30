@@ -3,8 +3,6 @@ import ReactECharts from "echarts-for-react";
 
 export default function Chart({ historical, simulatedPaths }) {
   if (!historical || historical.length === 0) return null;
-
-
 const baseColors = [
   "#2C5AA0", 
   "#2CA97E", 
@@ -66,10 +64,10 @@ const baseColors = [
         data: historicalData,
       },
       ...simulatedPaths.map((path, idx) => ({
-        name: `Simulated ${idx + 1}`,
+        name: `S${idx + 1}`,
         type: "line",
         smooth: true,
-        symbol: "emptyCircle",
+        symbol: "circle",
         symbolSize: 4,
         lineStyle: {
           width: 1.5,
@@ -105,7 +103,7 @@ const baseColors = [
       legend: {
         top: 10,
         textStyle: { color: "#111827", fontSize: 12 },
-        itemGap: 10,
+        itemGap: 5,
       },
       grid: {
         top: 0,
@@ -148,20 +146,20 @@ const baseColors = [
       series,
       animationDuration: 600,
       media: [
-        {
-          query: { maxWidth: 640 },
-          option: {
-            legend: { top: 5, textStyle: { fontSize: 10 } },
-            grid: { top: 40, bottom: 100,left:0  },
+          {
+              query: { maxWidth: 640 },
+              option: {
+                  legend: { top: 5, textStyle: { fontSize: 10 } },
+                  grid: { top: 40, bottom: 30, left: 40, right: 20 },
+              },
           },
-        },
-        {
-          query: { maxWidth: 1024 },
-          option: {
-            legend: { top: 40,bottom:80,right:20, textStyle: { fontSize: 11 } },
+          {
+              query: { maxWidth: 1024 },
+              option: {
+                  legend: { top: 40,bottom:0,right:20, textStyle: { fontSize: 11 } },
+              },
           },
-        },
-      ],
+      ]
     }),
     [labels, series]
   );
