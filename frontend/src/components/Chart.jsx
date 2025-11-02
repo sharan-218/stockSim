@@ -3,25 +3,40 @@ import ReactECharts from "echarts-for-react";
 
 export default function Chart({ historical, simulatedPaths }) {
   if (!historical || historical.length === 0) return null;
-const baseColors = [
-  "#2C5AA0", 
-  "#2CA97E", 
-  "#a616caff", 
-  "#E45B5B",
-  "#8C6ADE", 
-  "#E07B39", 
-  "#D6619C", 
-  "#28B3A7", 
-  "#6673E0",
-  "#0c1e6eff", 
-]
+
+  const baseColors = [
+    "#3c7cdcff",
+    "#2CA97E",
+    "#a616caff",
+    "#E45B5B",
+    "#8C6ADE",
+    "#E07B39",
+    "#D6619C",
+    "#28B3A7",
+    "#6673E0",
+    "#3658f0ff",
+  ];
+
   simulatedPaths = Array.isArray(simulatedPaths) ? simulatedPaths : [];
+
   const historicalLabels = historical.map((h) => h.open_time.split("T")[0]);
   const historicalData = historical.map((h) => h.close);
+  const allPrices = [
+    ...historicalData,
+    ...simulatedPaths.flat(),
+  ].filter((v) => typeof v === "number" && !isNaN(v));
+
+  const minPrice = Math.min(...allPrices);
+  const maxPrice = Math.max(...allPrices);
+  const padding = (maxPrice - minPrice) * 0.1;
+  const dynamicMin = minPrice - padding;
+  const dynamicMax = maxPrice + padding;
+
   const maxSimulatedLength = Math.max(
     0,
     ...simulatedPaths.map((path) => path.length)
   );
+
   const lastDate = new Date(historical[historical.length - 1].open_time);
   const futureLabels =
     maxSimulatedLength > 0
@@ -49,8 +64,8 @@ const baseColors = [
             x2: 0,
             y2: 1,
             colorStops: [
-              { offset: 0, color: "rgba(96,165,250,0.3)" },
-              { offset: 1, color: "rgba(96,165,250,0.05)" },
+              { offset: 0, color: "rgba(128, 185, 255, 0.3)" },
+              { offset: 1, color: "rgba(100, 170, 255, 0.05)" },
             ],
           },
         },
@@ -64,7 +79,7 @@ const baseColors = [
         data: historicalData,
       },
       ...simulatedPaths.map((path, idx) => ({
-        name: `S${idx + 1}`,
+        name: idx+1,
         type: "line",
         smooth: true,
         symbol: "circle",
@@ -87,6 +102,7 @@ const baseColors = [
     ],
     [historicalData, simulatedPaths]
   );
+
   const options = useMemo(
     () => ({
       backgroundColor: "transparent",
@@ -94,21 +110,16 @@ const baseColors = [
         trigger: "axis",
         axisPointer: {
           type: "cross",
-          label: { backgroundColor: "#4B5563" },
+          label: { backgroundColor: "#0b2140ff" },
         },
         backgroundColor: "#1f2937",
         textStyle: { color: "#E5E7EB", fontSize: 12 },
         borderWidth: 0,
       },
-      legend: {
-        top: 10,
-        textStyle: { color: "#111827", fontSize: 12 },
-        itemGap: 5,
-      },
       grid: {
         top: 0,
-        left: 0,
-        bottom: 100,
+        left: -40,
+        bottom: 50,
         containLabel: true,
       },
       xAxis: {
@@ -119,7 +130,7 @@ const baseColors = [
           rotate: -15,
           fontSize: 11,
         },
-        axisLine: { show: false },
+        axisLine: { show: true },
         axisTick: { show: false },
       },
       yAxis: {
@@ -129,6 +140,8 @@ const baseColors = [
           show: true,
           lineStyle: { color: "#374151", type: "dashed" },
         },
+        min: dynamicMin,
+        max: dynamicMax,
       },
       dataZoom: [
         { type: "inside", throttle: 30 },
@@ -145,23 +158,8 @@ const baseColors = [
       ],
       series,
       animationDuration: 600,
-      media: [
-          {
-              query: { maxWidth: 640 },
-              option: {
-                  legend: { top: 5, textStyle: { fontSize: 10 } },
-                  grid: { top: 40, bottom: 30, left: 40, right: 20 },
-              },
-          },
-          {
-              query: { maxWidth: 1024 },
-              option: {
-                  legend: { top: 40,bottom:0,right:20, textStyle: { fontSize: 11 } },
-              },
-          },
-      ]
     }),
-    [labels, series]
+    [labels, series, dynamicMin, dynamicMax]
   );
 
   return (

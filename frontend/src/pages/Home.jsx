@@ -3,7 +3,6 @@ import SymbolInput from "../components/SymbolInput";
 import ModelSelect from "../components/ModelSelect";
 import Chart from "../components/Chart";
 import axios from "axios";
-
 const MODEL_INFO = [
     {
         id: "gbm",
@@ -65,8 +64,8 @@ export default function Home() {
      */
     const fetchData = async (symbol) => {
         setState((prev) => ({ ...prev, loading: true, error: null }));
-        const dataUrl = `https://stocksim-4zqk.onrender.com/data/${symbol}?interval=1d&limit=30`;
-        const simUrl = "https://stocksim-4zqk.onrender.com/simulate/";
+        const dataUrl = `${import.meta.env.VITE_SERVER_DATA}/${symbol}?interval=1d&limit=30`;
+        const simUrl = import.meta.env.VITE_SERVER_SIMULATE;
         try {
             const dataResp = await axios.get(dataUrl);
             const simResp = await axios.post(simUrl, {
@@ -132,10 +131,9 @@ export default function Home() {
                             <input
                                 type="number"
                                 min="0"
-                                max="50"
                                 value={state.paths}
                                 onChange={(e) =>
-                                    setState((prev) => ({ ...prev, paths: Math.min(50, Math.max(1, Number(e.target.value))) }))
+                                    setState((prev) => ({ ...prev, paths: Number(e.target.value) }))
                                 }
                                 className="input-modern w-full"
                             />
