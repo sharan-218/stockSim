@@ -2,6 +2,7 @@ from fastapi import APIRouter, Body, HTTPException
 import pandas as pd
 import numpy as np
 import importlib
+from app.utils.signals import generate_signals_from_paths
 
 router = APIRouter(prefix="/simulate", tags=["Simulation"])
 
@@ -11,6 +12,7 @@ MODELS = {
     "garch": {"module": "app.models.garch", "func": "simulate_garch"},
     "jump_diffusion": {"module": "app.models.jump_diffusion", "func": "simulate_jump_diffusion"},
     "arima": {"module": "app.models.arima", "func": "simulate_arima"},
+    "bbmc": {"module": "app.models.bbmc", "func": "simulate_bbmc"},
 }
 
 
@@ -24,39 +26,39 @@ def run_simulation(payload: dict = Body(...)):
     historical = payload.get("historical")
     horizon_days = int(payload.get("horizon_days", 30))
     steps = int(payload.get("steps", 30))
-
     num_paths = int(payload.get("paths") or payload.get("num_paths") or 3)
-
-    if not historical:
+    if not historical or not isinstance(historical, list):
         raise HTTPException(status_code=400, detail="Historical data required")
     if model not in MODELS:
         raise HTTPException(status_code=400, detail=f"Model '{model}' not supported")
 
-    df = pd.DataFrame(historical)
-    if "close" not in df.columns:
-        raise HTTPException(status_code=400, detail="Historical data must contain 'close' prices")
+    try:
+        if isinstance(historical[0], dict) and "close" in historical[0]:
+            prices = [float(x["close"]) for x in historical if "close" in x]
+        elif isinstance(historical[0], (int, float)):
+            prices = [float(x) for x in historical]
+        else:
+            raise HTTPException(status_code=400, detail="historical must be list of dicts with numeric 'close' values")
 
-    prices = df["close"].astype(float).dropna()
-    log_returns = np.log(prices / prices.shift(1)).dropna()
-    mu = log_returns.mean()
-    sigma = log_returns.std()
-    last_price = prices.iloc[-1]
+        if len(prices) < 2:
+            raise HTTPException(status_code=400, detail="Need at least 2 data points to simulate")
+
+        prices = np.array(prices, dtype=float)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid historical data format")
+
+
+    log_returns = np.log(prices[1:] / prices[:-1])
+    mu = np.mean(log_returns)
+    sigma = np.std(log_returns)
+    last_price = prices[-1]
+
 
     try:
         module_info = MODELS[model]
         module = importlib.import_module(module_info["module"])
         simulate_func = getattr(module, module_info["func"])
-
-        if model == "ou":
-            result = simulate_func(
-                historical=list(prices),
-                horizon_days=horizon_days,
-                steps=steps,
-                num_paths=num_paths
-            )
-            simulated_paths = result["paths"]
-
-        elif model in ["gbm", "jump_diffusion"]:
+        if model in ["gbm", "jump_diffusion"]:
             simulated_paths = simulate_func(
                 last_price=last_price,
                 mu=mu,
@@ -65,8 +67,7 @@ def run_simulation(payload: dict = Body(...)):
                 steps=steps,
                 num_paths=num_paths
             )
-
-        elif model == "garch":
+        elif model in ["ou", "garch", "arima", "bbmc"]:
             result = simulate_func(
                 historical=list(prices),
                 horizon_days=horizon_days,
@@ -74,25 +75,24 @@ def run_simulation(payload: dict = Body(...)):
                 num_paths=num_paths
             )
             simulated_paths = result["paths"] if isinstance(result, dict) else result
-        elif model == "arima":
-            result = simulate_func(
-                historical=list(prices),
-                horizon_days=horizon_days,
-                steps=steps,
-                num_paths=num_paths
-            )
-            simulated_paths = result["paths"] if isinstance(result, dict) else result
-
         else:
             raise HTTPException(status_code=400, detail=f"Model {model} not implemented")
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+    signals = generate_signals_from_paths(
+        simulated_paths,
+        S0=float(last_price),
+        steps=steps,
+        horizon_days=horizon_days
+    )
 
     return {
         "model": model,
         "paths": simulated_paths,
         "steps": steps,
         "horizon_days": horizon_days,
-        "num_paths": num_paths
+        "num_paths": num_paths,
+        "signals": signals
     }

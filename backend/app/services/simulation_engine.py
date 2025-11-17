@@ -17,5 +17,8 @@ def run_simulation(model_name: str, params: dict):
         return jump_diffusion.simulate_jump_diffusion(**params)
     elif model_name == "arima":
         return arima.simulate_arima(**params)
+    elif model_name == "bbmc":
+        return arima.simulate_bbmc(**params)
+    
     else:
         raise ValueError(f"Model '{model_name}' not implemented")

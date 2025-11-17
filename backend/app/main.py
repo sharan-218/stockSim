@@ -33,4 +33,4 @@ app.include_router(simulation.router)
 
 @app.get("/")
 def root():
-    return {"status": f"{APP_NAME} running", "port": APP_PORT}
+    return {"status": f"{APP_NAME} running"}
