@@ -10,20 +10,20 @@ export default function SymbolInput({ onSubmit }) {
     }
   };
   return (
-    <form onSubmit={handleSubmit} className="flex gap-4 w-full items-end">
+    <form onSubmit={handleSubmit} className="flex gap-4 w-full items-center">
       <div className="flex-grow">
-          <input
-            type="text"
-            value={symbol}
-            onChange={(e) => setSymbol(e.target.value.toUpperCase())}
-            placeholder="Enter symbol, e.g., BTCUSDT"
-            className="input-modern w-full"
-            aria-label="Crypto Symbol"
-          />
+        <input
+          type="text"
+          value={symbol}
+          onChange={(e) => setSymbol(e.target.value.toUpperCase())}
+          placeholder="Enter symbol"
+          className="input-modern w-full"
+          aria-label="Crypto Symbol"
+        />
       </div>
-      <Button 
-        type="submit" 
-        className="btn-modern flex-shrink-0" 
+      <Button
+        type="submit"
+        className="btn-modern flex-shrink-0"
       >
         Fetch
       </Button>

@@ -1,17 +1,15 @@
-// ModelSelect.jsx
-
+import React from "react";
 export default function ModelSelect({ model, setModel }) {
   const models = [
     { id: "gbm", name: "Geometric Brownian Motion" },
     { id: "ou", name: "Ornstein–Uhlenbeck" },
     { id: "garch", name: "GARCH (1,1)" },
     { id: "jump_diffusion", name: "Jump Diffusion" },
-    { id: "arima", name: "Arima" },
 
   ];
 
   return (
-    <div className="form-control-modern w-full"> 
+    <div className="form-control-modern w-full">
       <label className="label-modern">
         Select Model
       </label>

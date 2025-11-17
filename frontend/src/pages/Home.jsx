@@ -3,6 +3,7 @@ import SymbolInput from "../components/SymbolInput";
 import ModelSelect from "../components/ModelSelect";
 import Chart from "../components/Chart";
 import SignalsCard from "../components/SignalsCard";
+import HeatMap from "../components/HeatMap";
 
 import axios from "axios";
 const MODEL_INFO = [
@@ -70,7 +71,6 @@ export default function Home() {
                 steps: 30,
                 num_paths: Number(state.paths) || 3,
             });
-            console.log("Simulation Response:", simResp.data);
             let simulatedPaths = [];
             const signals = simResp.data.signals || {};
             if (Array.isArray(simResp.data.paths)) {
@@ -118,31 +118,30 @@ export default function Home() {
                     <div className="flex flex-col sm:flex-row gap-6">
                         <div className="form-control-modern flex-1">
                             <label className="text-[var(--color-text-tertiary)] font-medium mb-1 block">
-                                Enter Symbol (e.g., BTCUSDT)
+                                Enter Symbol
                             </label>
                             <SymbolInput onSubmit={(sym) => fetchData(sym)} />
                         </div>
 
-                        <div className="form-control-modern flex-1 sm:max-w-xs">
+                        <div className="form-control-modern flex-1 sm:max-w-xs mt-1">
                             <ModelSelect
                                 model={state.model}
                                 setModel={(model) => setState((prev) => ({ ...prev, model }))}
                             />
                         </div>
 
-                        <div className="form-control-modern flex-1 sm:max-w-xs">
+                        <div className="form-control-modern sm:max-w-xs">
                             <label className="text-[var(--color-text-tertiary)] font-medium mb-1 block">
-                                Number of Paths
+                                Paths
                             </label>
                             <input
                                 type="number"
                                 min="1"
-                                placeholder="1"
-                                value={state.paths}
+                                placeholder="3"
                                 onChange={(e) =>
                                     setState((prev) => ({ ...prev, paths: Number(e.target.value) }))
                                 }
-                                className="input-modern w-full bg-[var(--color-bg-tertiary)] border border-[var(--color-border-primary)] rounded-xl px-3 py-2 text-[var(--color-text-primary)]"
+                                className="input-modern"
                             />
                         </div>
                     </div>
@@ -167,7 +166,7 @@ export default function Home() {
 
 
                 {state.historical.length > 0 && (
-                    <div className="p-6 mb-6 rounded-2xl shadow-lg bg-[var(--color-bg-secondary)] border border-[var(--color-border-secondary)]">
+                    <div className="p-4 mb-6 rounded-2xl shadow-lg bg-[var(--color-bg-secondary)] border border-[var(--color-border-secondary)]">
                         <Chart
                             historical={state.historical}
                             simulatedPaths={state.simulated}
@@ -175,12 +174,27 @@ export default function Home() {
                     </div>
                 )}
                 {state.signals && <SignalsCard signals={state.signals} />}
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {
+                    state.simulated.length > 0 && (
+                        <div className="w-full  
+                h-[55vh] sm:h-[55vh] md:h-[65vh] lg:h-[70vh] 
+                min-h-[280px] 
+                rounded-2xl p-2 
+                bg-transparent mb-20">
+                            <HeatMap simulatedPaths={state.simulated} />
+                        </div>
+                    )
+                }
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-25">
                     {MODEL_INFO.map((m) => (
                         <div
                             key={m.id}
-                            className="p-4 rounded-xl bg-[var(--color-bg-secondary)] border border-[var(--color-border-primary)] shadow-sm flex flex-col h-full"
+                            className=" p-4 rounded-xl bg-[var(--color-bg-secondary)] border border-[var(--color-border-primary)]
+                                            shadow-sm flex flex-col h-full
+                                            transform transition-all duration-300 ease-out
+                                            hover:-translate-y-1 hover:shadow-2xl
+                                            "
+
                             style={{ borderLeft: m.id === state.model ? '4px solid var(--color-accent)' : '3px solid transparent' }}
                         >
                             <h3 className="text-lg font-semibold mb-2">{m.name}</h3>
@@ -192,6 +206,7 @@ export default function Home() {
             </div>
 
 
+
             <footer className="w-full bg-[var(--color-bg-primary)]">
                 <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
                     <div className="border-t border-[var(--color-border-primary)] mt-10"></div>
@@ -200,7 +215,7 @@ export default function Home() {
                             href="https://yskfolio.netlify.app"
                             className="text-[var(--color-text-primary)] hover:underline font-semibold"
                         >
-                            Sharan
+                            Sharan❤️
                         </a>
                     </p>
                 </div>

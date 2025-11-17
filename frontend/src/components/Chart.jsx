@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import ReactECharts from "echarts-for-react";
+import { connect } from "echarts";
 
 export default function Chart({ historical, simulatedPaths }) {
   if (!historical || historical.length === 0) return null;
@@ -41,10 +42,10 @@ export default function Chart({ historical, simulatedPaths }) {
   const futureLabels =
     maxSimulatedLength > 0
       ? Array.from({ length: maxSimulatedLength }, (_, i) => {
-          const nextDate = new Date(lastDate);
-          nextDate.setDate(lastDate.getDate() + i + 1);
-          return nextDate.toISOString().split("T")[0];
-        })
+        const nextDate = new Date(lastDate);
+        nextDate.setDate(lastDate.getDate() + i + 1);
+        return nextDate.toISOString().split("T")[0];
+      })
       : [];
   const labels = [...historicalLabels, ...futureLabels];
 
@@ -79,11 +80,12 @@ export default function Chart({ historical, simulatedPaths }) {
         data: historicalData,
       },
       ...simulatedPaths.map((path, idx) => ({
-        name: idx+1,
+        name: idx + 1,
         type: "line",
         smooth: true,
         symbol: "circle",
         symbolSize: 4,
+        connectNulls: false,
         lineStyle: {
           width: 1.5,
           type: "dashed",
@@ -117,45 +119,57 @@ export default function Chart({ historical, simulatedPaths }) {
         borderWidth: 0,
       },
       grid: {
-        top: 0,
-        left: -40,
-        bottom: 50,
+        top: 20,
+        left: window.innerWidth < 480 ? 5 : 5,
+        right: 5,
+        bottom: 60,
         containLabel: true,
       },
+
+
       xAxis: {
         type: "category",
         data: labels,
         axisLabel: {
           color: "#111827",
-          rotate: -15,
-          fontSize: 11,
+          fontSize: window.innerWidth < 480 ? 9 : 10,
+          rotate: window.innerWidth < 480 ? -5 : -20,
+          interval: "auto",
         },
         axisLine: { show: true },
         axisTick: { show: false },
       },
+
       yAxis: {
         type: "value",
-        axisLabel: { color: "#111827", fontSize: 11 },
+        axisLabel: {
+          color: "#111827",
+          fontSize: window.innerWidth < 480 ? 9 : 11,
+          formatter: (value) => value.toLocaleString(),
+        },
         splitLine: {
           show: true,
-          lineStyle: { color: "#374151", type: "dashed" },
+          lineStyle: { color: "#D1D5DB", type: "dashed" },
         },
         min: dynamicMin,
         max: dynamicMax,
       },
+
       dataZoom: [
         { type: "inside", throttle: 30 },
         {
           type: "slider",
-          height: 20,
-          bottom: 20,
-          handleSize: 20,
+          height: window.innerWidth < 480 ? 12 : 20,
+          bottom: window.innerWidth < 480 ? 5 : 20,
+          handleSize: window.innerWidth < 480 ? 10 : 20,
           borderColor: "transparent",
-          backgroundColor: "rgba(22, 38, 63, 0.87)",
-          fillerColor: "rgba(133, 170, 222, 0.24)",
+          backgroundColor: "rgba(22,38,63,0.87)",
+          fillerColor: "rgba(133,170,222,0.24)",
           handleColor: "#172e49ff",
         },
-      ],
+      ]
+      ,
+
       series,
       animationDuration: 600,
     }),
@@ -163,14 +177,19 @@ export default function Chart({ historical, simulatedPaths }) {
   );
 
   return (
-    <div className="w-full h-[65vh] sm:h-[70vh] md:h-[75vh] rounded-2xl bg-transparent p-2">
-      <ReactECharts
-        option={options}
-        style={{ width: "100%", height: "100%" }}
-        opts={{ renderer: "canvas" }}
-        notMerge={true}
-        lazyUpdate={true}
-      />
-    </div>
+    <>
+      <div className="w-full h-[65vh] sm:h-[70vh] md:h-[75vh] rounded-2xl bg-transparent p-2">
+        <ReactECharts
+          option={options}
+          style={{ width: "100%", height: "100%" }}
+          opts={{ renderer: "canvas" }}
+          notMerge={true}
+          lazyUpdate={true}
+        />
+
+      </div>
+
+
+    </>
   );
 }

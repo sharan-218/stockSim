@@ -47,7 +47,7 @@
   *,
   *::before,
   *::after {
-    box-sizing: inherit;
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
@@ -60,8 +60,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.6;
+    overflow-x: hidden;
   }
-  
 
   @font-face {
     font-family: 'Inter';
@@ -185,9 +185,6 @@
     @apply border border-[var(--color-border-primary)] rounded-xl p-6 transition-all duration-200;
     @apply hover:bg-[var(--color-hover)] hover:border-[var(--color-border-secondary)];
   }
-  
-  /* --- FORM ELEMENTS --- */
-
   /* Input Modern */
   .input-modern {
     @apply bg-[var(--color-bg-secondary)] text-[var(--color-text-primary)] border border-[var(--color-border-secondary)] rounded-xl px-5 py-3.5 text-base;
@@ -337,4 +334,10 @@
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .focus-visible-only:focus:not(:focus-visible) { outline: none; }
   .no-shadow { box-shadow: none !important; }
+}
+
+@layer components {
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 hover:border-[var(--color-border-secondary)];
+  }
 }
