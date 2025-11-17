@@ -11,8 +11,8 @@ MODELS = {
     "ou": {"module": "app.models.ou", "func": "simulate_ou"},
     "garch": {"module": "app.models.garch", "func": "simulate_garch"},
     "jump_diffusion": {"module": "app.models.jump_diffusion", "func": "simulate_jump_diffusion"},
-    "arima": {"module": "app.models.arima", "func": "simulate_arima"},
-    "bbmc": {"module": "app.models.bbmc", "func": "simulate_bbmc"},
+    # "arima": {"module": "app.models.arima", "func": "simulate_arima"},
+    # "bbmc": {"module": "app.models.bbmc", "func": "simulate_bbmc"},
 }
 
 
@@ -67,7 +67,7 @@ def run_simulation(payload: dict = Body(...)):
                 steps=steps,
                 num_paths=num_paths
             )
-        elif model in ["ou", "garch", "arima", "bbmc"]:
+        elif model in ["ou", "garch" ]:
             result = simulate_func(
                 historical=list(prices),
                 horizon_days=horizon_days,
