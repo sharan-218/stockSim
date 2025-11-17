@@ -14,8 +14,6 @@ MODELS = {
     # "arima": {"module": "app.models.arima", "func": "simulate_arima"},
     # "bbmc": {"module": "app.models.bbmc", "func": "simulate_bbmc"},
 }
-
-
 @router.get("/models")
 def get_models():
     return [{"id": k, "name": v["func"].replace("_", " ").title()} for k, v in MODELS.items()]
@@ -39,21 +37,16 @@ def run_simulation(payload: dict = Body(...)):
             prices = [float(x) for x in historical]
         else:
             raise HTTPException(status_code=400, detail="historical must be list of dicts with numeric 'close' values")
-
         if len(prices) < 2:
             raise HTTPException(status_code=400, detail="Need at least 2 data points to simulate")
 
         prices = np.array(prices, dtype=float)
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid historical data format")
-
-
     log_returns = np.log(prices[1:] / prices[:-1])
     mu = np.mean(log_returns)
     sigma = np.std(log_returns)
     last_price = prices[-1]
-
-
     try:
         module_info = MODELS[model]
         module = importlib.import_module(module_info["module"])
@@ -87,7 +80,6 @@ def run_simulation(payload: dict = Body(...)):
         steps=steps,
         horizon_days=horizon_days
     )
-
     return {
         "model": model,
         "paths": simulated_paths,

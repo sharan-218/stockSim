@@ -7,8 +7,6 @@ from dotenv import load_dotenv
 load_dotenv() 
 
 BINANCE_BASE_URL = os.getenv("BINANCE_BASE_URL", "https://api.binance.com/api/v3/klines")
-
-
 router = APIRouter(prefix="/data", tags=["Data"])
 
 @router.get("/{symbol}")

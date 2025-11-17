@@ -206,7 +206,6 @@
     appearance: none;
     -webkit-appearance: none;
     box-shadow: none !important;
-    /* Deep Slate SVG arrow - Using high contrast tertiary color: #475569 */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23475569'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 1rem center;
@@ -283,7 +282,7 @@
 
   /* Gradient Text (Monochrome gradient: Dark Text to Accent) */
   .gradient-text-modern {
-    @apply bg-gradient-to-r from-[var(--color-bg-elevated)] via-[var(--color-active)] to-[var(--color-text-secondary)] bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-[var(--color-text-primary)] via-[var(--color-text-secondary)] to-[var(--color-text-tertiary)] bg-clip-text text-transparent;
   }
 
   /* Shimmer Loading Effect - Adjusted for light background */
