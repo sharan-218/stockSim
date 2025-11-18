@@ -15,7 +15,7 @@ export default function SignalsCard({ signals }) {
                 : "bg-[var(--color-text-muted)]";
 
     return (
-        <div className="p-8 mb-10 rounded-2xl shadow-xl bg-[var(--color-bg-secondary)] border border-[var(--color-border-secondary)]">
+        <div className="p-8 mb-10 rounded-2xl bg-[var(--color-bg-secondary)] border border-[var(--color-border-secondary)]">
             <h2 className="text-3xl font-bold mb-6 text-[var(--color-text-primary)]">
                 Simulation Signals
             </h2>

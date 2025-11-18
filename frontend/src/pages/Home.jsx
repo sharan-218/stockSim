@@ -61,7 +61,7 @@ export default function Home() {
     const fetchData = async (symbol) => {
         setState((prev) => ({ ...prev, loading: true, error: null }));
         const dataUrl = `${import.meta.env.VITE_SERVER_DATA}/${symbol}?interval=1d&limit=30`;
-        const simUrl = import.meta.env.VITE_SERVER_SIMULATE;
+        const simUrl = import.meta.env.VITE_DEV_SIMULATE;
         try {
             const dataResp = await axios.get(dataUrl);
             const simResp = await axios.post(simUrl, {
@@ -166,7 +166,7 @@ export default function Home() {
 
 
                 {state.historical.length > 0 && (
-                    <div className="p-4 mb-6 rounded-2xl shadow-lg bg-[var(--color-bg-secondary)] border border-[var(--color-border-secondary)]">
+                    <div className="p-4 mb-6 rounded-2xl bg-[var(--color-bg-secondary)] border border-[var(--color-border-secondary)]">
                         <Chart
                             historical={state.historical}
                             simulatedPaths={state.simulated}
