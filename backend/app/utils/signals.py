@@ -165,43 +165,62 @@ def signal_confidence(paths: Paths, percentile_sigma_bootstrap: float = None) ->
     if percentile_sigma_bootstrap is not None:
         conf *= float(max(0.0, 1.0 - percentile_sigma_bootstrap))
     return float(min(1.0, max(0.0, conf)))
+def compute_step_percentiles(paths, percentiles=[5, 25, 50, 75, 95]):
+    """
+    Compute per-step percentiles for all paths.
+    Returns: { step_index: {percentile: value} }
+    """
+    arr = np.array(paths, dtype=float)
+    stepwise = {}
 
-def generate_signals_from_paths(paths: Paths,
-                                S0: float = None,
-                                steps: int = None,
-                                horizon_days: int = None,
-                                percentiles: List[int] = [5,25,50,75,95],
-                                prob_thresholds: Dict[str, Tuple[float, float]] = None
-                                ) -> Dict[str, Any]:
-    """
-    High-level generator:
-      - computes percentiles
-      - probabilities of hitting some targets relative to S0
-      - CVaR
-      - scenario bucket
-      - simple signals (add/reduce) based on example thresholds
-    prob_thresholds example:
-      { "add": (1.2, 0.6),  # check P(S_T > 1.2*S0) > 0.6
-        "reduce": (0.8, 0.5) }
-    """
+    for t in range(arr.shape[1]):
+        values = arr[:, t]
+        stepwise[t] = {
+            str(p): float(np.percentile(values, p))
+            for p in percentiles
+        }
+
+    return stepwise
+def generate_signals_from_paths(
+        paths: Paths,
+        S0: float = None,
+        steps: int = None,
+        horizon_days: int = None,
+        percentiles: List[int] = [5, 25, 50, 75, 95],
+        prob_thresholds: Dict[str, Tuple[float, float]] = None
+    ) -> Dict[str, Any]:
+
     arr = _to_numpy(paths)
+
+    # S0
     if S0 is None:
         S0 = float(np.median(arr[:, 0]))
     final_percentiles = compute_percentiles(paths, percentiles)
-    percentiles_at_final = {p: float(final_percentiles[p][-1]) for p in percentiles}
+    percentiles_at_final = {
+        p: float(final_percentiles[p][-1])
+        for p in percentiles
+    }
+
+    # Step-wise percentiles 
+    step_percentiles = compute_step_percentiles(paths, percentiles)
+
     if prob_thresholds is None:
         prob_thresholds = {
             "add": (1.2, 0.6),
             "reduce": (0.8, 0.5)
         }
+
     probs = {}
     actions = []
+
     for label, (ratio, prob_thresh) in prob_thresholds.items():
         target = S0 * ratio
+
         if label == "reduce":
             p = prob_below(paths, target, at_step=-1)
         else:
             p = prob_exceed(paths, target, at_step=-1)
+
         probs[label] = {"target": target, "prob": p}
 
         if label == "add" and p > prob_thresh:
@@ -209,6 +228,7 @@ def generate_signals_from_paths(paths: Paths,
         if label == "reduce" and p > prob_thresh:
             actions.append("consider_reduce")
 
+    # CVaR, scenario, confidence
     tail_risk = cvar(paths, alpha=0.95, at_step=-1)
     bucket = scenario_bucket_for_price_ratio(paths, S0)
     conf = signal_confidence(paths)
@@ -216,6 +236,7 @@ def generate_signals_from_paths(paths: Paths,
     return {
         "S0": S0,
         "percentiles_final": percentiles_at_final,
+        "percentiles_stepwise": step_percentiles,
         "prob_checks": probs,
         "tail_risk_cvar95": tail_risk,
         "scenario": bucket,

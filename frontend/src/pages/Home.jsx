@@ -6,6 +6,14 @@ import SignalsCard from "../components/SignalsCard";
 import HeatMap from "../components/HeatMap";
 
 import axios from "axios";
+import { TrendingUpDown, BadgePercent, ChartSpline } from "lucide-react";
+const modeIcons = {
+    paths: <TrendingUpDown size={20} />,
+    percentiles: <BadgePercent size={20} />,
+    average: <ChartSpline size={20} />,
+};
+
+
 const MODEL_INFO = [
     {
         id: "gbm",
@@ -42,6 +50,7 @@ const MODEL_INFO = [
 ];
 
 export default function Home() {
+    const [chartMode, setChartMode] = useState("paths");
     const [state, setState] = useState({
         symbol: "BTCUSDT",
         model: "gbm",
@@ -61,7 +70,7 @@ export default function Home() {
     const fetchData = async (symbol) => {
         setState((prev) => ({ ...prev, loading: true, error: null }));
         const dataUrl = `${import.meta.env.VITE_SERVER_DATA}/${symbol}?interval=1d&limit=30`;
-        const simUrl = import.meta.env.VITE_SERVER_SIMULATE;
+        const simUrl = import.meta.env.VITE_DEV_SIMULATE;
         try {
             const dataResp = await axios.get(dataUrl);
             const simResp = await axios.post(simUrl, {
@@ -102,8 +111,6 @@ export default function Home() {
     return (
         <div className="bg-[var(--color-bg-primary)] min-h-screen flex flex-col w-full text-[var(--color-text-primary)]">
             <div className="section-padding max-w-7xl mx-auto flex-grow w-full">
-
-
                 <header className="text-center mb-10 pt-10">
                     <h1 className="text-6xl md:text-8xl font-extrabold mb-2 tracking-tight leading-tight text-[var(--color-text-primary)]">
                         <span className="gradient-text-modern">Crypseer</span>
@@ -167,9 +174,26 @@ export default function Home() {
 
                 {state.historical.length > 0 && (
                     <div className="p-4 mb-6 rounded-2xl bg-[var(--color-bg-secondary)] border border-[var(--color-border-secondary)]">
+                        <div className="flex gap-3 mb-6 justify-end">
+                            {["paths", "percentiles", "average"].map((mode) => (
+                                <button
+                                    key={mode}
+                                    onClick={() => setChartMode(mode)}
+                                    className={`px-4 py-2 rounded-xl text-sm font-medium transition border ${chartMode === mode
+                                        ? "bg-[var(--color-accent)] text-white border-[var(--color-accent)]"
+                                        : "bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)] border-[var(--color-border-primary)] hover:bg-[var(--color-bg-tertiary)]"}`}>
+                                    {mode === "paths" && modeIcons[mode]}
+                                    {mode === "percentiles" && modeIcons[mode]}
+                                    {mode === "average" && modeIcons[mode]}
+                                </button>
+                            ))}
+                        </div>
+
                         <Chart
                             historical={state.historical}
                             simulatedPaths={state.simulated}
+                            mode={chartMode}
+                            percentileStepwise={state.signals.percentiles_stepwise}
                         />
                     </div>
                 )}

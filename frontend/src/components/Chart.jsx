@@ -1,123 +1,147 @@
 import React, { useMemo } from "react";
 import ReactECharts from "echarts-for-react";
-import { connect } from "echarts";
 
-export default function Chart({ historical, simulatedPaths }) {
+function computePercentile(paths, percentile) {
+  const maxLen = Math.max(...paths.map((p) => p.length));
+  return Array.from({ length: maxLen }, (_, i) => {
+    const vals = paths.map((p) => p[i]).filter((v) => v !== undefined);
+    if (vals.length === 0) return null;
+    vals.sort((a, b) => a - b);
+    const idx = Math.floor((percentile / 100) * vals.length);
+    return vals[idx] ?? vals[vals.length - 1];
+  });
+}
+
+function computeAveragePath(paths) {
+  const maxLen = Math.max(...paths.map((p) => p.length));
+  return Array.from({ length: maxLen }, (_, i) => {
+    const vals = paths.map((p) => p[i]).filter(Boolean);
+    if (vals.length === 0) return null;
+    return vals.reduce((a, b) => a + b, 0) / vals.length;
+  });
+}
+
+export default function Chart({
+  historical,
+  simulatedPaths = [],
+  mode = "paths",
+}) {
   if (!historical || historical.length === 0) return null;
 
   const baseColors = [
-    "#3c7cdcff",
-    "#2CA97E",
-    "#a616caff",
-    "#E45B5B",
-    "#8C6ADE",
-    "#E07B39",
-    "#D6619C",
-    "#28B3A7",
-    "#6673E0",
-    "#3658f0ff",
+    "#3c7cdc", "#2CA97E", "#a616ca", "#E45B5B",
+    "#8C6ADE", "#E07B39", "#D6619C", "#28B3A7",
+    "#6673E0", "#3658f0"
   ];
 
-  simulatedPaths = Array.isArray(simulatedPaths) ? simulatedPaths : [];
 
-  const historicalLabels = historical.map((h) => h.open_time.split("T")[0]);
-  const historicalData = historical.map((h) => h.close);
-  const allPrices = [
-    ...historicalData,
-    ...simulatedPaths.flat(),
-  ].filter((v) => typeof v === "number" && !isNaN(v));
-
-  const minPrice = Math.min(...allPrices);
-  const maxPrice = Math.max(...allPrices);
-  const padding = (maxPrice - minPrice) * 0.1;
-  const dynamicMin = minPrice - padding;
-  const dynamicMax = maxPrice + padding;
-
-  const maxSimulatedLength = Math.max(
-    0,
-    ...simulatedPaths.map((path) => path.length)
+  const historicalLabels = historical.map((h) =>
+    h.open_time.split("T")[0]
   );
+  const historicalData = historical.map((h) => h.close);
 
+  const maxFuture = Math.max(0, ...simulatedPaths.map((p) => p.length));
   const lastDate = new Date(historical[historical.length - 1].open_time);
-  const futureLabels =
-    maxSimulatedLength > 0
-      ? Array.from({ length: maxSimulatedLength }, (_, i) => {
-        const nextDate = new Date(lastDate);
-        nextDate.setDate(lastDate.getDate() + i + 1);
-        return nextDate.toISOString().split("T")[0];
-      })
-      : [];
+
+  const futureLabels = Array.from({ length: maxFuture }, (_, i) => {
+    const next = new Date(lastDate);
+    next.setDate(next.getDate() + i + 1);
+    return next.toISOString().split("T")[0];
+  });
+
   const labels = [...historicalLabels, ...futureLabels];
 
-  const series = useMemo(
-    () => [
-      {
-        name: "Historical",
+  const historicalSeries = {
+    name: "Historical",
+    type: "line",
+    smooth: true,
+    symbol: "circle",
+    symbolSize: 5,
+    lineStyle: { width: 3, color: baseColors[0] },
+    data: historicalData,
+  };
+
+  const simulatedSeries =
+    mode === "paths"
+      ? simulatedPaths.map((path, idx) => ({
+        name: `Path ${idx + 1}`,
         type: "line",
         smooth: true,
-        symbol: "circle",
-        symbolSize: 5,
-        areaStyle: {
-          color: {
-            type: "linear",
-            x: 0,
-            y: 0,
-            x2: 0,
-            y2: 1,
-            colorStops: [
-              { offset: 0, color: "rgba(128, 185, 255, 0.3)" },
-              { offset: 1, color: "rgba(100, 170, 255, 0.05)" },
-            ],
-          },
-        },
-        lineStyle: { width: 3, color: baseColors[0] },
-        itemStyle: { color: baseColors[0] },
-        emphasis: {
-          focus: "series",
-          lineStyle: { width: 3 },
-          itemStyle: { color: "#93C5FD" },
-        },
-        data: historicalData,
-      },
-      ...simulatedPaths.map((path, idx) => ({
-        name: idx + 1,
-        type: "line",
-        smooth: true,
-        symbol: "circle",
-        symbolSize: 4,
-        connectNulls: false,
+        symbol: "none",
         lineStyle: {
-          width: 1.5,
+          width: 1.2,
           type: "dashed",
           color: baseColors[(idx + 1) % baseColors.length],
         },
-        emphasis: {
-          focus: "series",
-          lineStyle: { width: 2 },
-        },
         data: [
-          ...new Array(historicalData.length - 1).fill(null),
-          historicalData[historicalData.length - 1],
+          ...Array(historicalData.length - 1).fill(null),
+          historicalData[historical.length - 1],
           ...path,
         ],
-      })),
-    ],
-    [historicalData, simulatedPaths]
-  );
+      }))
+      : [];
+
+  const percentilesSeries = [];
+
+  if (mode === "percentiles" && simulatedPaths.length > 0) {
+    const p5 = computePercentile(simulatedPaths, 5);
+    const p25 = computePercentile(simulatedPaths, 25);
+    const p50 = computePercentile(simulatedPaths, 50);
+    const p75 = computePercentile(simulatedPaths, 75);
+    const p95 = computePercentile(simulatedPaths, 95);
+
+    const pad = Array(historical.length - 1).fill(null);
+
+    percentilesSeries.push(
+      {
+        name: "5–95%",
+        type: "line",
+        data: [...pad, ...p95],
+        lineStyle: { opacity: 0 },
+        areaStyle: { color: "rgba(100,116,139,0.12)" },
+      },
+      {
+        name: "25–75%",
+        type: "line",
+        data: [...pad, ...p75],
+        lineStyle: { opacity: 0 },
+        areaStyle: { color: "rgba(100,116,139,0.25)" },
+      },
+      {
+        name: "Median (P50)",
+        type: "line",
+        smooth: true,
+        symbol: "none",
+        lineStyle: { width: 3, color: "#E45B5B" },
+        data: [...pad, ...p50],
+      }
+    );
+  }
+
+  const averageSeries =
+    mode === "average" && simulatedPaths.length > 0
+      ? (() => {
+        const avg = computeAveragePath(simulatedPaths);
+        const pad = Array(historical.length - 1).fill(null);
+        return [
+          {
+            name: "Average",
+            type: "line",
+            smooth: true,
+            symbol: "none",
+            lineStyle: { width: 3, color: "#2CA97E" },
+            data: [...pad, ...avg],
+          },
+        ];
+      })()
+      : [];
 
   const options = useMemo(
     () => ({
+      tooltip: { trigger: "axis", axisPointer: { type: "cross" } },
       backgroundColor: "transparent",
-      tooltip: {
-        trigger: "axis",
-        axisPointer: {
-          type: "cross",
-          label: { backgroundColor: "#0b2140ff" },
-        },
-        backgroundColor: "#1f2937",
-        textStyle: { color: "#E5E7EB", fontSize: 12 },
-        borderWidth: 0,
-      },
+      renderer: "canvas",
+
       grid: {
         top: 20,
         left: window.innerWidth < 480 ? 5 : 5,
@@ -130,31 +154,14 @@ export default function Chart({ historical, simulatedPaths }) {
       xAxis: {
         type: "category",
         data: labels,
-        axisLabel: {
-          color: "#111827",
-          fontSize: window.innerWidth < 480 ? 9 : 10,
-          rotate: window.innerWidth < 480 ? -5 : -20,
-          interval: "auto",
-        },
-        axisLine: { show: true },
-        axisTick: { show: false },
+        axisLabel: { color: "#111827", rotate: -25 },
       },
 
       yAxis: {
         type: "value",
-        axisLabel: {
-          color: "#111827",
-          fontSize: window.innerWidth < 480 ? 9 : 11,
-          formatter: (value) => value.toLocaleString(),
-        },
-        splitLine: {
-          show: true,
-          lineStyle: { color: "#D1D5DB", type: "dashed" },
-        },
-        min: dynamicMin,
-        max: dynamicMax,
+        axisLabel: { color: "#111827" },
+        splitLine: { lineStyle: { type: "dashed" } },
       },
-
       dataZoom: [
         { type: "inside", throttle: 30 },
         {
@@ -169,27 +176,25 @@ export default function Chart({ historical, simulatedPaths }) {
         },
       ]
       ,
-
-      series,
-      animationDuration: 600,
+      series: [
+        historicalSeries,
+        ...simulatedSeries,
+        ...percentilesSeries,
+        ...averageSeries,
+      ],
     }),
-    [labels, series, dynamicMin, dynamicMax]
+    [mode, labels, simulatedPaths]
   );
 
   return (
-    <>
-      <div className="w-full h-[65vh] sm:h-[70vh] md:h-[75vh] rounded-2xl bg-transparent p-2">
-        <ReactECharts
-          option={options}
-          style={{ width: "100%", height: "100%" }}
-          opts={{ renderer: "canvas" }}
-          notMerge={true}
-          lazyUpdate={true}
-        />
-
-      </div>
-
-
-    </>
+    <div className="w-full h-[65vh] md:h-[70vh] rounded-2xl p-2">
+      <ReactECharts
+        option={options}
+        style={{ width: "100%", height: "100%" }}
+        notMerge={true}
+        lazyUpdate={true}
+        key={mode}
+      />
+    </div>
   );
 }

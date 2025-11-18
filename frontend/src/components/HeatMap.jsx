@@ -48,13 +48,15 @@ export default function HeatMap({ simulatedPaths, bucketCount = 40 }) {
         tooltip: { position: "top" },
         animation: false,
 
+
         grid: {
             top: 20,
-            bottom: 70,
-            left: 60,
-            right: 20,
+            left: window.innerWidth < 480 ? 5 : 5,
+            right: 5,
+            bottom: 60,
             containLabel: true,
         },
+
 
         xAxis: {
             type: "category",
