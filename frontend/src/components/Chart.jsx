@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import ReactECharts from "echarts-for-react";
+import { connect } from "echarts";
 
 function computePercentile(paths, percentile) {
   const maxLen = Math.max(...paths.map((p) => p.length));
@@ -29,10 +30,21 @@ export default function Chart({
   if (!historical || historical.length === 0) return null;
 
   const baseColors = [
-    "#3c7cdc", "#2CA97E", "#a616ca", "#E45B5B",
-    "#8C6ADE", "#E07B39", "#D6619C", "#28B3A7",
-    "#6673E0", "#3658f0"
+    "#3C7CDC",
+    "#2CA97E",
+    "#A616CA",
+    "#E45B5B",
+    "#8C6ADE",
+    "#E07B39",
+    "#D6619C",
+    "#28B3A7",
+    "#6673E0",
+    "#3658F0",
+    "#4D9FEC",
+    "#34C19F",
+    "#F28A2E",
   ];
+
 
 
   const historicalLabels = historical.map((h) =>
@@ -70,9 +82,11 @@ export default function Chart({
         symbol: "none",
         lineStyle: {
           width: 1.2,
-          type: "dashed",
+          type: "line",
           color: baseColors[(idx + 1) % baseColors.length],
         },
+        emphasis: { focus: "series" },
+        connectNulls: false,
         data: [
           ...Array(historicalData.length - 1).fill(null),
           historicalData[historical.length - 1],
@@ -128,8 +142,7 @@ export default function Chart({
             name: "Average",
             type: "line",
             smooth: true,
-            symbol: "none",
-            lineStyle: { width: 3, color: "#2CA97E" },
+            lineStyle: { width: 3 },
             data: [...pad, ...avg],
           },
         ];
@@ -141,6 +154,7 @@ export default function Chart({
       tooltip: { trigger: "axis", axisPointer: { type: "cross" } },
       backgroundColor: "transparent",
       renderer: "canvas",
+
 
       grid: {
         top: 20,
@@ -154,13 +168,17 @@ export default function Chart({
       xAxis: {
         type: "category",
         data: labels,
-        axisLabel: { color: "#111827", rotate: -25 },
+        axisLabel: {
+          color: "#111827", rotate: -25, interval: "auto",
+          fontSize: window.innerWidth < 480 ? 9 : 10
+
+        },
       },
 
       yAxis: {
         type: "value",
         axisLabel: { color: "#111827" },
-        splitLine: { lineStyle: { type: "dashed" } },
+        splitLine: { lineStyle: { type: "dasshed" } },
       },
       dataZoom: [
         { type: "inside", throttle: 30 },
@@ -170,9 +188,10 @@ export default function Chart({
           bottom: window.innerWidth < 480 ? 5 : 20,
           handleSize: window.innerWidth < 480 ? 10 : 20,
           borderColor: "transparent",
-          backgroundColor: "rgba(22,38,63,0.87)",
-          fillerColor: "rgba(133,170,222,0.24)",
-          handleColor: "#172e49ff",
+          backgroundColor: "rgba(4, 12, 26, 0.87)",
+          fillerColor: "rgba(126, 160, 207, 0.35)",
+          handleColor: "#09121c6e",
+          textStyle: { color: "#d3d5ffe5" },
         },
       ]
       ,
