@@ -4,32 +4,35 @@ from app.utils.helpers import estimate_ou_params
 
 def simulate_ou(historical=None, last_price=None, mu=None, sigma=None,
                 horizon_days=30, steps=30, num_paths=10):
-    """
-    Ornstein–Uhlenbeck (OU) process simulation
-    """
-    if historical is None or len(historical) < 2:
-        raise ValueError("Historical data required for OU simulation")
-    
-    prices = pd.Series(historical)
-    params = estimate_ou_params(prices, dt=1.0)
-    theta = np.clip(params.get("theta", 0.1), 0.01, 1.0)
-    mu_param = params.get("mu", prices.mean())
-    sigma_param = np.clip(params.get("sigma", prices.std() * 0.5), 0.01, prices.std())
 
-    last_price = prices.iloc[-1]
+    prices = np.array(historical, dtype=float)
+    logp = np.log(prices)
+
+    raw = estimate_ou_params(logp, dt=1.0)
+    theta = raw.get("theta", 0.2)
+    mu_p = raw.get("mu", np.mean(logp))
+    sigma_p = raw.get("sigma", np.std(logp))
+
+    theta = float(np.clip(theta, 0.01, 0.5))       
+    sigma_p = float(np.clip(sigma_p, 1e-6, 0.15))    
+    mu_p = float(np.clip(mu_p, np.min(logp)*0.9, np.max(logp)*1.1))
+
+    last_log = logp[-1]
     dt = horizon_days / steps
 
     all_paths = []
+
     for _ in range(num_paths):
-        path = [last_price]
+        path = [last_log]
         for _ in range(steps):
-            x_t = path[-1]
-            dx = theta * (mu_param - x_t) * dt + sigma_param * np.sqrt(dt) * np.random.normal()
-            path.append(max(x_t + dx, 0))
-        all_paths.append(path)
+            x = path[-1]
+            dx = theta * (mu_p - x) * dt + sigma_p * np.sqrt(dt) * np.random.normal()
+            path.append(x + dx)
+
+        all_paths.append(np.exp(path).tolist())
 
     return {
-        "paths": [list(map(float, p)) for p in all_paths],
+        "paths": all_paths,
         "steps": steps,
         "horizon_days": horizon_days,
         "num_paths": num_paths
