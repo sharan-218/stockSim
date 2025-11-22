@@ -74,17 +74,24 @@ export default function SignalsCard({ signals }) {
             </div>
 
             <div className="mb-12">
-                <h3 className="text-2xl font-semibold mb-4 text-[var(--color-text-primary)]">
+                <h3 className="text-2xl font-semibold mb-4 text-[var(--color-text-primary)] ">
                     Probability Checks
                 </h3>
 
-                <div className="space-y-4">
+                <div className="flex gap-4 flex-grow ">
                     {Object.entries(signals.prob_checks || {}).map(([label, info]) => (
                         <div
                             key={label}
-                            className="card-subtle p-4 !hover:bg-transparent !hover:border-[var(--color-border-primary)]"
+                            className={`p-4 flex-1 rounded-2xl transition-all duration-300 border backdrop-blur-xl bg-opacity-60
+                                    ${label === "add"
+                                    ? "bg-green-100/60 border-green-300 "
+                                    : label === "reduce"
+                                        ? "bg-red-100/60 border-red-300"
+                                        : "bg-[var(--color-bg-secondary)] border-[var(--color-border-primary)] shadow-sm"
+                                }
+  `}
                         >
-                            <p className="font-semibold capitalize text-[var(--color-text-primary)]">
+                            <p className="font-semibold capitalize text-[var(--color-text-primary)]" >
                                 {label}
                             </p>
                             <p className="text-sm text-[var(--color-text-secondary)]">
@@ -103,11 +110,11 @@ export default function SignalsCard({ signals }) {
                     Final Percentiles
                 </h3>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex flex-wrap justify-between gap-4">
                     {Object.entries(signals.percentiles_final || {}).map(([p, val]) => (
                         <div
                             key={p}
-                            className="card-subtle p-4 !hover:bg-transparent !hover:border-[var(--color-border-primary)]"
+                            className="card-subtle p-4 !hover:bg-transparent !hover:border-[var(--color-border-primary)] flex-auto"
                         >
                             <p className="font-semibold text-[var(--color-text-primary)]">
                                 {p}th Percentile
