@@ -82,7 +82,8 @@ export default function SignalsCard({ signals }) {
                     {Object.entries(signals.prob_checks || {}).map(([label, info]) => (
                         <div
                             key={label}
-                            className={`p-4 flex-1 rounded-2xl transition-all duration-300 border backdrop-blur-xl bg-opacity-60
+                            className={`p-4 flex-auto rounded-2xl transition-all duration-300 border backdrop-blur-xl bg-opacity-60
+                                  min-w-[140px] sm:min-w-[160px] md:min-w-[200px]
                                     ${label === "add"
                                     ? "bg-green-100/60 border-green-300 "
                                     : label === "reduce"
