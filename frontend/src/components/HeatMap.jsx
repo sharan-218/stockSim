@@ -81,7 +81,7 @@ export default function HeatMap({ simulatedPaths, bucketCount = 40 }) {
             calculable: true,
             orient: "horizontal",
             left: "center",
-            bottom: 10,
+            bottom: 0,
             inRange: {
                 color: [
                     '#30123b',
@@ -94,7 +94,8 @@ export default function HeatMap({ simulatedPaths, bucketCount = 40 }) {
                     '#d8fd9b',
                     '#f9f871'
                 ]
-            }
+            },
+
         }
         ,
 

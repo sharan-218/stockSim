@@ -1,7 +1,5 @@
 import React, { useMemo } from "react";
 import ReactECharts from "echarts-for-react";
-import { connect } from "echarts";
-
 function computePercentile(paths, percentile) {
   const maxLen = Math.max(...paths.map((p) => p.length));
   return Array.from({ length: maxLen }, (_, i) => {
@@ -76,7 +74,7 @@ export default function Chart({
   const simulatedSeries =
     mode === "paths"
       ? simulatedPaths.map((path, idx) => ({
-        name: `Path ${idx + 1}`,
+        name: idx + 1,
         type: "line",
         smooth: true,
         symbol: "none",
@@ -151,7 +149,11 @@ export default function Chart({
 
   const options = useMemo(
     () => ({
-      tooltip: { trigger: "axis", axisPointer: { type: "cross" } },
+      color: baseColors,
+      tooltip: {
+        trigger: "axis",
+        axisPointer: { type: "cross" },
+      },
       backgroundColor: "transparent",
       renderer: "canvas",
 
@@ -169,17 +171,21 @@ export default function Chart({
         type: "category",
         data: labels,
         axisLabel: {
-          color: "#111827", rotate: -25, interval: "auto",
-          fontSize: window.innerWidth < 480 ? 9 : 10
-
+          color: "#A6ADBB", rotate: -25, interval: "auto",
+          fontSize: window.innerWidth < 480 ? 9 : 10,
         },
+        axisTick: { show: false },
       },
 
       yAxis: {
         type: "value",
-        axisLabel: { color: "#111827" },
-        splitLine: { lineStyle: { type: "dasshed" } },
+        axisLabel: { color: "#A6ADBB", fontSize: 10, interval: 'auto' },
+        splitLine: {
+          show: true,
+          lineStyle: { color: "#2323233a", type: "dashed" },
+        },
       },
+
       dataZoom: [
         { type: "inside", throttle: 30 },
         {

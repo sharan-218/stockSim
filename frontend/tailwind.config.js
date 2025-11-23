@@ -14,6 +14,9 @@ theme: {
       danger: '#EF4444',
       info: '#94A3B8',
     },
+    fontFamily:{
+      poppins: ['Poppins', 'sans-serif'],
+    }
   },
 }
 ,

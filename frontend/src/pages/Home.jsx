@@ -69,8 +69,8 @@ export default function Home() {
      */
     const fetchData = async (symbol) => {
         setState((prev) => ({ ...prev, loading: true, error: null }));
-        const dataUrl = `${import.meta.env.VITE_SERVER_DATA}/${symbol}?interval=1d&limit=30`;
-        const simUrl = import.meta.env.VITE_SERVER_SIMULATE;
+        const dataUrl = `${import.meta.env.VITE_DEV_DATA}/${symbol}?interval=1d&limit=30`;
+        const simUrl = import.meta.env.VITE_DEV_SIMULATE;
         try {
             const dataResp = await axios.get(dataUrl);
             const simResp = await axios.post(simUrl, {
@@ -109,20 +109,23 @@ export default function Home() {
     const currentModel = MODEL_INFO.find(m => m.id === state.model) || MODEL_INFO[0];
 
     return (
-        <div className="bg-[var(--color-bg-primary)] min-h-screen flex flex-col w-full text-[var(--color-text-primary)]">
+        <div className="min-h-screen w-full bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] flex flex-col">
             <div className="section-padding max-w-7xl mx-auto flex-grow w-full">
                 <header className="text-center mb-10 pt-10">
-                    <h1 className="text-6xl md:text-8xl font-extrabold mb-2 tracking-tight leading-tight text-[var(--color-text-primary)]">
+                    <h1 className="text-7xl md:text-9xl font-extrabold mb-2 tracking-tight leading-tight text-[var(--color-text-primary)]">
                         <span className="gradient-text-modern">Crypseer</span>
                     </h1>
-                    <p className="text-xl md:text-2xl text-[var(--color-text-secondary)] font-light max-w-3xl mx-auto">
-                        It is in Data, Reveal it.
+                    <p className="text-xl md:text-3xl text-[var(--color-text-secondary)] mt-2 font-light max-w-3xl mx-auto">
+                        It is in Data, Reveal it
                     </p>
                 </header>
 
+                {/* -------------------------------------------------------------------------- */}
 
-                <div className="p-8 mb-6 rounded-2xl shadow-lg bg-[var(--color-bg-secondary)] border border-[var(--color-border-secondary)]">
-                    <div className="flex flex-col sm:flex-row gap-6">
+                <div
+                    className=" p-8 mb-6 rounded-2xl bg-[var(--color-bg-secondary)] border border-[var(--color-border-primary)] shadow-[0_4px_20px_rgba(0,0,0,0.04)]
+">
+                    <div className="flex flex-col sm:flex-row gap-6 ">
                         <div className="form-control-modern flex-1">
                             <label className="text-[var(--color-text-tertiary)] font-medium mb-1 block">
                                 Enter Symbol
@@ -144,14 +147,16 @@ export default function Home() {
                             <input
                                 type="number"
                                 min="1"
-                                placeholder="3"
+                                placeholder="eg. 3"
                                 onChange={(e) =>
                                     setState((prev) => ({ ...prev, paths: Number(e.target.value) }))
                                 }
-                                className="input-modern"
+                                className="input-modern w-full sm:w-30"
                             />
                         </div>
                     </div>
+
+                    {/* ---------------------------------------------------------- */}
 
                     <p className="mt-4 text-center text-sm text-[var(--color-text-secondary)]">
                         Current Model: <span className="font-semibold">{currentModel.name}</span>

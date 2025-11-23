@@ -25,7 +25,7 @@ export default function SignalsCard({ signals }) {
             </h2>
 
 
-            <div className="card-subtle mb-8 p-5 !hover:bg-transparent !hover:border-[var(--color-border-primary)]">
+            <div className="card-subtle mb-8 p-5 bg-[var(--color-bg-secondary)] border border-transparent bg-gradient-to-br from-white/80 to-slate-50/50 shadow-[0_2px_8px_rgba(15,23,42,0.06)] hover:shadow-[0_4px_14px_rgba(15,23,42,0.10)] transition-all duration-300 ">
                 <p className="text-xl font-semibold text-[var(--color-text-secondary)]">
                     Suggested Action
                 </p>
@@ -54,24 +54,30 @@ export default function SignalsCard({ signals }) {
                 </p>
             </div>
 
-            <div className="card-subtle mb-8 p-5 flex items-center justify-between !hover:bg-transparent !hover:border-[var(--color-border-primary)]">
-                <span className="font-semibold text-[var(--color-text-secondary)]">
-                    Risk Tail (CVaR 95%)
-                </span>
-                <span className="text-xl font-bold text-[var(--color-text-primary)]">
-                    {signals.tail_risk_cvar95?.toFixed(2)}
-                </span>
+
+            <div className="flex gap-4 mb-12 items-stretch flex-wrap">
+
+                <div className="card-subtle mb-8 p-5 flex flex-auto items-center justify-between gap-4 rounded-xl bg-[var(--color-bg-secondary)] border border-transparent bg-gradient-to-br from-white/80 to-slate-50/50 shadow-[0_2px_8px_rgba(15,23,42,0.06)] hover:shadow-[0_4px_14px_rgba(15,23,42,0.10)] transition-all duration-300">
+                    <span className="font-semibold text-[var(--color-text-secondary)]">
+                        Risk Tail (CVaR 95%)
+                    </span>
+                    <span className="text-xl font-bold text-[var(--color-text-primary)]">
+                        {signals.tail_risk_cvar95?.toFixed(2)}
+                    </span>
+                </div>
+
+                <div className="card-subtle mb-8 p-5 flex flex-auto items-center justify-between gap-4 rounded-xl bg-[var(--color-bg-secondary)] border border-transparent bg-gradient-to-br from-white/80 to-slate-50/50 shadow-[0_2px_8px_rgba(15,23,42,0.06)] hover:shadow-[0_4px_14px_rgba(15,23,42,0.10)] transition-all duration-300">
+                    <span className="font-semibold text-[var(--color-text-secondary)]">
+                        Scenario
+                    </span>
+                    <span className="text-2xl font-bold capitalize text-[var(--color-text-primary)]">
+                        {signals.scenario?.majority}
+                    </span>
+                </div>
+
             </div>
 
 
-            <div className="card-subtle mb-8 p-5 flex items-center justify-between !hover:bg-transparent !hover:border-[var(--color-border-primary)]">
-                <span className="font-semibold text-[var(--color-text-secondary)]">
-                    Scenario
-                </span>
-                <span className="text-2xl font-bold capitalize text-[var(--color-text-primary)]">
-                    {signals.scenario?.majority}
-                </span>
-            </div>
 
             <div className="mb-12">
                 <h3 className="text-2xl font-semibold mb-4 text-[var(--color-text-primary)] ">
@@ -82,15 +88,7 @@ export default function SignalsCard({ signals }) {
                     {Object.entries(signals.prob_checks || {}).map(([label, info]) => (
                         <div
                             key={label}
-                            className={`p-4 flex-auto rounded-2xl transition-all duration-300 border backdrop-blur-xl bg-opacity-60
-                                  min-w-[140px] sm:min-w-[160px] md:min-w-[200px]
-                                    ${label === "add"
-                                    ? "bg-green-100/60 border-green-300 "
-                                    : label === "reduce"
-                                        ? "bg-red-100/60 border-red-300"
-                                        : "bg-[var(--color-bg-secondary)] border-[var(--color-border-primary)] shadow-sm"
-                                }
-  `}
+                            className={` p-4 flex-auto rounded-2xl transition-all duration-300 backdrop-blur-xl min-w-[140px] sm:min-w-[160px] md:min-w-[200px] shadow-[0_2px_6px_rgba(15,23,42,0.06)] hover:shadow-[0_4px_14px_rgba(15,23,42,0.12)] hover:scale-[1.02] border ${label === "add" ? "bg-green-100/60 border-green-300 hover:border-green-400" : label === "reduce" ? "bg-red-100/60 border-red-300 hover:border-red-400" : "bg-[var(--color-bg-secondary)] border-[var(--color-border-primary)] hover:border-[var(--color-border-secondary)]"}`}
                         >
                             <p className="font-semibold capitalize text-[var(--color-text-primary)]" >
                                 {label}
@@ -115,7 +113,7 @@ export default function SignalsCard({ signals }) {
                     {Object.entries(signals.percentiles_final || {}).map(([p, val]) => (
                         <div
                             key={p}
-                            className="card-subtle p-4 !hover:bg-transparent !hover:border-[var(--color-border-primary)] flex-auto"
+                            className="  card-subtle p-4 flex-auto rounded-xl shadow-[0_2px_6px_rgba(15,23,42,0.06)] hover:shadow-[0_4px_12px_rgba(15,23,42,0.10)] hover:border-[var(--color-border-secondary)] transition-all duration-300"
                         >
                             <p className="font-semibold text-[var(--color-text-primary)]">
                                 {p}th Percentile

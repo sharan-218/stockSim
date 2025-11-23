@@ -12,25 +12,23 @@
   --color-text-secondary: #374151; /* Darker Neutral Gray for paragraphs */
   --color-text-tertiary: #64748B; /* Darker muted gray for labels/helper text */
   --color-text-muted: #94A3B8; /* Input placeholders/lowest contrast elements */
-  
-  /* BORDERS (Toned down light grays) */
   --color-border-primary: #E2E8F0; /* Subtle border */
   --color-border-secondary: #CBD5E1; /* Stronger border */
-  --color-border-active: var(--color-accent); /* Focus ring/Active border */
+  --color-border-active: var(--color-accent); 
   
-  /* ACCENTS (UPDATED: Near-Black/Monochrome Accent) */
-  --color-accent: #111827; /* Primary interactive color (Matches Primary Text) */
-  --color-accent-muted: #374151; /* Darker Gray for hover/active states (Matches Secondary Text) */
+  --color-accent: #111827; 
+  --color-accent-muted: #374151; 
   --color-info: #64748B; /* Secondary Accent/Info Color changed to neutral gray */
   
   /* Interactive States */
   --color-hover: #E2E8F0; /* Use Tertiary BG for hover */
   --color-active: #F1F5F9; /* Very light gray for active state */
-  
-  /* Semantic Colors - Kept as they convey essential status, exceptions to monochrome */
+
   --color-success: #10B981; /* Emerald Green */
   --color-error: #EF4444; /* Strong Red */
   --color-warning: #FBBF24; /* Amber Yellow */
+
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -47,27 +45,18 @@
   *,
   *::before,
   *::after {
-    box-sizing: border-box;
+
     margin: 0;
     padding: 0;
+
   }
   body {
     @apply m-0 p-0 min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)];
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-      sans-serif;
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.6;
     overflow-x: hidden;
-  }
-
-  @font-face {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 100 900;
-    font-display: swap;
-    src: url('https://fonts.gstatic.com/s/inter/v12/UcC73FpYtYqK9Qk.woff2') format('woff2');
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -103,7 +92,6 @@
     @apply bg-transparent p-0 border-0;
   }
 
-  /* Input/Select Reset */
   input, textarea, select {
     appearance: none;
     -webkit-appearance: none;
@@ -137,7 +125,15 @@
     @apply bg-[var(--color-accent)] text-[var(--color-bg-secondary)];
   }
 }
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
+input[type="number"] {
+  -moz-appearance: textfield;
+}
 @layer components {
   .custom-option {
     @apply text-[var(--color-text-secondary)] font-medium px-4 py-3 cursor-pointer transition-colors duration-150 rounded-lg;
