@@ -111,8 +111,8 @@ export default function Home() {
     return (
         <div className="min-h-screen w-full bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] flex flex-col">
             <div className="section-padding max-w-7xl mx-auto flex-grow w-full">
-                <header className="text-center mb-10 pt-10">
-                    <h1 className="text-7xl md:text-9xl font-extrabold mb-2 tracking-tight leading-tight text-[var(--color-text-primary)]">
+                <header className="text-center mb-10 p-6">
+                    <h1 className="text-6xl md:text-6xl lg:text-8xl font-extrabold mb-2 tracking-tight leading-tight text-[var(--color-text-primary)]">
                         <span className="gradient-text-modern">Crypseer</span>
                     </h1>
                     <p className="text-xl md:text-3xl text-[var(--color-text-secondary)] mt-2 font-light max-w-3xl mx-auto">

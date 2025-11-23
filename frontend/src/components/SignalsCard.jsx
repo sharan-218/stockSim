@@ -84,11 +84,12 @@ export default function SignalsCard({ signals }) {
                     Probability Checks
                 </h3>
 
-                <div className="flex gap-4 flex-grow ">
+                <div className="flex gap-4 flex-wrap">
                     {Object.entries(signals.prob_checks || {}).map(([label, info]) => (
                         <div
                             key={label}
-                            className={` p-4 flex-auto rounded-2xl transition-all duration-300 backdrop-blur-xl min-w-[140px] sm:min-w-[160px] md:min-w-[200px] shadow-[0_2px_6px_rgba(15,23,42,0.06)] hover:shadow-[0_4px_14px_rgba(15,23,42,0.12)] hover:scale-[1.02] border ${label === "add" ? "bg-green-100/60 border-green-300 hover:border-green-400" : label === "reduce" ? "bg-red-100/60 border-red-300 hover:border-red-400" : "bg-[var(--color-bg-secondary)] border-[var(--color-border-primary)] hover:border-[var(--color-border-secondary)]"}`}
+                            className={` p-4 flex-auto rounded-2xl transition-all duration-300 backdrop-blur-xl min-w-[140px] sm:min-w-[160px] md:min-w-[200px] shadow-[0_2px_6px_rgba(15,23,42,0.06)] hover:shadow-[0_4px_14px_rgba(15,23,42,0.12)] hover:scale-[1.02] border 
+                                ${label === "add" ? "bg-green-100/60 border-green-300 hover:border-green-400" : label === "reduce" ? "bg-red-100/60 border-red-300 hover:border-red-400" : "bg-[var(--color-bg-secondary)] border-[var(--color-border-primary)] hover:border-[var(--color-border-secondary)]"}`}
                         >
                             <p className="font-semibold capitalize text-[var(--color-text-primary)]" >
                                 {label}
