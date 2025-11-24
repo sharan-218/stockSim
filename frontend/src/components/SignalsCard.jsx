@@ -20,12 +20,12 @@ export default function SignalsCard({ signals }) {
     return (
         <div className="card-modern mb-12 !p-10 !shadow-none">
 
-            <h2 className="text-4xl font-bold mb-8 text-[var(--color-text-primary)]">
+            <h2 className="text-center text-4xl font-bold mb-8 text-[var(--color-text-primary)]">
                 Simulation Signals
             </h2>
 
 
-            <div className="card-subtle mb-8 p-5 bg-[var(--color-bg-secondary)] border border-transparent bg-gradient-to-br from-white/80 to-slate-50/50 shadow-[0_2px_8px_rgba(15,23,42,0.06)] hover:shadow-[0_4px_14px_rgba(15,23,42,0.10)] transition-all duration-300 ">
+            <div className="card-subtle ">
                 <p className="text-xl font-semibold text-[var(--color-text-secondary)]">
                     Suggested Action
                 </p>
@@ -38,7 +38,7 @@ export default function SignalsCard({ signals }) {
 
 
             <div className="mb-10">
-                <p className="text-[var(--color-text-secondary)] font-medium mb-2">
+                <p className="text-[var(--color-text-secondary)] font-medium mt-4">
                     Model Confidence
                 </p>
 
@@ -57,7 +57,7 @@ export default function SignalsCard({ signals }) {
 
             <div className="flex gap-4 mb-12 items-stretch flex-wrap">
 
-                <div className="card-subtle mb-8 p-5 flex flex-auto items-center justify-between gap-4 rounded-xl bg-[var(--color-bg-secondary)] border border-transparent bg-gradient-to-br from-white/80 to-slate-50/50 shadow-[0_2px_8px_rgba(15,23,42,0.06)] hover:shadow-[0_4px_14px_rgba(15,23,42,0.10)] transition-all duration-300">
+                <div className="card-subtle mb-8 p-5 flex flex-auto items-center justify-between gap-4">
                     <span className="font-semibold text-[var(--color-text-secondary)]">
                         Risk Tail (CVaR 95%)
                     </span>
@@ -66,7 +66,7 @@ export default function SignalsCard({ signals }) {
                     </span>
                 </div>
 
-                <div className="card-subtle mb-8 p-5 flex flex-auto items-center justify-between gap-4 rounded-xl bg-[var(--color-bg-secondary)] border border-transparent bg-gradient-to-br from-white/80 to-slate-50/50 shadow-[0_2px_8px_rgba(15,23,42,0.06)] hover:shadow-[0_4px_14px_rgba(15,23,42,0.10)] transition-all duration-300">
+                <div className="card-subtle mb-8 p-5 flex flex-auto items-center justify-between gap-4 rounded-xl">
                     <span className="font-semibold text-[var(--color-text-secondary)]">
                         Scenario
                     </span>
@@ -114,7 +114,7 @@ export default function SignalsCard({ signals }) {
                     {Object.entries(signals.percentiles_final || {}).map(([p, val]) => (
                         <div
                             key={p}
-                            className="  card-subtle p-4 flex-auto rounded-xl shadow-[0_2px_6px_rgba(15,23,42,0.06)] hover:shadow-[0_4px_12px_rgba(15,23,42,0.10)] hover:border-[var(--color-border-secondary)] transition-all duration-300"
+                            className="  card-subtle p-4 flex-auto rounded-xl "
                         >
                             <p className="font-semibold text-[var(--color-text-primary)]">
                                 {p}th Percentile

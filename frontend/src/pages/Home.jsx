@@ -109,18 +109,16 @@ export default function Home() {
     const currentModel = MODEL_INFO.find(m => m.id === state.model) || MODEL_INFO[0];
 
     return (
-        <div className="min-h-screen w-full bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] flex flex-col">
+        <div className="home">
             <div className="section-padding max-w-7xl mx-auto flex-grow w-full">
                 <header className="text-center mb-10 p-6">
                     <h1 className="text-6xl md:text-6xl lg:text-8xl font-extrabold mb-2 tracking-tight leading-tight text-[var(--color-text-primary)]">
                         <span className="gradient-text-modern">Crypseer</span>
                     </h1>
-                    <p className="text-xl md:text-3xl text-[var(--color-text-secondary)] mt-2 font-light max-w-3xl mx-auto">
+                    <p className="text-xl md:text-2xl text-[var(--color-text-secondary)] mt-2 font-light max-w-3xl mx-auto">
                         It is in Data, Reveal it
                     </p>
                 </header>
-
-                {/* -------------------------------------------------------------------------- */}
 
                 <div
                     className=" p-8 mb-6 rounded-2xl bg-[var(--color-bg-secondary)] border border-[var(--color-border-primary)] shadow-[0_4px_20px_rgba(0,0,0,0.04)]
@@ -155,8 +153,6 @@ export default function Home() {
                             />
                         </div>
                     </div>
-
-                    {/* ---------------------------------------------------------- */}
 
                     <p className="mt-4 text-center text-sm text-[var(--color-text-secondary)]">
                         Current Model: <span className="font-semibold">{currentModel.name}</span>

@@ -20,7 +20,7 @@ export default function ModelSelect({ model, setModel }) {
         onChange={(e) => setModel(e.target.value)}
       >
         {models.map((m) => (
-          <option key={m.id} value={m.id}>
+          <option key={m.id} value={m.id} className="w-full">
             {m.name}
           </option>
         ))}
