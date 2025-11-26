@@ -17,13 +17,13 @@ export default function SymbolInput({ onSubmit }) {
           value={symbol}
           onChange={(e) => setSymbol(e.target.value.toUpperCase())}
           placeholder="Enter symbol"
-          className="input-modern w-full"
+          className="input-modern w-full flex-auto"
           aria-label="Crypto Symbol"
         />
       </div>
       <Button
         type="submit"
-        className="btn-modern flex-shrink-0"
+        className="btn-modern"
       >
         Fetch
       </Button>

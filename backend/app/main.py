@@ -33,4 +33,4 @@ app.include_router(simulation.router)
 
 @app.get("/")
 def root():
-    return {"status": f"{APP_NAME} running"}
+    return "Got you! Welcome to the Crypto Quant"

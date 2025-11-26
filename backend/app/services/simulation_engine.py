@@ -1,4 +1,4 @@
-from app.models import gbm, ou, garch, jump_diffusion, arima
+from app.models import gbm, ou, garch, jump_diffusion,heston
 def run_simulation(model_name: str, params: dict):
     if model_name == "gbm":
         return gbm.simulate_gbm(
@@ -15,10 +15,7 @@ def run_simulation(model_name: str, params: dict):
         return garch.simulate_garch(**params)
     elif model_name == "jump_diffusion":
         return jump_diffusion.simulate_jump_diffusion(**params)
-    elif model_name == "arima":
-        return arima.simulate_arima(**params)
-    elif model_name == "bbmc":
-        return arima.simulate_bbmc(**params)
-    
+    elif model_name == "heston":
+        return heston.simulate_heston(**params)
     else:
         raise ValueError(f"Model '{model_name}' not implemented")

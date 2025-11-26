@@ -1,7 +1,5 @@
 import numpy as np
-def simulate_jump_diffusion(historical=None, last_price=None, mu=0.0, sigma=0.0,
-                            horizon_days=30, steps=30, num_paths=3,
-                            jump_lambda=0.1, jump_mu=0.0, jump_sigma=0.02):
+def simulate_jump_diffusion(historical=None, last_price=None, mu=0.0, sigma=0.0,horizon_days=30, steps=30, num_paths=3,jump_lambda=0.1, jump_mu=0.0, jump_sigma=0.02):
     """
     Merton jump diffusion model simulation
     """

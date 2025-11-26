@@ -69,8 +69,8 @@ export default function Home() {
      */
     const fetchData = async (symbol) => {
         setState((prev) => ({ ...prev, loading: true, error: null }));
-        const dataUrl = `${import.meta.env.VITE_SERVER_DATA}/${symbol}?interval=1d&limit=30`;
-        const simUrl = import.meta.env.VITE_SERVER_SIMULATE;
+        const dataUrl = `${import.meta.env.VITE_DEV_DATA}/${symbol}?interval=1d&limit=30`;
+        const simUrl = import.meta.env.VITE_DEV_SIMULATE;
         try {
             const dataResp = await axios.get(dataUrl);
             const simResp = await axios.post(simUrl, {
@@ -214,11 +214,7 @@ export default function Home() {
                     {MODEL_INFO.map((m) => (
                         <div
                             key={m.id}
-                            className=" p-4 rounded-xl bg-[var(--color-bg-secondary)] border border-[var(--color-border-primary)]
-                                            shadow-sm flex flex-col h-full
-                                            transform transition-all duration-300 ease-out
-                                            hover:-translate-y-1 hover:shadow-2xl
-                                            "
+                            className=" p-4 rounded-xl bg-[var(--color-bg-secondary)] border border-[var(--color-border-primary)] shadow-sm flex flex-col h-full glow-hover"
 
                             style={{ borderLeft: m.id === state.model ? '4px solid var(--color-accent)' : '3px solid transparent' }}
                         >

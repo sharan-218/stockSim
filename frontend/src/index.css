@@ -1,18 +1,20 @@
 @import "tailwindcss";
 
 :root {
---color-bg-primary: linear-gradient(
-  135deg,
-  #fffaf3 0%,
-  #ffffee 40%,
-  #edf1f8 80%,
-  #dbe7ff 100%
-);
+--color-bg-primary: #ffffff;
+  /* Quant Trading Theme: Slate, Indigo, Teal (Professional & Tech) */
+  --bg-blobs-light: 
+    radial-gradient(at 0% 0%, hsla(220, 29%, 90%, 0.804) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, hsla(230, 80%, 90%, 0.5) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, hsla(180, 70%, 90%, 0.5) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, hsla(210, 50%, 90%, 0.6) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, hsla(225, 60%, 95%, 0.5) 0px, transparent 50%);
+  --bg-pattern: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' viewBox='0 0 1600 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1102.5 222.3C958.4 222.3 852.2 366.7 722 366.7 547.9 366.7 464.8 222.3 322 222.3 179.2 222.3 114 366.7 0 366.7L0 0 1600 0 1600 366.7C1460.8 366.7 1355.2 222.3 1251.5 222.3 1147.8 222.3 1102.5 222.3 1102.5 222.3z' fill='rgba(100, 116, 139, 0.03)'/%3E%3Cpath d='M1282.5 322.3C1138.4 322.3 1032.2 466.7 902 466.7 727.9 466.7 644.8 322.3 502 322.3 359.2 322.3 294 466.7 180 466.7L180 0 1600 0 1600 466.7C1460.8 466.7 1355.2 322.3 1251.5 322.3 1147.8 322.3 1282.5 322.3 1282.5 322.3z' fill='rgba(100, 116, 139, 0.02)'/%3E%3C/svg%3E");
 
   --color-bg-secondary: #ffffff;
 
   /* Tertiary layers / hover */
-  --color-bg-tertiary: rgba(240, 244, 250, 0.55);
+  --color-bg-tertiary: rgba(33, 84, 159, 0.877);
 
   /* Text Colors */
   --color-text-primary: #111827;
@@ -58,7 +60,10 @@
   }
 body {
   @apply text-[var(--color-text-primary)] antialiased;
-  background: var(--color-bg-primary);
+  background-color: #ffffff;
+  background-image: var(--bg-blobs-light);
+  background-attachment: fixed;
+  background-size: 100% 100%;
   font-family: var(--font-sans);
   line-height: 1.6;
   overflow-x: hidden;
@@ -108,19 +113,6 @@ body {
     box-shadow: none !important;
   }
 
-  /* Scrollbar styling */
-  ::-webkit-scrollbar {
-    @apply w-2 h-2;
-  }
-
-  ::-webkit-scrollbar-track {
-    @apply bg-[var(--color-bg-primary)];
-  }
-
-  ::-webkit-scrollbar-thumb {
-    @apply bg-[var(--color-border-secondary)] rounded-full hover:bg-[var(--color-border-primary)];
-  }
-
   /* Selection - Changed to text-primary on accent selection */
   ::selection {
     @apply bg-[var(--color-accent)] text-[var(--color-bg-secondary)]; 
@@ -141,9 +133,10 @@ input[type="number"] {
 }
 .home {
   @apply min-h-screen w-full flex flex-col text-[var(--color-text-primary)];
-  background: var(--color-bg-primary);
-  background-size: cover;
+  background-color: #ffffff;
+  background-image: var(--bg-blobs-light);
   background-attachment: fixed;
+  background-size: cover, 100% 100%;
 }
 @layer components {
 
@@ -166,99 +159,99 @@ input[type="number"] {
 .card-modern {
   position: relative;
   overflow: hidden;
-  background: rgb(255, 255, 255);
+  /* More translucent white for better glass effect */
+  background: rgba(255, 255, 255, 0.65);
 
-  /* Real glass blur */
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  /* Stronger blur for depth */
+  backdrop-filter: blur(1rem) saturate(180%);
+  -webkit-backdrop-filter: blur(1rem) saturate(180%);
+  
+  /* Crisp white border */
+  border: 1px solid rgba(255, 255, 255, 0.4);
 
-  /* Aesthetic soft shadow */
+  /* Soft, dreamy shadow */
   box-shadow:
-    0 8px 18px rgba(0, 0, 0, 0.08),
-    inset 0 0 0 2px rgba(255, 255, 255, 0.073);
+    0 8px 32px rgba(31, 38, 135, 0.07),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+
   &::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 80%;
+    height: 100%;
+    /* Subtle iridescent overlay */
     background: linear-gradient(
-      to bottom right,
-      rgba(255, 232, 155, 0.107),
-      transparent
+      125deg,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(255, 255, 255, 0.1) 100%
     );
     pointer-events: none;
+    opacity: 0.5;
   }
 
   @apply rounded-2xl p-8 transition-all duration-300;
 }
 
 .card-modern:hover {
-  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.75);
+  border-color: rgba(255, 255, 255, 0.6);
   box-shadow:
-    0 12px 26px rgba(0, 0, 0, 0.327),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.389);
+    0 12px 40px rgba(31, 38, 135, 0.12),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
 }
 
 
 .card-elevated {
   position: relative;
   overflow: hidden;
+  /* Cleaner, softer gradient stack */
   background:
-    radial-gradient(circle at 12% 10%, rgba(255,255,255,0.55), transparent 55%),
-    radial-gradient(circle at 85% 85%, rgba(225,235,245,0.35), transparent 70%),
-    linear-gradient(135deg, rgba(255,255,255,0.70), rgba(243,247,250,0.88));
+    linear-gradient(135deg, rgba(255,255,255,0.8), rgba(255,255,255,0.6));
   
-  backdrop-filter: blur(22px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(160%);
   
-  border: 1px solid rgba(255,255,255,0.45);
+  border: 1px solid rgba(255,255,255,0.6);
 
   box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.25),
-    0 12px 28px rgba(15,23,42,0.10),
-    0 8px 18px rgba(15,23,42,0.06);
+    0 10px 30px -5px rgba(0, 0, 0, 0.05),
+    0 4px 12px -2px rgba(0, 0, 0, 0.02);
 
   @apply rounded-2xl p-8 transition-all duration-300;
 }
 
 .card-elevated:hover {
   background:
-    radial-gradient(circle at 12% 10%, rgba(255,255,255,0.65), transparent 55%),
-    radial-gradient(circle at 85% 85%, rgba(225,235,245,0.45), transparent 70%),
-    linear-gradient(135deg, rgba(255,255,255,0.78), rgba(243,247,250,0.94));
+    linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
   
-  border-color: rgba(255,255,255,0.6);
+  border-color: rgba(255,255,255,0.8);
 
   box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.32),
-    0 18px 36px rgba(15,23,42,0.14),
-    0 10px 24px rgba(15,23,42,0.10);
+    0 20px 40px -5px rgba(0, 0, 0, 0.08),
+    0 8px 16px -4px rgba(0, 0, 0, 0.04);
 
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
 
 .card-subtle {
-  background:
-    linear-gradient(135deg, rgba(255,255,255,0.35), rgba(240,244,250,0.30));
+  /* Very light, almost invisible background */
+  background: rgba(255, 255, 255, 0.4);
   
-  backdrop-filter: blur(12px) saturate(140%);
+  backdrop-filter: blur(12px);
   
-  border: 1px solid rgba(255,255,255,0.25);
+  border: 1px solid rgba(255,255,255,0.3);
 
-  box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.12),
-    0 4px 10px rgba(15,23,42,0.05);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
 
   @apply rounded-xl p-6 transition-all duration-200;
 }
 
 .card-subtle:hover {
-  background:
-    linear-gradient(135deg, rgba(255,255,255,0.42), rgba(240,244,250,0.35));
-  
-  border-color: rgba(255,255,255,0.32);
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(255,255,255,0.5);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
 }
 
   /* Input Modern */
@@ -336,8 +329,6 @@ select option {
     @apply hover:bg-[var(--color-accent-muted)] active:scale-[0.98] transition-all duration-200;
   }
 
-  /* --- UTILITIES & EFFECTS --- */
-
   /* Badge */
   .badge-modern {
     @apply inline-flex items-center px-4 py-2 rounded-full text-sm font-medium;
@@ -352,11 +343,11 @@ select option {
 
   /* Glass Effect (standalone utility) - LIGHT MODE ADJUSTMENTS */
   .glass-modern {
-    /* Background: Subtle light gray tint on the glass effect for a utility class */
-    background: linear-gradient(135deg, rgba(30, 41, 59, 0.05), rgba(255, 255, 255, 0.8)); 
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    @apply border border-[var(--color-border-primary)] rounded-2xl p-8 shadow-lg shadow-[rgba(15,23,42,0.05)];
+    /* Background: Cleaner, brighter glass effect */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.116), rgba(255, 255, 255, 0.9)); 
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    @apply border border-[var(--color-border-primary)] rounded-2xl p-8 shadow-xl shadow-[rgba(148,163,184,0.1)];
   }
 
   /* Gradient Text (Monochrome gradient: Dark Text to Accent) */

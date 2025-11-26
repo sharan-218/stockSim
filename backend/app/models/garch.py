@@ -22,7 +22,7 @@ def simulate_garch(historical, horizon_days=30, steps=30, num_paths=10):
             sigma_step = sigma_forecast[step]  
             ret = np.random.normal(0, sigma_step * np.sqrt(dt))
             price_next = path[-1] * np.exp(ret)
-            path.append(price_next)
+            path.append(float(price_next))
         all_paths.append(path)
 
     return {"paths": all_paths}

@@ -5,6 +5,7 @@ export default function ModelSelect({ model, setModel }) {
     { id: "ou", name: "Ornstein–Uhlenbeck" },
     { id: "garch", name: "GARCH (1,1)" },
     { id: "jump_diffusion", name: "Jump Diffusion" },
+    { id: "heston", name: "Heston" },
 
   ];
 

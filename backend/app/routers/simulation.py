@@ -11,6 +11,7 @@ MODELS = {
     "ou": {"module": "app.models.ou", "func": "simulate_ou"},
     "garch": {"module": "app.models.garch", "func": "simulate_garch"},
     "jump_diffusion": {"module": "app.models.jump_diffusion", "func": "simulate_jump_diffusion"},
+    "heston": {"module": "app.models.heston", "func": "simulate_heston"},
 }
 
 
@@ -89,7 +90,16 @@ def run_simulation(payload: dict = Body(...)):
                 num_paths=num_paths
             )
             simulated_paths = result["paths"]
-
+        elif model == "heston":
+            result = simulate_func(
+                last_price=last_price,
+                mu=mu,
+                sigma=sigma,
+                horizon_days=horizon_days,
+                steps=steps,
+                num_paths=num_paths
+            )
+            simulated_paths = result["paths"]
         else:
             raise HTTPException(status_code=400, detail=f"Model {model} not implemented")
 
