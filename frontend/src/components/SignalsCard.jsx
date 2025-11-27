@@ -52,9 +52,7 @@ export default function SignalsCard({ signals }) {
                 </p>
             </div>
 
-
             <div className="flex gap-2 mb-12 items-stretch flex-wrap justify-center">
-
                 <div className="card-subtle mb-8 p-5 flex flex-col gap-4 rounded-lg border border-[var(--color-border-primary)] bg-[var(--color-bg-secondary)]">
                     <div className="inline-flex gap-2 self-end rounded-sm p-1 bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400">
                         <svg
@@ -114,7 +112,7 @@ export default function SignalsCard({ signals }) {
                         </svg>
                     </div>
 
-                    <div className="max-w-[50%] flex flex-auto items-center justify-end gap-8 ">
+                    <div className="min-w-[150px] max-w-[20vw] flex flex-auto items-center justify-end gap-8 ">
                         <span className="font-semibold text-[var(--color-text-secondary)]">
                             Scenario
                         </span>

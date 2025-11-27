@@ -80,7 +80,6 @@ export default function Chart({
     name: "Historical",
     type: "line",
     smooth: true,
-    symbol: "circle",
     symbolSize: 5,
     lineStyle: { width: 3, color: baseColors[0] },
     data: historicalData,

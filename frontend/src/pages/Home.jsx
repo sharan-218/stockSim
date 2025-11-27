@@ -77,7 +77,7 @@ export default function Home() {
      */
     const fetchData = async (symbol) => {
         setState((prev) => ({ ...prev, loading: true, error: null }));
-        const dataUrl = `${import.meta.env.VITE_SRVER_DATA}/${symbol}?interval=1d&limit=30`;
+        const dataUrl = `${import.meta.env.VITE_SERVER_DATA}/${symbol}?interval=1d&limit=30`;
         const simUrl = import.meta.env.VITE_SERVER_SIMULATE;
         try {
             const dataResp = await axios.get(dataUrl);
@@ -176,6 +176,7 @@ export default function Home() {
                 {state.error && (
                     <div className="p-4 rounded-xl border border-[var(--color-error)] bg-red-50 flex items-center gap-3 mb-4 text-sm text-[var(--color-error)]">
                         <span>{state.error}</span>
+                        {console.log(state.error)}
                     </div>
                 )}
 
@@ -217,28 +218,6 @@ export default function Home() {
                         </div>
                     )
                 }
-                {/* <div className="max-w-[1080px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-20 mx-auto">
-                    {MODEL_INFO.map((m) => (
-                        <div
-                            key={m.id}
-                            className="flex-auto max-h-[300px] p-4 rounded-xl bg-[var(--color-bg-secondary)] border border-[var(--color-border-primary)] shadow-sm glow-hover transition-all duration-300"
-                            style={{
-                                borderLeft:
-                                    m.id === state.model
-                                        ? "4px solid var(--color-accent)"
-                                        : "3px solid transparent",
-                            }}
-                        >
-                            <h3 className="text-lg font-semibold mb-2">{m.name}</h3>
-                            <p className="text-sm text-[var(--color-text-secondary)] flex-grow">
-                                {m.description}
-                            </p>
-                            <p className="text-xs italic text-[var(--color-text-tertiary)] mt-2">
-                                {m.working}
-                            </p>
-                        </div>
-                    ))}
-                </div> */}
 
                 <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
                     <div className="mx-auto max-w-lg text-center">
@@ -278,15 +257,7 @@ export default function Home() {
                         ))}
                     </div>
                 </div>
-
-
-
-
             </div>
-
-
-
-
             <footer className="w-full bg-[var(--color-bg-primary)]">
                 <div className="max-w-7xl mx-auto  sm:px-8 lg:px-12">
                     <p className="text-center text-xs text-[var(--color-text-tertiary)] py-4">
