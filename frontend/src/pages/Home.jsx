@@ -35,7 +35,7 @@ const MODEL_INFO = [
         id: "garch",
         name: "GARCH (1,1)",
         description:
-            "Models time-varying volatility in a price series, capturing volatility clustering.",
+            "The Generalized Autoregressive Conditional Heteroskedasticity (GARCH) model is a statistical tool used primarily in financial econometrics to analyze and forecast time-varying volatility in time series data",
         working:
             "Fits GARCH parameters to historical returns and simulates future returns with dynamic volatility.",
     },
@@ -45,7 +45,15 @@ const MODEL_INFO = [
         description:
             "Extends GBM by including random jumps to capture sudden large movements in the market.",
         working:
-            "Simulates paths using GBM with added random jumps determined by a Poisson process.",
+            "The jump diffusion model operates by combining a continuous, small, random movement (diffusion component) with a separate, discontinuous process that accounts for sudden, large market shocks or events (jump component).",
+    },
+    {
+        id: "heston",
+        name: "Heston Model",
+        description:
+            "It is used to evaluate the volatility of an asset. Like other stochastic models, the Heston model assumes that the volatility of an asset follows a random process",
+        working:
+            "The Heston model prices options by assuming asset volatility randomly fluctuates around a long-term mean, using a system of stochastic differential equations to account for the correlation between price and variance changes.",
     },
 ];
 
@@ -69,7 +77,7 @@ export default function Home() {
      */
     const fetchData = async (symbol) => {
         setState((prev) => ({ ...prev, loading: true, error: null }));
-        const dataUrl = `${import.meta.env.VITE_SERVER_DATA}/${symbol}?interval=1d&limit=30`;
+        const dataUrl = `${import.meta.env.VITE_SRVER_DATA}/${symbol}?interval=1d&limit=30`;
         const simUrl = import.meta.env.VITE_SERVER_SIMULATE;
         try {
             const dataResp = await axios.get(dataUrl);
@@ -111,18 +119,17 @@ export default function Home() {
     return (
         <div className="home">
             <div className="section-padding max-w-7xl mx-auto flex-grow w-full">
-                <header className="text-center mb-10 p-6">
+                <section className="text-center mb-10 p-6">
                     <h1 className="text-6xl md:text-6xl lg:text-8xl font-extrabold mb-2 tracking-tight leading-tight text-[var(--color-text-primary)]">
                         <span className="gradient-text-modern">Crypseer</span>
                     </h1>
                     <p className="text-xl md:text-2xl text-[var(--color-text-secondary)] mt-2 font-light max-w-3xl mx-auto">
                         It is in Data, Reveal it
                     </p>
-                </header>
+                </section>
 
                 <div
-                    className=" p-8 mb-6 rounded-2xl bg-[var(--color-bg-secondary)] border border-[var(--color-border-primary)] shadow-[0_4px_20px_rgba(0,0,0,0.04)]
-">
+                    className=" p-8 mb-6 rounded-2xl bg-[var(--color-bg-secondary)] border border-[var(--color-border-primary)] shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
                     <div className="flex flex-col sm:flex-row gap-6 ">
                         <div className="form-control-modern flex-1">
                             <label className="text-[var(--color-text-tertiary)] font-medium mb-1 block">
@@ -210,27 +217,78 @@ export default function Home() {
                         </div>
                     )
                 }
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-25">
+                {/* <div className="max-w-[1080px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-20 mx-auto">
                     {MODEL_INFO.map((m) => (
                         <div
                             key={m.id}
-                            className=" p-4 rounded-xl bg-[var(--color-bg-secondary)] border border-[var(--color-border-primary)] shadow-sm flex flex-col h-full glow-hover"
-
-                            style={{ borderLeft: m.id === state.model ? '4px solid var(--color-accent)' : '3px solid transparent' }}
+                            className="flex-auto max-h-[300px] p-4 rounded-xl bg-[var(--color-bg-secondary)] border border-[var(--color-border-primary)] shadow-sm glow-hover transition-all duration-300"
+                            style={{
+                                borderLeft:
+                                    m.id === state.model
+                                        ? "4px solid var(--color-accent)"
+                                        : "3px solid transparent",
+                            }}
                         >
                             <h3 className="text-lg font-semibold mb-2">{m.name}</h3>
-                            <p className="text-sm text-[var(--color-text-secondary)] flex-grow">{m.description}</p>
-                            <p className="text-xs italic text-[var(--color-text-tertiary)] mt-2">{m.working}</p>
+                            <p className="text-sm text-[var(--color-text-secondary)] flex-grow">
+                                {m.description}
+                            </p>
+                            <p className="text-xs italic text-[var(--color-text-tertiary)] mt-2">
+                                {m.working}
+                            </p>
                         </div>
                     ))}
+                </div> */}
+
+                <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+                    <div className="mx-auto max-w-lg text-center">
+                        <h2 className="text-3xl font-bold">
+                            Model Selection
+                        </h2>
+
+                        <p className="mt-4 text-lg">
+                            Choose the model that fits your workflow.
+                        </p>
+                    </div>
+
+                    <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3">
+                        {MODEL_INFO.map((m) => (
+                            <div
+                                key={m.id}
+                                className=" rounded-lg p-6 bg-[var(--color-bg-secondary)] border border-[var(--color-border-primary)] shadow-sm transition-all duration-300"
+                                style={{
+                                    borderLeft:
+                                        m.id === state.model
+                                            ? "4px solid var(--color-accent)"
+                                            : "3px solid transparent",
+                                }}
+                            >
+                                <h3 className="mt-4 text-lg font-semibold">
+                                    {m.name}
+                                </h3>
+
+                                <p className="mt-2">
+                                    {m.description}
+                                </p>
+
+                                <p className="mt-2 text-sm italic opacity-75">
+                                    {m.working}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
+
+
+
+
             </div>
 
 
 
+
             <footer className="w-full bg-[var(--color-bg-primary)]">
-                <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-                    <div className="border-t border-[var(--color-border-primary)] mt-10"></div>
+                <div className="max-w-7xl mx-auto  sm:px-8 lg:px-12">
                     <p className="text-center text-xs text-[var(--color-text-tertiary)] py-4">
                         Developed by <a
                             href="https://yskfolio.netlify.app"

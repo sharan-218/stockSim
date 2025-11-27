@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import ReactECharts from "echarts-for-react";
+
 function computePercentile(paths, percentile) {
   const maxLen = Math.max(...paths.map((p) => p.length));
   return Array.from({ length: maxLen }, (_, i) => {
@@ -14,7 +15,7 @@ function computePercentile(paths, percentile) {
 function computeAveragePath(paths) {
   const maxLen = Math.max(...paths.map((p) => p.length));
   return Array.from({ length: maxLen }, (_, i) => {
-    const vals = paths.map((p) => p[i]).filter(Boolean);
+    const vals = paths.map((p) => p[i]).filter((v) => v !== undefined);
     if (vals.length === 0) return null;
     return vals.reduce((a, b) => a + b, 0) / vals.length;
   });
@@ -43,8 +44,6 @@ export default function Chart({
     "#F28A2E",
   ];
 
-
-
   const historicalLabels = historical.map((h) =>
     h.open_time.split("T")[0]
   );
@@ -61,6 +60,22 @@ export default function Chart({
 
   const labels = [...historicalLabels, ...futureLabels];
 
+  const allValues = [
+    ...historicalData,
+    ...simulatedPaths.flat(),
+  ];
+
+  const cleanValues = allValues.filter(
+    (v) => typeof v === "number" && !isNaN(v)
+  );
+
+  const minPrice = Math.min(...cleanValues);
+  const maxPrice = Math.max(...cleanValues);
+  const range = maxPrice - minPrice;
+  const padding = range * 0.05;
+  const safePad = padding === 0 ? minPrice * 0.02 : padding;
+  const yMin = minPrice - safePad;
+  const yMax = maxPrice + safePad;
   const historicalSeries = {
     name: "Historical",
     type: "line",
@@ -70,11 +85,10 @@ export default function Chart({
     lineStyle: { width: 3, color: baseColors[0] },
     data: historicalData,
   };
-
   const simulatedSeries =
     mode === "paths"
       ? simulatedPaths.map((path, idx) => ({
-        name: idx + 1,
+        name: `${idx + 1}`,
         type: "line",
         smooth: true,
         symbol: "none",
@@ -87,7 +101,7 @@ export default function Chart({
         connectNulls: false,
         data: [
           ...Array(historicalData.length - 1).fill(null),
-          historicalData[historical.length - 1],
+          historicalData[historicalData.length - 1],
           ...path,
         ],
       }))
@@ -129,7 +143,6 @@ export default function Chart({
       }
     );
   }
-
   const averageSeries =
     mode === "average" && simulatedPaths.length > 0
       ? (() => {
@@ -140,7 +153,7 @@ export default function Chart({
             name: "Average",
             type: "line",
             smooth: true,
-            lineStyle: { width: 3 },
+            lineStyle: { width: 3, color: baseColors[1] },
             data: [...pad, ...avg],
           },
         ];
@@ -155,8 +168,6 @@ export default function Chart({
         axisPointer: { type: "cross" },
       },
       backgroundColor: "transparent",
-      renderer: "canvas",
-
 
       grid: {
         top: 20,
@@ -166,12 +177,12 @@ export default function Chart({
         containLabel: true,
       },
 
-
       xAxis: {
         type: "category",
         data: labels,
         axisLabel: {
-          color: "#A6ADBB", rotate: -25, interval: "auto",
+          color: "#A6ADBB",
+          rotate: -25,
           fontSize: window.innerWidth < 480 ? 9 : 10,
         },
         axisTick: { show: false },
@@ -179,7 +190,9 @@ export default function Chart({
 
       yAxis: {
         type: "value",
-        axisLabel: { color: "#A6ADBB", fontSize: 10, interval: 'auto' },
+        min: yMin.toFixed(0),
+        max: yMax.toFixed(0),
+        axisLabel: { color: "#A6ADBB", fontSize: 10 },
         splitLine: {
           show: true,
           lineStyle: { color: "#2323233a", type: "dashed" },
@@ -197,10 +210,10 @@ export default function Chart({
           backgroundColor: "rgba(4, 12, 26, 0.87)",
           fillerColor: "rgba(126, 160, 207, 0.35)",
           handleColor: "#09121c6e",
-          textStyle: { color: "#d3d5ffe5" },
+          textStyle: { color: "#fff" },
         },
-      ]
-      ,
+      ],
+
       series: [
         historicalSeries,
         ...simulatedSeries,
@@ -215,9 +228,9 @@ export default function Chart({
     <div className="w-full h-[65vh] md:h-[70vh] rounded-2xl p-2">
       <ReactECharts
         option={options}
-        style={{ width: "100%", height: "100%" }}
         notMerge={true}
         lazyUpdate={true}
+        style={{ width: "100%", height: "100%" }}
         key={mode}
       />
     </div>

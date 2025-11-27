@@ -35,8 +35,6 @@ export default function SignalsCard({ signals }) {
                     {actionLabel}
                 </span>
             </div>
-
-
             <div className="mb-10">
                 <p className="text-[var(--color-text-secondary)] font-medium mt-4">
                     Model Confidence
@@ -55,29 +53,78 @@ export default function SignalsCard({ signals }) {
             </div>
 
 
-            <div className="flex gap-4 mb-12 items-stretch flex-wrap">
+            <div className="flex gap-2 mb-12 items-stretch flex-wrap justify-center">
 
-                <div className="card-subtle mb-8 p-5 flex flex-auto items-center justify-between gap-4">
-                    <span className="font-semibold text-[var(--color-text-secondary)]">
-                        Risk Tail (CVaR 95%)
-                    </span>
-                    <span className="text-xl font-bold text-[var(--color-text-primary)]">
-                        {signals.tail_risk_cvar95?.toFixed(2)}
-                    </span>
+                <div className="card-subtle mb-8 p-5 flex flex-col gap-4 rounded-lg border border-[var(--color-border-primary)] bg-[var(--color-bg-secondary)]">
+                    <div className="inline-flex gap-2 self-end rounded-sm p-1 bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="size-4"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"
+                            />
+                        </svg>
+                    </div>
+
+                    <div className="flex flex-col">
+                        <strong className="block text-sm font-medium text-[var(--color-text-secondary)]">
+                            Risk Tail (CVaR 95%)
+                        </strong>
+
+                        <p>
+                            <span className="text-2xl font-bold text-[var(--color-text-primary)]">
+                                {signals.tail_risk_cvar95?.toFixed(2)}
+                            </span>
+
+                            <span className="text-xs text-[var(--color-text-tertiary)] ml-2">
+                                loss risk estimate
+                            </span>
+                        </p>
+                    </div>
+
                 </div>
 
-                <div className="card-subtle mb-8 p-5 flex flex-auto items-center justify-between gap-4 rounded-xl">
-                    <span className="font-semibold text-[var(--color-text-secondary)]">
-                        Scenario
-                    </span>
-                    <span className="text-2xl font-bold capitalize text-[var(--color-text-primary)]">
-                        {signals.scenario?.majority}
-                    </span>
-                </div>
+                <div className="card-subtle mb-8 p-5 flex items-center justify-between gap-4 border-rounded-xl sm:flex-1">
+                    <div className="block shrink-0">
+                        <svg
+                            className="h-8 w-8 sm:h-13 sm:w-13  md:h-15 md:w-15  lg:h-18 lg:w-18  xl:h-20 xl:w-20 text-[var(--color-text-secondary)] opacity-25
+      "
+                            viewBox="0 0 100 100"
+                            fill="none"
+                        >
+                            <defs>
+                                <pattern
+                                    id="responsive-grid"
+                                    width="10"
+                                    height="10"
+                                    patternUnits="userSpaceOnUse"
+                                >
+                                    <circle cx="1" cy="1" r="1.2" fill="currentColor" />
+                                </pattern>
+                            </defs>
 
+                            <rect width="100" height="100" fill="url(#responsive-grid)" />
+                        </svg>
+                    </div>
+
+                    <div className="max-w-[50%] flex flex-auto items-center justify-end gap-8 ">
+                        <span className="font-semibold text-[var(--color-text-secondary)]">
+                            Scenario
+                        </span>
+
+                        <span className="text-2xl font-bold capitalize text-[var(--color-text-primary)]">
+                            {signals.scenario?.majority}
+                        </span>
+                    </div>
+                </div>
             </div>
-
-
 
             <div className="mb-12">
                 <h3 className="text-2xl font-semibold mb-4 text-[var(--color-text-primary)] ">
