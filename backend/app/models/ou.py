@@ -21,15 +21,21 @@ def simulate_ou(historical=None, last_price=None, mu=None, sigma=None,
     dt = horizon_days / steps
 
     all_paths = []
+    paths = np.zeros((num_paths, steps + 1))
+    paths[:, 0] = last_log
+    
+    sqrt_dt = np.sqrt(dt)
+    
+    # Pre-generate random noise: shape (num_paths, steps)
+    Z = np.random.normal(0, 1, (num_paths, steps))
+    
+    for t in range(steps):
+        x = paths[:, t]
+        # dx = theta * (mu - x) * dt + sigma * sqrt(dt) * Z
+        dx = theta * (mu_p - x) * dt + sigma_p * sqrt_dt * Z[:, t]
+        paths[:, t+1] = x + dx
 
-    for _ in range(num_paths):
-        path = [last_log]
-        for _ in range(steps):
-            x = path[-1]
-            dx = theta * (mu_p - x) * dt + sigma_p * np.sqrt(dt) * np.random.normal()
-            path.append(x + dx)
-
-        all_paths.append(np.exp(path).tolist())
+    all_paths = np.exp(paths).tolist()
 
     return {
         "paths": all_paths,

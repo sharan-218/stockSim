@@ -11,13 +11,12 @@ def simulate(last_price, mu, sigma, horizon_days=30, steps=30, num_paths=10):
     paths : Number of paths
     """
     dt = horizon_days / steps
-    all_paths = []
-
-    for _ in range(num_paths):
-        path = [last_price]
-        for _ in range(steps):
-            price_next = path[-1] * np.exp((mu - 0.5 * sigma**2) * dt + sigma * np.sqrt(dt) * np.random.normal())
-            path.append(price_next)
-        all_paths.append(path)
-
-    return all_paths
+    Z = np.random.normal(0, 1, (num_paths, steps))
+    drift = (mu - 0.5 * sigma**2) * dt
+    diffusion = sigma * np.sqrt(dt) * Z
+    daily_log_returns = drift + diffusion
+    cumulative_log_returns = np.cumsum(daily_log_returns, axis=1)
+    zeros = np.zeros((num_paths, 1))
+    cumulative_log_returns = np.hstack([zeros, cumulative_log_returns])
+    paths = last_price * np.exp(cumulative_log_returns)
+    return paths.tolist()
