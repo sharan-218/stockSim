@@ -230,18 +230,16 @@ export default function Home() {
                         </p>
                     </div>
 
-                    <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3">
+                    <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
                         {MODEL_INFO.map((m) => (
                             <div
                                 key={m.id}
-                                className=" rounded-lg p-6 bg-[var(--color-bg-secondary)] border border-[var(--color-border-primary)] shadow-sm transition-all duration-300"
-                                style={{
+                                className=" rounded-lg p-6 bg-[var(--color-bg-secondary)] border border-[var(--color-border-primary)] shadow-sm transition-all duration-300" style={{
                                     borderLeft:
                                         m.id === state.model
                                             ? "4px solid var(--color-accent)"
                                             : "3px solid transparent",
-                                }}
-                            >
+                                }}>
                                 <h3 className="mt-4 text-lg font-semibold">
                                     {m.name}
                                 </h3>

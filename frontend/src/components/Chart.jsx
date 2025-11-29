@@ -72,8 +72,8 @@ export default function Chart({
   const minPrice = Math.min(...cleanValues);
   const maxPrice = Math.max(...cleanValues);
   const range = maxPrice - minPrice;
-  const padding = range * 0.05;
-  const safePad = padding === 0 ? minPrice * 0.02 : padding;
+  const padding = range * 0.10;
+  const safePad = padding === 0 ? minPrice * 0.04 : padding;
   const yMin = minPrice - safePad;
   const yMax = maxPrice + safePad;
   const historicalSeries = {
@@ -202,8 +202,8 @@ export default function Chart({
         { type: "inside", throttle: 30 },
         {
           type: "slider",
-          height: window.innerWidth < 480 ? 12 : 20,
-          bottom: window.innerWidth < 480 ? 5 : 20,
+          height: window.innerWidth < 480 ? 20 : 25,
+          bottom: window.innerWidth < 480 ? 2 : 15,
           handleSize: window.innerWidth < 480 ? 10 : 20,
           borderColor: "transparent",
           backgroundColor: "rgba(4, 12, 26, 0.87)",
