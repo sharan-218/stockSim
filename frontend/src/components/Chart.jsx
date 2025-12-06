@@ -44,8 +44,8 @@ export default function Chart({ historical, simulatedPaths = [], mode = "paths" 
 
   const minPrice = Math.min(...cleanValues);
   const maxPrice = Math.max(...cleanValues);
-  const range = Math.min(0.001, maxPrice - minPrice);
-  const pad = range * 0.1;
+  const range = Math.min(0.01, maxPrice - minPrice);
+  const pad = range * 0.2;
 
   const yMin = minPrice - pad;
   const yMax = maxPrice + pad;

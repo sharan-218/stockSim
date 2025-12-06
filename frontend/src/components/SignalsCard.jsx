@@ -12,137 +12,114 @@ export default function SignalsCard({ signals }) {
 
     const actionColor =
         action === "consider_add"
-            ? "bg-[var(--color-success)]"
+            ? "bg-emerald-500"
             : action === "consider_reduce"
-                ? "bg-[var(--color-error)]"
-                : "bg-[var(--color-warning)]";
+                ? "bg-rose-500"
+                : "bg-amber-500";
 
     return (
-        <div className="card-modern mb-12 !p-10 !shadow-none">
+        <div className="glass-modern mb-20 p-10 rounded-3xl">
 
-            <h2 className="text-center text-4xl font-bold mb-8 text-[var(--color-text-primary)]">
-                Simulation Signals
-            </h2>
+            <div className="text-center mb-14">
+                <h2 className="text-4xl md:text-5xl font-extrabold gradient-text-modern">
+                    Simulation Signals
+                </h2>
+                <p className="mt-2 text-sm md:text-base text-[var(--color-text-secondary)] max-w-2xl mx-auto">
+                    Extracted using stochastic simulations & probabilistic inference.
+                </p>
+            </div>
 
-
-            <div className="card-subtle ">
-                <p className="text-xl font-semibold text-[var(--color-text-secondary)]">
+            <div className="card-subtle p-8 rounded-2xl mb-16">
+                <p className="text-lg font-medium text-[var(--color-text-secondary)] text-center">
                     Suggested Action
                 </p>
-                <span
-                    className={`inline-block mt-3 px-4 py-2 rounded-full text-sm font-semibold text-white ${actionColor}`}
-                >
-                    {actionLabel}
-                </span>
-            </div>
-            <div className="mb-10">
-                <p className="text-[var(--color-text-secondary)] font-medium mt-4">
-                    Model Confidence
-                </p>
 
-                <div className="w-full h-3 bg-[var(--color-bg-tertiary)] rounded-full overflow-hidden">
-                    <div
-                        className="h-full bg-[var(--color-accent)] transition-all duration-700 ease-out"
-                        style={{ width: `${(signals.confidence * 100).toFixed(1)}%` }}
-                    ></div>
+                <div className="flex justify-center mt-5">
+                    <span
+                        className={`px-4 py-2 rounded-full text-white font-semibold shadow-md ${actionColor}`}
+                    >
+                        {actionLabel}
+                    </span>
                 </div>
 
-                <p className="text-sm mt-2 text-[var(--color-text-tertiary)] font-medium">
-                    {(signals.confidence * 100).toFixed(1)}%
-                </p>
+                <div className="mt-8">
+                    <p className="text-sm font-medium text-[var(--color-text-secondary)]">
+                        Model Confidence
+                    </p>
+
+                    <div className="mt-2 w-full h-3 bg-[var(--color-border-primary)]/40 rounded-full overflow-hidden">
+                        <div
+                            className="h-full bg-[var(--color-accent)] transition-all duration-700"
+                            style={{ width: `${(signals.confidence * 100).toFixed(1)}%` }}
+                        ></div>
+                    </div>
+
+                    <p className="text-xs mt-2 text-[var(--color-text-tertiary)] font-semibold">
+                        {(signals.confidence * 100).toFixed(1)}%
+                    </p>
+                </div>
             </div>
 
-            <div className="flex gap-2 mb-12 items-stretch flex-wrap justify-center">
-                <div className="card-subtle mb-8 p-5 flex flex-col gap-4 rounded-lg border border-[var(--color-border-primary)] bg-[var(--color-bg-secondary)]">
-                    <div className="inline-flex gap-2 self-end rounded-sm p-1 bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="size-4"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"
-                            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
+
+                <div className="card-modern p-8 rounded-2xl h-full flex flex-col justify-between">
+                    <div className="self-end p-2 bg-red-100 text-red-600 rounded-md">
+                        <svg className="size-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
                         </svg>
                     </div>
 
-                    <div className="flex flex-col">
-                        <strong className="block text-sm font-medium text-[var(--color-text-secondary)]">
-                            Risk Tail (CVaR 95%)
-                        </strong>
-
-                        <p>
-                            <span className="text-2xl font-bold text-[var(--color-text-primary)]">
-                                {signals.tail_risk_cvar95?.toFixed(2)}
-                            </span>
-
-                            <span className="text-xs text-[var(--color-text-tertiary)] ml-2">
-                                loss risk estimate
-                            </span>
+                    <div className="mt-2">
+                        <p className="text-sm text-[var(--color-text-tertiary)] uppercase">CVaR 95%</p>
+                        <p className="text-4xl font-bold mt-1">
+                            {signals.tail_risk_cvar95?.toFixed(2)}
+                        </p>
+                        <p className="text-xs text-[var(--color-text-secondary)] mt-1">
+                            Extreme loss estimate
                         </p>
                     </div>
-
                 </div>
 
-                <div className="card-subtle mb-8 p-5 flex items-center justify-between gap-4 border-rounded-xl sm:flex-1">
-                    <div className="block shrink-0">
-                        <svg
-                            className="h-8 w-8 sm:h-13 sm:w-13  md:h-15 md:w-15  lg:h-18 lg:w-18  xl:h-20 xl:w-20 text-[var(--color-text-secondary)] opacity-25
-      "
-                            viewBox="0 0 100 100"
-                            fill="none"
-                        >
+
+                <div className="card-modern p-8 rounded-2xl h-full flex items-center justify-between">
+                    <div className="opacity-30">
+                        <svg className="w-20 h-20 text-[var(--color-text-secondary)]" viewBox="0 0 100 100">
                             <defs>
-                                <pattern
-                                    id="responsive-grid"
-                                    width="10"
-                                    height="10"
-                                    patternUnits="userSpaceOnUse"
-                                >
+                                <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
                                     <circle cx="1" cy="1" r="1.2" fill="currentColor" />
                                 </pattern>
                             </defs>
-
-                            <rect width="100" height="100" fill="url(#responsive-grid)" />
+                            <rect width="100" height="100" fill="url(#grid)" />
                         </svg>
                     </div>
 
-                    <div className="min-w-[150px] max-w-[20vw] flex flex-auto items-center justify-end gap-8 ">
-                        <span className="font-semibold text-[var(--color-text-secondary)]">
-                            Scenario
-                        </span>
-
-                        <span className="text-2xl font-bold capitalize text-[var(--color-text-primary)]">
+                    <div className="text-right">
+                        <p className="text-sm text-[var(--color-text-tertiary)] uppercase">Scenario</p>
+                        <p className="text-3xl font-bold mt-1 capitalize">
                             {signals.scenario?.majority}
-                        </span>
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <div className="mb-12">
-                <h3 className="text-2xl font-semibold mb-4 text-[var(--color-text-primary)] ">
-                    Probability Checks
-                </h3>
+            <div className="mb-20">
+                <h3 className="text-2xl font-bold mb-6">Probability Checks</h3>
 
                 <div className="flex gap-4 flex-wrap">
                     {Object.entries(signals.prob_checks || {}).map(([label, info]) => (
                         <div
                             key={label}
-                            className={` p-4 flex-auto rounded-2xl transition-all duration-300 backdrop-blur-xl min-w-[140px] sm:min-w-[160px] md:min-w-[200px] shadow-[0_2px_6px_rgba(15,23,42,0.06)] hover:shadow-[0_4px_14px_rgba(15,23,42,0.12)] hover:scale-[1.02] border 
-                                ${label === "add" ? "bg-green-100/60 border-green-300 hover:border-green-400" : label === "reduce" ? "bg-red-100/60 border-red-300 hover:border-red-400" : "bg-[var(--color-bg-secondary)] border-[var(--color-border-primary)] hover:border-[var(--color-border-secondary)]"}`}
+                            className={`flex-auto p-6 rounded-2xl shadow-sm transition-all hover:shadow-md border backdrop-blur-xl
+                                ${label === "add"
+                                    ? "bg-emerald-100/60 border-emerald-300"
+                                    : label === "reduce"
+                                        ? "bg-rose-100/60 border-rose-300"
+                                        : "bg-[var(--color-bg-secondary)] border-[var(--color-border-primary)]"
+                                }`}
                         >
-                            <p className="font-semibold capitalize text-[var(--color-text-primary)]" >
-                                {label}
-                            </p>
-                            <p className="text-sm text-[var(--color-text-secondary)]">
-                                Target: {info.target.toLocaleString()}
-                            </p>
-                            <p className="text-sm text-[var(--color-text-secondary)]">
+                            <p className="font-semibold capitalize">{label}</p>
+                            <p className="mt-1 text-sm">Target: {info.target.toLocaleString()}</p>
+                            <p className="mt-1 text-sm">
                                 Probability: {(info.prob * 100).toFixed(2)}%
                             </p>
                         </div>
@@ -151,20 +128,13 @@ export default function SignalsCard({ signals }) {
             </div>
 
             <div>
-                <h3 className="text-2xl font-semibold mb-4 text-[var(--color-text-primary)]">
-                    Final Percentiles
-                </h3>
+                <h3 className="text-2xl font-bold mb-6">Final Percentiles</h3>
 
                 <div className="flex flex-wrap justify-between gap-4">
                     {Object.entries(signals.percentiles_final || {}).map(([p, val]) => (
-                        <div
-                            key={p}
-                            className="  card-subtle p-4 flex-auto rounded-xl "
-                        >
-                            <p className="font-semibold text-[var(--color-text-primary)]">
-                                {p}th Percentile
-                            </p>
-                            <p className="text-sm text-[var(--color-text-secondary)]">
+                        <div key={p} className="card-subtle p-5 rounded-xl shadow-sm flex-auto">
+                            <p className="font-semibold">{p}th Percentile</p>
+                            <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
                                 {Math.round(val).toLocaleString()}
                             </p>
                         </div>
