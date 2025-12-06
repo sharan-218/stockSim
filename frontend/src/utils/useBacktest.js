@@ -4,7 +4,7 @@ export async function runBacktest({strategy = "sma",symbol = "BTCUSDT",limit = 3
 
   const closes = data.map(c => ({ close: c.close }));
 
-  const result = await fetch(`${import.meta.env.VITE_DEV_BACKTEST}`, {
+  const result = await fetch(`${import.meta.env.VITE_SERVER_BACKTEST}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
