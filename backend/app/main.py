@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 import os
 from app.routers import health, data, simulation
 
-
 load_dotenv()
 
 APP_NAME = "Crypto Quant API"
@@ -29,7 +28,6 @@ app.add_middleware(
 app.include_router(health.router)
 app.include_router(data.router)
 app.include_router(simulation.router)
-
 
 @app.get("/")
 def root():

@@ -3,7 +3,8 @@ import pandas as pd
 import numpy as np
 import importlib
 from app.utils.signals import generate_signals_from_paths
-
+from app.backtest.smaStrategy import sma_strategy, compute_sma_series
+from app.backtest.backtestEngine import backtest
 router = APIRouter(prefix="/simulate", tags=["Simulation"])
 
 MODELS = {
@@ -120,3 +121,43 @@ def run_simulation(payload: dict = Body(...)):
         "num_paths": num_paths,
         "signals": signals
     }
+
+@router.post("/backtest")
+def run_backtest(payload: dict):
+    strategy_type = payload.get("strategy")
+    historical = payload.get("historical")
+    initialvalue = payload.get("initial_capital")
+
+    if not strategy_type or not historical:
+        raise HTTPException(status_code=400, detail="strategy and historical are required")
+    try:
+        if isinstance(historical[0], dict) and "close" in historical[0]:
+            historical_data = historical
+        elif isinstance(historical[0], (int, float)):
+            historical_data = [{"close": float(x)} for x in historical]
+        else:
+            raise ValueError("Invalid price format")
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid historical data format")
+    if strategy_type == "sma":
+        def signal(i, prices):
+            return sma_strategy(i, prices)
+    else:
+        raise HTTPException(status_code=400, detail=f"Unknown strategy '{strategy_type}'")
+
+    try:
+        result = backtest(historical_data, signal,initial_capital=initialvalue)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    closes = [float(h["close"]) for h in historical_data]
+    sma_series = compute_sma_series(closes, window=20)
+
+
+    return {
+        "final_value": result["final_value"],
+        "returns": result["returns"],
+        "max_drawdown": result["max_drawdown"],
+        "closes": closes,
+        "sma": sma_series
+    }
+
