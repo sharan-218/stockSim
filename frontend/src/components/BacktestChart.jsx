@@ -2,9 +2,10 @@
 import React, { useEffect, useState } from "react";
 import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
-
+import { formatNumber } from "../utils/formatter";
 export default function BacktestChart({ returns }) {
     const [option, setOption] = useState({});
+    const isSmall = window.innerWidth < 420;
 
     useEffect(() => {
         if (!returns || returns.length === 0) return;
@@ -35,9 +36,10 @@ export default function BacktestChart({ returns }) {
             animationEasing: "cubicOut",
 
             grid: {
-                left: "20%",
-                right: "0%",
-                top: "6%",
+                containLabel: true,
+                left: isSmall ? 10 : 15,
+                right: 10,
+                top: "14%",
                 bottom: "16%",
             },
 
@@ -69,6 +71,7 @@ export default function BacktestChart({ returns }) {
                 type: "value",
                 axisLabel: {
                     color: "var(--color-text-tertiary)",
+                    formatter: (value) => formatNumber(value),
                 },
                 axisLine: {
                     lineStyle: { color: "var(--color-border-secondary)" },

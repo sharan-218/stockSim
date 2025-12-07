@@ -1,9 +1,10 @@
-// src/components/PriceChart.jsx
 import React from "react";
 import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts";
-
+import { formatNumber } from "../utils/formatter";
 export default function PriceChart({ closes, sma }) {
+
+    const isSmall = window.innerWidth < 420;
     const option = {
         backgroundColor: "transparent",
 
@@ -27,12 +28,12 @@ export default function PriceChart({ closes, sma }) {
         },
 
         grid: {
-            left: "20%",
-            right: "0%",
+            containLabel: true,
+            left: isSmall ? 10 : 15,
+            right: 10,
             top: "14%",
             bottom: "16%",
         },
-
         dataZoom: [
             { type: "inside" },
             {
@@ -55,7 +56,10 @@ export default function PriceChart({ closes, sma }) {
         yAxis: {
             type: "value",
             axisLine: { lineStyle: { color: "var(--color-border-secondary)" } },
-            axisLabel: { color: "var(--color-text-tertiary)" },
+            axisLabel: {
+                color: "var(--color-text-tertiary)",
+                formatter: (value) => formatNumber(value),
+            },
             splitLine: {
                 lineStyle: { color: "rgba(148,163,184,0.15)" },
             },
