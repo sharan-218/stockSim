@@ -201,13 +201,12 @@ def generate_signals_from_paths(
         for p in percentiles
     }
 
-    # Step-wise percentiles 
     step_percentiles = compute_step_percentiles(paths, percentiles)
 
     if prob_thresholds is None:
         prob_thresholds = {
-            "add": (1.2, 0.6),
-            "reduce": (0.8, 0.5)
+            "add": (1.08, 0.45),
+            "reduce": (0.968, 0.35)
         }
 
     probs = {}
