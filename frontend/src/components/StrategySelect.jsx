@@ -3,10 +3,7 @@ import React from "react";
 export default function StrategySelect({ strategy, setStrategy }) {
     const strategies = [
         { id: "sma", name: "SMA" },
-        // Future strategies — uncomment when ready:
-        // { id: "ema", name: "Exponential Moving Average (EMA)" },
-        // { id: "rsi", name: "Relative Strength Index (RSI)" },
-        // { id: "macd", name: "MACD" },
+        { id: "macd", name: "MACD" },
         // { id: "bollinger", name: "Bollinger Bands" },
         // { id: "dual_sma", name: "SMA Crossover" },
     ];

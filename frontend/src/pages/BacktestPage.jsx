@@ -107,10 +107,8 @@ export default function BacktestPage() {
                     </p>
                 </aside>
 
-                {/* RIGHT SIDE */}
                 <main className="flex-1 flex flex-col gap-6 lg:gap-8 px-3">
 
-                    {/* HEADER */}
                     <header>
                         <h2 className="text-3xl md:text-5xl font-semibold text-[var(--color-text-primary)]">
                             Backtest Overview
@@ -181,12 +179,12 @@ export default function BacktestPage() {
 
 
                             <section className="grid grid-cols-1 xl:grid-cols-2 gap-6 mt-2">
-                                <div className="card-subtle glow-hover">
+                                <div className="card-subtle ">
                                     <h3 className="text-lg font-semibold mb-3">Price & SMA</h3>
                                     <PriceChart closes={data.closes} sma={data.sma} />
                                 </div>
 
-                                <div className="card-subtle glow-hover">
+                                <div className="card-subtle ">
                                     <h3 className="text-lg font-semibold mb-3">Equity Curve</h3>
                                     <BacktestChart returns={data.returns} />
                                 </div>

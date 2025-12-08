@@ -28,12 +28,15 @@ export default function BacktestControls({
                     value={limit}
                     onChange={(e) => setLimit(Number(e.target.value))}
                 >
-                    <option value={90}>3 Months (90)</option>
-                    <option value={180}>6 Months (180)</option>
-                    <option value={365}>1 Year (365)</option>
-                    <option value={730}>2 Years (730)</option>
-                    <option value={1095}>3 Years (1095)</option>
-                    <option value={1460}>4 Years (1460)</option>
+                    <option value={30}>1 Month</option>
+                    <option value={90}>3 Months</option>
+                    <option value={180}>6 Months</option>
+                    <option value={365}>1 Year </option>
+                    <option value={730}>2 Years </option>
+                    <option value={1095}>3 Years </option>
+                    <option value={1460}>4 Years</option>
+                    <option value={1825}>5 Years</option>
+                    <option value={2190}>6 Years</option>
                 </select>
             </div>
             <div className="form-control-modern w-full">

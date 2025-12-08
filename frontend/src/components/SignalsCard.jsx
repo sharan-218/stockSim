@@ -7,7 +7,7 @@ export default function SignalsCard({ signals }) {
         action === "consider_add"
             ? "Consider Adding"
             : action === "consider_reduce"
-                ? "Consider Reducing"
+                ? "Consider Reduce"
                 : "Hold";
 
     const actionColor =
@@ -35,11 +35,11 @@ export default function SignalsCard({ signals }) {
                 </p>
 
                 <div className="flex justify-center mt-5">
-                    <span
+                    <p
                         className={`px-4 py-2 rounded-full text-white font-semibold shadow-md ${actionColor}`}
                     >
                         {actionLabel}
-                    </span>
+                    </p>
                 </div>
 
                 <div className="mt-8">
@@ -71,10 +71,10 @@ export default function SignalsCard({ signals }) {
 
                     <div className="mt-2">
                         <p className="text-sm text-[var(--color-text-tertiary)] uppercase">CVaR 95%</p>
-                        <p className="text-4xl font-bold mt-1">
+                        <p className="text-4xl font-bold mt-1 text-[var(--color-text-primary)]">
                             {signals.tail_risk_cvar95?.toFixed(2)}
                         </p>
-                        <p className="text-xs text-[var(--color-text-secondary)] mt-1">
+                        <p className="text-xs text-[var(--color-text-secondary)] m-0">
                             Extreme loss estimate
                         </p>
                     </div>

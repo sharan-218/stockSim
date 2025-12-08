@@ -1,4 +1,4 @@
-export async function runBacktest({strategy = "sma",symbol = "BTCUSDT",limit = 365,initialCapital = 1000}) {
+export async function runBacktest({ strategy,symbol,limit,initialCapital }) {
   const data = await fetch(`${import.meta.env.VITE_SERVER_BACKTEST_DATA}/${symbol}?interval=1d&limit=${limit}`)
     .then(r => r.json());
 
@@ -15,6 +15,7 @@ export async function runBacktest({strategy = "sma",symbol = "BTCUSDT",limit = 3
   }).then(r => r.json());
 
   return {
+    ...result,
     closes: result.closes,
     sma: result.sma,         
     returns: result.returns, 

@@ -5,7 +5,8 @@ import ModelSelect from "../components/ModelSelect";
 import Chart from "../components/Chart";
 import SignalsCard from "../components/SignalsCard";
 import HeatMap from "../components/HeatMap";
-import axios from "axios";
+import axios from 'axios'
+
 import { TrendingUpDown, BadgePercent, ChartSpline } from "lucide-react";
 
 const modeIcons = {
@@ -54,6 +55,14 @@ const MODEL_INFO = [
             "A stochastic volatility model where volatility itself follows a random process.",
         working:
             "Uses coupled stochastic differential equations to simulate correlated price & variance evolution.",
+    },
+    {
+        id: "hybrid_arima",
+        name: "Hybrid ARIMA",
+        description:
+            "A stochastic volatility model where volatility itself follows a random process.",
+        working:
+            "A hybrid model that combines ARIMA trend forecasting with machine-learned residual corrections to generate more realistic future price paths",
     },
 ];
 
@@ -116,24 +125,29 @@ export default function Home() {
 
             <section className="relative py-20 flex flex-col items-center text-center">
                 <div className="absolute inset-0 flex items-center justify-center -z-10">
-                    <div className="w-[420px] h-[420px] md:w-[580px] md:h-[580px] rounded-full 
-            bg-gradient-to-br from-[var(--color-accent)]/10 to-transparent 
-            blur-3xl opacity-20 animate-pulse"></div>
+                    <div className="w-[420px] h-[420px] md:w-[580px] md:h-[580px] rounded-full  bg-gradient-to-br from-[var(--color-accent)]/10 to-transparent  blur-3xl opacity-20 animate-pulse">
+                    </div>
                 </div>
 
-                <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-tight mb-6">
-                    <span className="bg-gradient-to-r from-[var(--color-text-primary)] via-[var(--color-accent-muted)] to-[var(--color-text-tertiary)] bg-clip-text text-transparent">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 
+               font-extrabold tracking-tight leading-tight mb-6">
+                    <span className="bg-gradient-to-r from-[var(--color-text-primary)] 
+                     via-[var(--color-accent-muted)] 
+                     to-[var(--color-text-tertiary)] 
+                     bg-clip-text text-transparent">
                         Crypseer
                     </span>
                 </h1>
 
 
-                <p className="text-lg md:text-2xl text-[var(--color-text-secondary)] max-w-2xl mx-auto font-light mb-10">
+
+                <p className="text-base sm:text-lg md:text-xl  text-[var(--color-text-secondary)] max-w-xl mx-auto font-light mb-10 leading-relaxed">
                     Turning financial uncertainty into actionable insights.<br />
-                    <span className="text-[var(--color-text-tertiary)]">
+                    <span className="text-[var(--color-text-tertiary)] text-sm sm:text-base md:text-lg">
                         The data knows, you just have to listen.
                     </span>
                 </p>
+
 
 
                 <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mt-4">
