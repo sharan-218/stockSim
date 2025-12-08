@@ -5,6 +5,7 @@ import importlib
 from app.utils.signals import generate_signals_from_paths
 from app.backtest.smaStrategy import sma_strategy, compute_sma_series
 from app.backtest.backtestEngine import backtest
+from app.backtest.macdStrategy import macd_strategy
 router = APIRouter(prefix="/simulate", tags=["Simulation"])
 
 MODELS = {
@@ -13,6 +14,7 @@ MODELS = {
     "garch": {"module": "app.models.garch", "func": "simulate_garch"},
     "jump_diffusion": {"module": "app.models.jump_diffusion", "func": "simulate_jump_diffusion"},
     "heston": {"module": "app.models.heston", "func": "simulate_heston"},
+    "hybrid_arima":{"module":"app.models.hybrid_arima","func":"simulate_hybrid_arima"}
 }
 
 
@@ -101,6 +103,15 @@ def run_simulation(payload: dict = Body(...)):
                 num_paths=num_paths
             )
             simulated_paths = result["paths"]
+        elif model == "hybrid_arima":
+            result = simulate_func(
+                historical=list(prices),
+                horizon_days=horizon_days,
+                steps=steps,
+                num_paths=num_paths
+            )
+            simulated_paths = result["paths"]
+
         else:
             raise HTTPException(status_code=400, detail=f"Model {model} not implemented")
 
@@ -130,6 +141,7 @@ def run_backtest(payload: dict):
 
     if not strategy_type or not historical:
         raise HTTPException(status_code=400, detail="strategy and historical are required")
+
     try:
         if isinstance(historical[0], dict) and "close" in historical[0]:
             historical_data = historical
@@ -139,25 +151,28 @@ def run_backtest(payload: dict):
             raise ValueError("Invalid price format")
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid historical data format")
+
     if strategy_type == "sma":
         def signal(i, prices):
             return sma_strategy(i, prices)
+
+    elif strategy_type == "macd":
+        def signal(i, prices):
+            return macd_strategy(i, prices)
+        
+
     else:
         raise HTTPException(status_code=400, detail=f"Unknown strategy '{strategy_type}'")
-
     try:
-        result = backtest(historical_data, signal,initial_capital=initialvalue)
+        result = backtest(historical_data, signal, initial_capital=initialvalue)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     closes = [float(h["close"]) for h in historical_data]
     sma_series = compute_sma_series(closes, window=20)
-
-
     return {
         "final_value": result["final_value"],
         "returns": result["returns"],
         "max_drawdown": result["max_drawdown"],
         "closes": closes,
-        "sma": sma_series
+        "sma": sma_series,  
     }
-

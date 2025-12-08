@@ -7,6 +7,5 @@ scipy
 statsmodels
 arch
 requests
-python-dotenv
 pmdarima
 scikit-learn
