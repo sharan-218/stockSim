@@ -1,4 +1,4 @@
-from app.models import gbm, ou, garch, jump_diffusion,heston,hybrid_arima
+from app.models import gbm, ou, garch, jump_diffusion,heston,hybrid_arima, kalman
 def run_simulation(model_name: str, params: dict):
     if model_name == "gbm":
         return gbm.simulate_gbm(
@@ -19,5 +19,7 @@ def run_simulation(model_name: str, params: dict):
         return heston.simulate_heston(**params)
     elif model_name == "hybrid_arima":
         return hybrid_arima.simulate_hybrid_arima(**params)
+    elif model_name == "kalman":
+        return kalman.simulate_kalman(**params)
     else:
         raise ValueError(f"Model '{model_name}' not implemented")
