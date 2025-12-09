@@ -64,6 +64,14 @@ const MODEL_INFO = [
         working:
             "A hybrid model that combines ARIMA trend forecasting with machine-learned residual corrections to generate more realistic future price paths",
     },
+    {
+        id: "kalman",
+        name: "Kalman",
+        description:
+            "It is an optimal estimation algorithm that predicts a parameter of interests such as location, speed, and direction in the presence of noise and measurements",
+        working:
+            "It estimates the true state of a dynamic system from noisy, incomplete measurements over time, using a two-step recursive process of prediction (guessing the next state) and correction/update (refining the guess with actual observations)",
+    },
 ];
 
 export default function Home() {
@@ -157,7 +165,7 @@ export default function Home() {
                         className="px-10 py-4 text-lg rounded-2xl bg-[var(--color-accent)] text-white font-semibold shadow-lg shadow-[rgba(0,0,0,0.1)]
                        hover:bg-[var(--color-accent-muted)] active:scale-[0.97] transition-all duration-300"
                     >
-                        Launch Backtester →
+                        Launch Backtester
                     </Link>
 
                     <a
@@ -179,7 +187,7 @@ export default function Home() {
                 <div className="glass-modern p-8 mb-10">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div>
-                            <label className="label-modern">Symbol</label>
+                            <label className="label-modern ">Symbol</label>
                             <SymbolInput onSubmit={(sym) => fetchData(sym)} />
                         </div>
 

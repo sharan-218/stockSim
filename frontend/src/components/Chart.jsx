@@ -90,12 +90,13 @@ export default function Chart({ historical, simulatedPaths = [], mode = "paths" 
       ? simulatedPaths.map((path, idx) => ({
         name: `${idx + 1}`,
         type: "line",
+        polyline: true,
         smooth: true,
         sampling: "lttb",
         symbol: "none",
 
         lineStyle: {
-          width: 1.2,
+          width: 1,
           color: baseColors[(idx + 1) % baseColors.length],
         },
         itemStyle: {

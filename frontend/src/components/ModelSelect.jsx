@@ -7,6 +7,7 @@ export default function ModelSelect({ model, setModel }) {
     { id: "jump_diffusion", name: "Jump Diffusion" },
     { id: "heston", name: "Heston" },
     { id: "hybrid_arima", name: "Hybrid ARIMA" },
+    { id: "kalman", name: "Kalman" },
 
   ];
 

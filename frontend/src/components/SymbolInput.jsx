@@ -10,7 +10,7 @@ export default function SymbolInput({ onSubmit }) {
     }
   };
   return (
-    <form onSubmit={handleSubmit} className="flex gap-4 w-full items-center">
+    <form onSubmit={handleSubmit} className="flex gap-4 w-full items-center mt-1">
       <div className="flex-grow">
         <input
           type="text"
