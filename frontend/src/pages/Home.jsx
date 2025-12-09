@@ -72,6 +72,14 @@ const MODEL_INFO = [
         working:
             "It estimates the true state of a dynamic system from noisy, incomplete measurements over time, using a two-step recursive process of prediction (guessing the next state) and correction/update (refining the guess with actual observations)",
     },
+    {
+        id: "tiny_mlp",
+        name: "Tiny MLP",
+        description:
+            "A lightweight, single-hidden-layer neural network that learns patterns in past log-returns and recursively predicts future returns for price simulation.",
+        working:
+            "Tiny MLP is a lightweight neural network that learns patterns from past log-returns. and predicts the next return using a single hidden layer and recursive forecasting.",
+    },
 ];
 
 export default function Home() {
@@ -90,7 +98,7 @@ export default function Home() {
     const fetchData = async (symbol) => {
         setState((prev) => ({ ...prev, loading: true, error: null }));
 
-        const dataUrl = `${import.meta.env.VITE_SERVER_DATA}/${symbol}?interval=1d&limit=30`;
+        const dataUrl = `${import.meta.env.VITE_SERVER_DATA}/${symbol}?interval=1d&limit=300`;
         const simUrl = import.meta.env.VITE_SERVER_SIMULATE;
 
         try {
