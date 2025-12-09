@@ -9,3 +9,4 @@ arch
 requests
 pmdarima
 scikit-learn
+numba

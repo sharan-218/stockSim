@@ -15,7 +15,8 @@ MODELS = {
     "jump_diffusion": {"module": "app.models.jump_diffusion", "func": "simulate_jump_diffusion"},
     "heston": {"module": "app.models.heston", "func": "simulate_heston"},
     "hybrid_arima":{"module":"app.models.hybrid_arima","func":"simulate_hybrid_arima"},
-    "kalman":{"module":"app.models.kalman","func":"simulate_kalman"}
+    "kalman":{"module":"app.models.kalman","func":"simulate_kalman"},
+    "tiny_mlp":{"module":"app.models.tiny_mlp","func":"simulate_tiny_mlp"}
 }
 
 
@@ -114,6 +115,14 @@ def run_simulation(payload: dict = Body(...)):
             simulated_paths = result["paths"]
 
         elif model == "kalman":
+            result = simulate_func(
+                historical=list(prices),
+                horizon_days=horizon_days,
+                steps=steps,
+                num_paths=num_paths
+            )
+            simulated_paths = result["paths"]
+        elif model == "tiny_mlp":
             result = simulate_func(
                 historical=list(prices),
                 horizon_days=horizon_days,
