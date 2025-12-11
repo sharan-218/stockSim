@@ -3,7 +3,7 @@ from numba import njit, prange
 import app.utils.tunehyperparameters 
 
 
-def _prepare_returns(prices, window=20):
+def _prepare_returns(prices, window=50):
     prices = np.asarray(prices, dtype=float)
     n = len(prices)
 

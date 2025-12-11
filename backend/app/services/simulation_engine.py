@@ -1,4 +1,4 @@
-from app.models import gbm, ou, garch, jump_diffusion,heston,hybrid_arima, kalman, tiny_mlp
+from app.models import gbm, ou, garch, jump_diffusion,heston,hybrid_arima, kalman, tiny_mlp, hmm
 def run_simulation(model_name: str, params: dict):
     if model_name == "gbm":
         return gbm.simulate_gbm(
@@ -23,5 +23,7 @@ def run_simulation(model_name: str, params: dict):
         return kalman.simulate_kalman(**params)
     elif model_name == "tiny_mlp":
         return tiny_mlp.simulate_tiny_mlp(**params)
+    elif model_name == "hmm":
+        return hmm.simulate_hmm(**params)
     else:
         raise ValueError(f"Model '{model_name}' not implemented")
