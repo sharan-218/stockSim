@@ -20,8 +20,8 @@ export default function SignalsCard({ signals }) {
     return (
         <div className="glass-modern mb-20 p-10 rounded-3xl">
 
-            <div className="text-center mb-14">
-                <h2 className="text-4xl md:text-5xl font-extrabold gradient-text-modern">
+            <div className="text-center mb-14 h-3xl">
+                <h2 className="text-4xl md:text-5xl font-extrabold gradient-text-modern py-4">
                     Simulation Signals
                 </h2>
                 <p className="mt-2 text-sm md:text-base text-[var(--color-text-secondary)] max-w-2xl mx-auto">
@@ -72,7 +72,7 @@ export default function SignalsCard({ signals }) {
                     <div className="mt-2">
                         <p className="text-sm text-[var(--color-text-tertiary)] uppercase">CVaR 95%</p>
                         <p className="text-4xl font-bold mt-1 text-[var(--color-text-primary)]">
-                            {signals.tail_risk_cvar95?.toFixed(2)}
+                            ${signals.tail_risk_cvar95?.toFixed(2)}
                         </p>
                         <p className="text-xs text-[var(--color-text-secondary)] m-0">
                             Extreme loss estimate
@@ -82,7 +82,7 @@ export default function SignalsCard({ signals }) {
 
 
                 <div className="card-modern p-8 rounded-2xl h-full flex items-center justify-between">
-                    <div className="opacity-30">
+                    <div className="opacity-50">
                         <svg className="w-20 h-20 text-[var(--color-text-secondary)]" viewBox="0 0 100 100">
                             <defs>
                                 <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">

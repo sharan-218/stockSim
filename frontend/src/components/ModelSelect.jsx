@@ -9,6 +9,7 @@ export default function ModelSelect({ model, setModel }) {
     { id: "hybrid_arima", name: "Hybrid ARIMA" },
     { id: "kalman", name: "Kalman" },
     { id: "tiny_mlp", name: "Tiny MLP" },
+    { id: "hmm", name: "Hidden Markov Model" },
 
   ];
 

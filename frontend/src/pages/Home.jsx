@@ -80,6 +80,14 @@ const MODEL_INFO = [
         working:
             "Tiny MLP is a lightweight neural network that learns patterns from past log-returns. and predicts the next return using a single hidden layer and recursive forecasting.",
     },
+    {
+        id: "hmm",
+        name: "Hidden Markov Model",
+        description:
+            "A a statistical model used to analyze sequential data where the underlying causes or states are unobservable (hidden), but can be inferred from a sequence of observable outcomes",
+        working:
+            "A Hidden Markov Model infers the most likely sequence of unobservable, underlying states by analyzing a sequence of observable outcomes based on predefined probabilities for moving between states and generating observations.",
+    },
 ];
 
 export default function Home() {
@@ -98,7 +106,7 @@ export default function Home() {
     const fetchData = async (symbol) => {
         setState((prev) => ({ ...prev, loading: true, error: null }));
 
-        const dataUrl = `${import.meta.env.VITE_SERVER_DATA}/${symbol}?interval=1d&limit=300`;
+        const dataUrl = `${import.meta.env.VITE_SERVER_DATA}/${symbol}?interval=1d&limit=800`;
         const simUrl = import.meta.env.VITE_SERVER_SIMULATE;
 
         try {
@@ -141,7 +149,7 @@ export default function Home() {
 
             <section className="relative py-20 flex flex-col items-center text-center">
                 <div className="absolute inset-0 flex items-center justify-center -z-10">
-                    <div className="w-[420px] h-[420px] md:w-[580px] md:h-[580px] rounded-full  bg-gradient-to-br from-[var(--color-accent)]/10 to-transparent  blur-3xl opacity-20 animate-pulse">
+                    <div className="w-[420px] h-[420px] md:w-[580px] md:h-[580px] rounded-full  bg-gradient-to-br from-[var(--color-accent)]/20 to-transparent  blur-3xl opacity-20 animate-pulse">
                     </div>
                 </div>
 
