@@ -4,6 +4,7 @@ export default function StrategySelect({ strategy, setStrategy }) {
     const strategies = [
         { id: "sma", name: "SMA" },
         { id: "macd", name: "MACD" },
+        { id: "fama_french", name: "Fama–French (3-Factor)" },
         // { id: "bollinger", name: "Bollinger Bands" },
         // { id: "dual_sma", name: "SMA Crossover" },
     ];

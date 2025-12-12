@@ -180,8 +180,8 @@ export default function BacktestPage() {
 
                             <section className="grid grid-cols-1 xl:grid-cols-2 gap-6 mt-2">
                                 <div className="card-subtle ">
-                                    <h3 className="text-lg font-semibold mb-3">Price & SMA</h3>
-                                    <PriceChart closes={data.closes} sma={data.sma} />
+                                    <h3 className="text-lg font-semibold mb-3">Price & Indicators</h3>
+                                    <PriceChart closes={data.closes} indicators={data.indicators} />
                                 </div>
 
                                 <div className="card-subtle ">
