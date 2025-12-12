@@ -1,6 +1,6 @@
 import numpy as np
 
-def sma_strategy(index, prices, window=20):
+def sma_strategy(index, prices, window=26):
     if index < window:
         return 0
     sma = np.mean(prices[index - window : index])

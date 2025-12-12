@@ -5,7 +5,9 @@ import importlib
 from app.utils.signals import generate_signals_from_paths
 from app.backtest.smaStrategy import sma_strategy, compute_sma_series
 from app.backtest.backtestEngine import backtest
-from app.backtest.macdStrategy import macd_strategy
+from app.backtest.macdStrategy import macd_strategy, macd_indicator
+from app.backtest.fama_french import compute_ff_factors, fama_french_strategy
+
 router = APIRouter(prefix="/simulate", tags=["Simulation"])
 
 MODELS = {
@@ -160,10 +162,9 @@ def run_simulation(payload: dict = Body(...)):
         "num_paths": num_paths,
         "signals": signals
     }
-
 @router.post("/backtest")
 def run_backtest(payload: dict):
-    strategy_type = payload.get("strategy")
+    strategy_type = payload.get("strategy", "").lower()
     historical = payload.get("historical")
     initialvalue = payload.get("initial_capital")
 
@@ -172,35 +173,49 @@ def run_backtest(payload: dict):
 
     try:
         if isinstance(historical[0], dict) and "close" in historical[0]:
-            historical_data = historical
-        elif isinstance(historical[0], (int, float)):
-            historical_data = [{"close": float(x)} for x in historical]
+            closes = [float(x["close"]) for x in historical]
         else:
-            raise ValueError("Invalid price format")
-    except Exception:
+            closes = [float(x) for x in historical]
+    except:
         raise HTTPException(status_code=400, detail="Invalid historical data format")
 
+    indicators = {}
+
     if strategy_type == "sma":
-        def signal(i, prices):
-            return sma_strategy(i, prices)
+        signal = lambda i, prices: sma_strategy(i, prices)
 
     elif strategy_type == "macd":
-        def signal(i, prices):
-            return macd_strategy(i, prices)
-        
+        signal = lambda i, prices: macd_strategy(i, prices)
+
+    elif strategy_type == "fama_french":
+        signal = lambda i, prices: fama_french_strategy(i, prices)
 
     else:
         raise HTTPException(status_code=400, detail=f"Unknown strategy '{strategy_type}'")
+
     try:
-        result = backtest(historical_data, signal, initial_capital=initialvalue)
+        result = backtest([{"close": c} for c in closes], signal, initial_capital=initialvalue)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    closes = [float(h["close"]) for h in historical_data]
-    sma_series = compute_sma_series(closes, window=20)
+    if strategy_type == "sma":
+        indicators["sma"] = compute_sma_series(closes, window=26)
+
+    elif strategy_type == "macd":
+        macd_line, signal_line = macd_indicator(closes)
+        indicators["macd_line"] = macd_line.tolist()
+        indicators["signal_line"] = signal_line
+
+    elif strategy_type == "fama_french":
+        ff = compute_ff_factors(closes)
+        indicators = {
+            "mkt": ff["MKT"].tolist(),
+            "mom": ff["MOM"].tolist(),
+            "vol": ff["VOL"].tolist(),
+        }
     return {
-        "final_value": result["final_value"],
-        "returns": result["returns"],
-        "max_drawdown": result["max_drawdown"],
+        "final_value": float(result["final_value"]),
+        "returns": [float(r) for r in result["returns"]],
+        "max_drawdown": float(result["max_drawdown"]),
         "closes": closes,
-        "sma": sma_series,  
+        "indicators": indicators,
     }
