@@ -29,8 +29,8 @@ function convertToHeatmap(simulatedPaths, buckets = 40) {
         path.forEach((value, day) => {
             const bucketIndex = Math.floor((value - min) / bucketSize);
             if (bucketIndex >= 0 && bucketIndex < buckets) {
-                const index = day * buckets + bucketIndex;
-                heatmap[index][2] += 1;
+                const idx = day * buckets + bucketIndex;
+                heatmap[idx][2] += 1;
             }
         });
     });
@@ -44,78 +44,92 @@ export default function HeatMap({ simulatedPaths, bucketCount = 40 }) {
         [simulatedPaths, bucketCount]
     );
 
-    const options = {
-        tooltip: { position: "top" },
-        animation: false,
 
+    const showEvery = Math.max(1, Math.floor(yLabels.length / 7));
+
+    const options = {
+        tooltip: {
+            formatter: (params) => {
+                const [day, bucket, count] = params.data;
+                return `
+                    <strong>${xLabels[day]}</strong><br/>
+                    Price Bucket: <b>${yLabels[bucket].toLocaleString()}</b><br/>
+                    Hits: <b>${count}</b>
+                `;
+            }
+        },
+
+        animation: false,
 
         grid: {
             top: 20,
-            left: window.innerWidth < 480 ? 5 : 5,
-            right: 5,
-            bottom: 60,
+            left: 55,
+            right: 20,
+            bottom: 70,
             containLabel: true,
         },
-
 
         xAxis: {
             type: "category",
             data: xLabels,
-            axisLabel: { rotate: 45, fontSize: 9 },
-            splitArea: { show: true },
+            axisLabel: {
+                rotate: 45,
+                fontSize: 9,
+                color: "#A6ADBB",
+            }
         },
 
         yAxis: {
             type: "category",
             data: yLabels,
             axisLabel: {
-                fontSize: 9,
-                formatter: (v) => v.toLocaleString(),
+                fontSize: 10,
+                color: "#A6ADBB",
+                formatter: (value, index) =>
+                    index % showEvery === 0 ? value.toLocaleString() : "",
             },
-            splitArea: { show: true },
         },
 
         visualMap: {
             min: 0,
             max: simulatedPaths.length,
-            calculable: true,
+            calculable: false,
             orient: "horizontal",
             left: "center",
             bottom: 0,
+            textStyle: { color: "#A6ADBB" },
             inRange: {
                 color: [
-                    '#30123b',
-                    '#482878',
-                    '#3e4ab8',
-                    '#2c7ef7',
-                    '#1ebef0',
-                    '#38e5c6',
-                    '#8ff7a8',
-                    '#d8fd9b',
-                    '#f9f871'
-                ]
+                    "#190B28",
+                    "#3A1F5D",
+                    "#4B3F9C",
+                    "#3766D1",
+                    "#2C9BEF",
+                    "#00D4C5",
+                    "#7CF9A6",
+                    "#F6FF8E"
+                ],
             },
-
-        }
-        ,
+        },
 
         series: [
             {
                 type: "heatmap",
                 data: heatmap,
-                emphasis: {
-                    itemStyle: {
-                        shadowBlur: 8,
-                        shadowColor: "rgba(0,0,0,0.3)",
-                    },
-                },
+                progressive: 5000,
             },
         ],
     };
 
     return (
-        <div className="w-full h-[60vh] rounded-xl" >
-            <ReactECharts option={options} style={{ width: "100%", height: "100%" }} />
-        </div >
+        <div className="w-full">
+            <ReactECharts
+                option={options}
+                style={{ width: "100%", height: "450px" }}
+                notMerge={true}
+                lazyUpdate={true}
+                opts={{ renderer: "canvas" }}
+            />
+        </div>
     );
 }

@@ -1,3 +1,12 @@
+import React from "react";
+import { TrendingUp, TrendingDown, Minus } from "lucide-react";
+
+const IconWrap = ({ children }) => (
+    <div className="h-6 w-6 flex items-center justify-center translate-y-[-5px] shrink-0">
+        {children}
+    </div>
+);
+
 export default function SignalsCard({ signals }) {
     if (!signals) return null;
 
@@ -7,140 +16,209 @@ export default function SignalsCard({ signals }) {
         action === "consider_add"
             ? "Consider Adding"
             : action === "consider_reduce"
-                ? "Consider Reduce"
+                ? "Consider Reducing"
                 : "Hold";
 
-    const actionColor =
+    const iconSizeClass = "w-6 h-6";
+    const icons = {
+        consider_add: <TrendingUp className={`${iconSizeClass} text-emerald-500`} />,
+        consider_reduce: <TrendingDown className={`${iconSizeClass} text-rose-500`} />,
+
+        hold: <Minus className={`${iconSizeClass} text-amber-500 mt-[1px]`} />
+    };
+
+    const actionBorder =
         action === "consider_add"
-            ? "bg-emerald-500"
+            ? "border-emerald-500/70"
             : action === "consider_reduce"
-                ? "bg-rose-500"
-                : "bg-amber-500";
+                ? "border-rose-500/70"
+                : "border-amber-500/70";
+
+    const percentileColors = {
+        5: "text-rose-500",
+        50: "text-yellow-400",
+        95: "text-emerald-500"
+    };
+
 
     return (
-        <div className="glass-modern mb-20 p-10 rounded-3xl">
+        <div className="glass-modern mb-20 p-8 md:p-12 rounded-3xl space-y-16">
 
-            <div className="text-center mb-14 h-3xl">
-                <h2 className="text-4xl md:text-5xl font-extrabold gradient-text-modern py-4">
+            <div className="text-center max-w-2xl mx-auto">
+                <h2 className="text-4xl md:text-5xl font-extrabold gradient-text-modern mb-3">
                     Simulation Signals
                 </h2>
-                <p className="mt-2 text-sm md:text-base text-[var(--color-text-secondary)] max-w-2xl mx-auto">
+                <p className="text-sm md:text-base text-[var(--color-text-secondary)]">
                     Extracted using stochastic simulations & probabilistic inference.
                 </p>
             </div>
 
-            <div className="card-subtle p-8 rounded-2xl mb-16">
-                <p className="text-lg font-medium text-[var(--color-text-secondary)] text-center">
-                    Suggested Action
-                </p>
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
 
-                <div className="flex justify-center mt-5">
-                    <p
-                        className={`px-4 py-2 rounded-full text-white font-semibold shadow-md ${actionColor}`}
-                    >
+                <div className={`card-modern p-6 rounded-2xl flex flex-col space-y-4 border-l-4 ${actionBorder}`}>
+
+                    <div className="flex items-center gap-3 leading-none">
+                        <p className="text-sm font-semibold">Suggested Action</p>
+                    </div>
+
+                    <p className="text-3xl font-bold text-[var(--color-text-primary)]">
                         {actionLabel}
+                    </p>
+
+                    <p className="text-xs text-[var(--color-text-secondary)]">
+                        Based on probability-weighted market outcomes.
                     </p>
                 </div>
 
-                <div className="mt-8">
-                    <p className="text-sm font-medium text-[var(--color-text-secondary)]">
-                        Model Confidence
+
+                <div className="card-modern p-6 rounded-2xl space-y-4 flex flex-col">
+                    <p className="text-sm font-semibold">Model Confidence</p>
+
+                    <p className="text-3xl font-bold text-[var(--color-text-primary)]">
+                        {(signals.confidence * 100).toFixed(1)}%
                     </p>
 
-                    <div className="mt-2 w-full h-3 bg-[var(--color-border-primary)]/40 rounded-full overflow-hidden">
+                    <div className="h-2 bg-[var(--color-border-primary)]/40 rounded-full overflow-hidden">
                         <div
                             className="h-full bg-[var(--color-accent)] transition-all duration-700"
                             style={{ width: `${(signals.confidence * 100).toFixed(1)}%` }}
                         ></div>
                     </div>
 
-                    <p className="text-xs mt-2 text-[var(--color-text-tertiary)] font-semibold">
-                        {(signals.confidence * 100).toFixed(1)}%
+                    <p className="text-xs text-[var(--color-text-tertiary)]">
+                        Confidence level of the current simulation environment.
                     </p>
                 </div>
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
 
-                <div className="card-modern p-8 rounded-2xl h-full flex flex-col justify-between">
-                    <div className="self-end p-2 bg-red-100 text-red-600 rounded-md">
-                        <svg className="size-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
-                        </svg>
+
+                <div className="relative card-modern p-6 rounded-2xl flex flex-col justify-between border border-white/5 hover:border-rose-500/40 transition-all">
+                    <div className="absolute left-0 top-0 h-full w-1 bg-rose-500/60 rounded-l-xl"></div>
+
+                    <div className="space-y-2">
+
+                        <div className="flex items-center gap-3 leading-none">
+                            <IconWrap>
+                                <TrendingDown className={`${iconSizeClass} text-rose-500`} />
+                            </IconWrap>
+                            <p className="text-sm font-semibold">CVaR (95%)</p>
+                        </div>
+
+                        <p className="text-3xl font-bold text-rose-500">
+                            -${signals.tail_risk_cvar95?.toFixed(2)}
+                        </p>
                     </div>
 
-                    <div className="mt-2">
-                        <p className="text-sm text-[var(--color-text-tertiary)] uppercase">CVaR 95%</p>
-                        <p className="text-4xl font-bold mt-1 text-[var(--color-text-primary)]">
-                            ${signals.tail_risk_cvar95?.toFixed(2)}
-                        </p>
-                        <p className="text-xs text-[var(--color-text-secondary)] m-0">
-                            Extreme loss estimate
-                        </p>
-                    </div>
+                    <p className="text-xs mt-2 text-[var(--color-text-secondary)]">
+                        Expected extreme downside loss at 5% tail probability.
+                    </p>
                 </div>
 
 
-                <div className="card-modern p-8 rounded-2xl h-full flex items-center justify-between">
-                    <div className="opacity-50">
-                        <svg className="w-20 h-20 text-[var(--color-text-secondary)]" viewBox="0 0 100 100">
-                            <defs>
-                                <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-                                    <circle cx="1" cy="1" r="1.2" fill="currentColor" />
-                                </pattern>
-                            </defs>
-                            <rect width="100" height="100" fill="url(#grid)" />
-                        </svg>
-                    </div>
+                <div className="card-modern p-6 rounded-2xl space-y-3 flex flex-col">
+                    <p className="text-sm font-semibold">Percentiles</p>
 
-                    <div className="text-right">
-                        <p className="text-sm text-[var(--color-text-tertiary)] uppercase">Scenario</p>
-                        <p className="text-3xl font-bold mt-1 capitalize">
-                            {signals.scenario?.majority}
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div className="mb-20">
-                <h3 className="text-2xl font-bold mb-6">Probability Checks</h3>
-
-                <div className="flex gap-4 flex-wrap">
-                    {Object.entries(signals.prob_checks || {}).map(([label, info]) => (
-                        <div
-                            key={label}
-                            className={`flex-auto p-6 rounded-2xl shadow-sm transition-all hover:shadow-md border backdrop-blur-xl
-                                ${label === "add"
-                                    ? "bg-emerald-100/60 border-emerald-300"
-                                    : label === "reduce"
-                                        ? "bg-rose-100/60 border-rose-300"
-                                        : "bg-[var(--color-bg-secondary)] border-[var(--color-border-primary)]"
-                                }`}
-                        >
-                            <p className="font-semibold capitalize">{label}</p>
-                            <p className="mt-1 text-sm">Target: {info.target.toLocaleString()}</p>
-                            <p className="mt-1 text-sm">
-                                Probability: {(info.prob * 100).toFixed(2)}%
-                            </p>
+                    {Object.entries(signals.percentiles_final || {}).map(([p, val]) => (
+                        <div key={p} className="flex justify-between text-sm">
+                            <span className="text-[var(--color-text-secondary)]">{p}th</span>
+                            <span className={`font-bold ${percentileColors[p] || "text-[var(--color-text-primary)]"}`}>
+                                {Math.round(val).toLocaleString()}
+                            </span>
                         </div>
                     ))}
                 </div>
+
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+
+                <div className="card-modern p-6 rounded-2xl space-y-4">
+                    <p className="text-sm font-semibold">Target Price Probability</p>
+
+                    <div className="flex items-center justify-between">
+                        <p className="text-xl font-bold">
+                            ${signals.prob_checks?.add?.target?.toLocaleString()}
+                        </p>
+
+                        <p className="text-3xl font-bold text-[var(--color-accent)]">
+                            {(signals.prob_checks?.add?.prob * 100).toFixed(2)}%
+                        </p>
+                    </div>
+                </div>
+
+                <div className="card-modern p-6 rounded-2xl flex items-center justify-start gap-6 relative">
+
+                    <div>
+                        <p className="text-sm text-[var(--color-text-tertiary)] uppercase leading-none">Scenario</p>
+                        <p className="text-3xl font-bold capitalize text-[var(--color-text-primary)] leading-none">
+                            {signals.scenario?.majority}
+                        </p>
+                        <p className="text-xs text-[var(--color-text-secondary)] leading-none">
+                            Based on Monte Carlo probability clustering.
+                        </p>
+                    </div>
+                </div>
+
             </div>
 
             <div>
-                <h3 className="text-2xl font-bold mb-6">Final Percentiles</h3>
+                <h3 className="text-xl font-bold mb-4">Probability Checks</h3>
 
-                <div className="flex flex-wrap justify-between gap-4">
-                    {Object.entries(signals.percentiles_final || {}).map(([p, val]) => (
-                        <div key={p} className="card-subtle p-5 rounded-xl shadow-sm flex-auto">
-                            <p className="font-semibold">{p}th Percentile</p>
-                            <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
-                                {Math.round(val).toLocaleString()}
-                            </p>
-                        </div>
-                    ))}
+                <div className="flex gap-6 flex-wrap">
+                    {Object.entries(signals.prob_checks || {}).map(([label, info]) => {
+                        const isAdd = label === "add";
+                        const isReduce = label === "reduce";
+
+                        const borderColor = isAdd
+                            ? "border-emerald-400/60"
+                            : isReduce
+                                ? "border-rose-400/60"
+                                : "border-amber-400/60";
+
+                        const icon = isAdd ? (
+                            <IconWrap>
+                                <TrendingUp className="w-5 h-5 text-emerald-500" />
+                            </IconWrap>
+                        ) : isReduce ? (
+                            <IconWrap>
+                                <TrendingDown className="w-5 h-5 text-rose-500 " />
+                            </IconWrap>
+                        ) : (
+
+                            icons[label]
+                        );
+
+                        return (
+                            <div
+                                key={label}
+                                className={`flex-auto p-6 rounded-2xl shadow-sm transition-all hover:shadow-md border
+                                ${label === "add"
+                                        ? "bg-emerald-100/20 border-emerald-100"
+                                        : label === "reduce"
+                                            ? "bg-rose-100/60 border-rose-100"
+                                            : "bg-[var(--color-bg-secondary)] border-[var(--color-border-primary)]"
+                                    }`}
+                            >
+
+                                <div className="flex items-center gap-2 mb-3 leading-none">
+                                    <IconWrap>{icon}</IconWrap>
+                                    <p className="text-lg font-semibold capitalize">{label}</p>
+                                </div>
+
+                                <p className="text-sm text-[var(--color-text-secondary)]">
+                                    Target: {info.target.toLocaleString()}
+                                </p>
+
+                                <p className="text-lg font-bold mt-2 text-[var(--color-text-primary)]">
+                                    Probability: {(info.prob * 100).toFixed(0)}%
+                                </p>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
+
         </div>
     );
 }

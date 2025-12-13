@@ -8,86 +8,94 @@ import HeatMap from "../components/HeatMap";
 import FloatImg from "../components/FloatImg";
 import axios from 'axios'
 
-import { TrendingUpDown, BadgePercent, ChartSpline } from "lucide-react";
-
+import { TrendingUpDown, BadgePercent, ChartSpline, Activity, LineChart, Waves, Zap, Sigma, BarChart2, Cpu, Radar } from "lucide-react"
 const modeIcons = {
     paths: <TrendingUpDown size={18} />,
     percentiles: <BadgePercent size={18} />,
     average: <ChartSpline size={18} />,
 
 }
-const MODEL_INFO = [
+export const MODEL_INFO = [
     {
         id: "gbm",
         name: "Geometric Brownian Motion (GBM)",
+        icon: <Activity className="w-6 h-6 text-blue-400" />,
         description:
-            "Simulates price paths assuming continuous compounding with constant drift and volatility.",
+            "Simulates price as a continuously drifting and compounding random walk.",
         working:
-            "Uses historical log returns to estimate drift (mu) and volatility (sigma) and generates future paths.",
+            "Estimates drift and volatility from log returns, then generates stochastic price paths.",
     },
     {
         id: "ou",
         name: "Ornstein–Uhlenbeck (OU)",
+        icon: <Waves className="w-6 h-6 text-emerald-400" />,
         description:
-            "A mean-reverting stochastic process where prices drift back toward a long-term mean.",
+            "A mean-reverting process where prices gravitate toward a long-term average.",
         working:
-            "Estimates reversion speed (theta), long-term mean (mu), and volatility to simulate realistic behavior.",
+            "Uses reversion speed, long-term mean, and volatility to simulate pull-back toward equilibrium.",
     },
     {
         id: "garch",
         name: "GARCH (1,1)",
+        icon: <LineChart className="w-6 h-6 text-purple-400" />,
         description:
-            "Captures time-varying volatility by modeling clusters of high and low variance.",
+            "Models volatility clustering with alternating periods of high and low variance.",
         working:
-            "Fits GARCH parameters to historical returns and simulates returns with dynamic volatility.",
+            "Fits GARCH parameters to returns and simulates paths with time-varying volatility.",
     },
     {
         id: "jump_diffusion",
         name: "Jump Diffusion",
+        icon: <Zap className="w-6 h-6 text-yellow-400" />,
         description:
-            "Extends GBM by adding sudden, discrete price jumps,  capturing real-world shock events.",
+            "Extends GBM by adding sudden jumps that capture rare market shocks.",
         working:
-            "Combines a continuous diffusion process with a jump process to model rare extreme moves.",
+            "Combines continuous diffusion with a Poisson-driven jump process for extreme events.",
     },
     {
         id: "heston",
         name: "Heston Model",
+        icon: <Sigma className="w-6 h-6 text-rose-400" />,
         description:
-            "A stochastic volatility model where volatility itself follows a random process.",
+            "A stochastic volatility model where volatility itself fluctuates randomly.",
         working:
-            "Uses coupled stochastic differential equations to simulate correlated price & variance evolution.",
+            "Simulates coupled price and variance equations with correlated randomness.",
     },
     {
         id: "hybrid_arima",
         name: "Hybrid ARIMA",
+        icon: <BarChart2 className="w-6 h-6 text-indigo-400" />,
         description:
-            "A stochastic volatility model where volatility itself follows a random process.",
+            "Combines classical ARIMA forecasting with ML-based residual correction.",
         working:
-            "A hybrid model that combines ARIMA trend forecasting with machine-learned residual corrections to generate more realistic future price paths",
+            "Forecasts trend using ARIMA, then adjusts predictions using learned residual patterns.",
     },
     {
         id: "kalman",
-        name: "Kalman",
+        name: "Kalman Filter",
+        icon: <Radar className="w-6 h-6 text-cyan-400" />,
         description:
-            "It is an optimal estimation algorithm that predicts a parameter of interests such as location, speed, and direction in the presence of noise and measurements",
+            "A recursive estimator that infers true states from noisy observations.",
         working:
-            "It estimates the true state of a dynamic system from noisy, incomplete measurements over time, using a two-step recursive process of prediction (guessing the next state) and correction/update (refining the guess with actual observations)",
+            "Predicts next state and corrects it using real data to refine hidden variables.",
     },
     {
         id: "tiny_mlp",
         name: "Tiny MLP",
+        icon: <Cpu className="w-6 h-6 text-orange-400" />,
         description:
-            "A lightweight, single-hidden-layer neural network that learns patterns in past log-returns and recursively predicts future returns for price simulation.",
+            "A lightweight neural network that learns return patterns from past data",
         working:
-            "Tiny MLP is a lightweight neural network that learns patterns from past log-returns. and predicts the next return using a single hidden layer and recursive forecasting.",
+            "Uses a single hidden layer to recursively predict future returns for simulation.",
     },
     {
         id: "hmm",
         name: "Hidden Markov Model",
+        icon: <Radar className="w-6 h-6 text-pink-400" />,
         description:
-            "A a statistical model used to analyze sequential data where the underlying causes or states are unobservable (hidden), but can be inferred from a sequence of observable outcomes",
+            "Learns hidden market regimes and switches between them probabilistically.",
         working:
-            "A Hidden Markov Model infers the most likely sequence of unobservable, underlying states by analyzing a sequence of observable outcomes based on predefined probabilities for moving between states and generating observations.",
+            "IEstimates hidden states using transition probabilities and observed price sequences.",
     },
 ];
 
@@ -160,30 +168,13 @@ export default function Home() {
             rounded-full blur-2xl opacity-40"></div>
                 </div>
 
-                {/* <div className="absolute inset-0 -z-10 opacity-[0.09]">
-                    <svg width="100%" height="100%">
-                        <defs>
-                            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" strokeWidth="0.7" />
-                            </pattern>
-                        </defs>
-                        <rect width="100%" height="100%" fill="url(#grid)" />
-                    </svg>
-                </div> */}
-
-
-
-                <h1 className="text-5xl sm:text-7xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-tight mb-6 
-        drop-shadow-[0_0px_30px_rgba(0,0,0,0.2)]">
-                    <span className="bg-gradient-to-r from-[var(--color-text-primary)] 
-        via-[var(--color-accent-muted)] to-[var(--color-text-tertiary)] 
-        bg-clip-text text-transparent animate-gradient-x">
+                <h1 className="text-5xl sm:text-7xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-tight mb-6 drop-shadow-[0_0px_30px_rgba(0,0,0,0.2)]">
+                    <span className="bg-gradient-to-r from-[var(--color-text-primary)] via-[var(--color-accent-muted)] to-[var(--color-text-tertiary)] bg-clip-text text-transparent animate-gradient-x">
                         Crypseer
                     </span>
                 </h1>
 
-                <p className="text-base sm:text-lg md:text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto 
-       font-light mb-10 leading-relaxed relative animate-fade-in">
+                <p className="text-base sm:text-lg md:text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto font-light mb-10 leading-relaxed relative animate-fade-in">
                     Turning financial uncertainty into actionable insights.
                     <br />
                     <span className="text-[var(--color-text-tertiary)] text-sm sm:text-base md:text-lg">
@@ -195,11 +186,7 @@ export default function Home() {
 
                     <Link
                         to="/backtest"
-                        className="px-12 py-4 text-lg rounded-2xl bg-[var(--color-accent)] text-white 
-            font-semibold shadow-lg shadow-[rgba(0,0,0,0.15)]
-            hover:bg-[var(--color-accent-muted)] hover:shadow-[0_0_25px_rgba(0,0,0,0.2)]
-            active:scale-[0.97] transition-all duration-200 
-            backdrop-blur-xl"
+                        className="px-12 py-4 text-lg rounded-2xl bg-[var(--color-accent)] text-white  font-semibold shadow-lg shadow-[rgba(0,0,0,0.15)] hover:bg-[var(--color-accent-muted)] hover:shadow-[0_0_25px_rgba(0,0,0,0.2)] active:scale-[0.97] transition-all duration-200  backdrop-blur-xl"
                     >
                         Launch Backtester
                     </Link>
@@ -207,10 +194,7 @@ export default function Home() {
                     <a
                         href="#models"
                         className="px-12 py-4 text-lg rounded-2xl 
-                       border border-[var(--color-border-secondary)]
-            bg-white/30 backdrop-blur-md text-[var(--color-text-primary)]
-            hover:bg-white/40 hover:shadow-[0_0_20px_rgba(0,0,0,0.1)]
-            active:scale-[0.97] transition-all duration-200"
+                       border border-[var(--color-border-secondary)] bg-white/30 backdrop-blur-md text-[var(--color-text-primary)] hover:bg-white/40 hover:shadow-[0_0_20px_rgba(0,0,0,0.1)] active:scale-[0.97] transition-all duration-200"
                     >
                         Explore Models
                     </a>
@@ -297,8 +281,7 @@ export default function Home() {
                 )}
 
 
-                {state.signals && <SignalsCard signals={state.signals} />}
-
+                {state.signals && <SignalsCard signals={state.signals} simulated={state.simulated} />}
 
                 {state.simulated.length > 0 && (
                     <div className="rounded-2xl p-3 mt-10 mb-20 bg-transparent h-[55vh] md:h-[65vh] lg:h-[70vh]">
@@ -306,27 +289,46 @@ export default function Home() {
                     </div>
                 )}
 
-                <div className="mx-auto max-w-7xl py-12" id="models">
-                    <h2 className="text-3xl font-bold text-center mb-6">Model Selection</h2>
+                <div className="mx-auto max-w-7xl py-16" id="models">
+                    <div className="text-center mb-14">
+                        <h2 className="text-4xl font-extrabold gradient-text-modern mb-2">
+                            Meet the Simulation Models
+                        </h2>
+                        <p className="text-[var(--color-text-secondary)] max-w-2xl mx-auto text-sm md:text-base">
+                            Each model offers a unique approach to forecasting, from classic financial theories
+                            to cutting-edge machine learning.
+                        </p>
+                    </div>
 
-                    <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+
+                    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         {MODEL_INFO.map((m) => (
                             <div
                                 key={m.id}
-                                className={`card-modern transition-all duration-300 hover:scale-[1.01] ${m.id === state.model ? "border-l-4 border-[var(--color-accent)]" : ""
-                                    }`}
+                                onClick={() => setState((p) => ({ ...p, model: m.id }))}
+                                className={`group cursor-pointer rounded-2xl p-6 backdrop-blur-sm bg-[var(--color-bg-secondary)]/60 border border-[var(--color-border-primary)]  shadow-sm transition-all duration-250  hover:shadow-[0_0_10px_rgba(0,0,0,0.25)] hover:-translate-y-1 flex flex-col gap-3 
+                                    ${state.model === m.id ? "ring-2 ring-[var(--color-accent)] ring-offset-2" : ""}`}
                             >
-                                <h3 className="text-lg font-semibold">{m.name}</h3>
-                                <p className="mt-2 text-[var(--color-text-secondary)]">
+                                <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br from-[var(--color-text-primary)]/70 to-[var(--color-accent)]/100 shadow-inner group-hover:scale-105 transition-transform">
+                                    {m.icon}
+                                </div>
+
+
+                                <h3 className="text-xl font-semibold text-[var(--color-text-primary)]">
+                                    {m.name}
+                                </h3>
+
+                                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
                                     {m.description}
                                 </p>
-                                <p className="mt-2 text-sm italic opacity-70">
+                                {/* <p className="mt-auto text-xs italic opacity-80 text-[var(--color-text-tertiary)]">
                                     {m.working}
-                                </p>
+                                </p> */}
                             </div>
                         ))}
                     </div>
                 </div>
+
             </div>
 
 

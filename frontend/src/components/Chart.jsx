@@ -212,8 +212,8 @@ export default function Chart({ historical, simulatedPaths = [], mode = "paths" 
 
       yAxis: {
         type: "value",
-        min: yMin,
-        max: yMax,
+        min: yMin.toFixed(0),
+        max: yMax.toFixed(0),
         axisLabel: { color: "#A6ADBB", fontSize: 10 },
         splitLine: {
           lineStyle: { type: "dashed", color: "#23232344" },
