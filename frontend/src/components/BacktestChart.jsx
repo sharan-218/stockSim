@@ -23,8 +23,8 @@ export default function BacktestChart({ returns }) {
                 containLabel: true,
                 left: isSmall ? "8%" : "4%",
                 right: "3%",
-                top: "10%",
-                bottom: "18%",
+                top: "14%",
+                bottom: "6%",
             },
 
             tooltip: {
@@ -171,7 +171,7 @@ export default function BacktestChart({ returns }) {
     return (
         <ReactECharts
             option={option}
-            style={{ height: "500px", width: "100%" }}
+            style={{ height: "650px", width: "100%" }}
             notMerge={true}
             lazyUpdate={true}
 

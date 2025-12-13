@@ -14,7 +14,7 @@ export default function PriceChart({ closes, indicators = {} }) {
         "#ef4444",
         "#8b5cf6",
         "#14b8a6",
-        "#e11d48",
+        "#b60027ff",
         "#6366f1",
     ];
 
@@ -28,9 +28,9 @@ export default function PriceChart({ closes, indicators = {} }) {
 
         const indMin = Math.min(...raw);
         const indMax = Math.max(...raw);
-        const indRange = Math.max(indMax - indMin, 0.000001);
+        const indRange = Math.max(indMax - indMin, 0.0001);
 
-        const scaleFactor = priceRange / indRange;
+        const scaleFactor = (priceRange / indRange) * 0.6;
 
         const scaledData = raw.map((v) =>
             v === null || v === undefined ? null : (v - indMin) * scaleFactor + priceMin
@@ -40,7 +40,7 @@ export default function PriceChart({ closes, indicators = {} }) {
             name: key.toUpperCase(),
             type: "line",
             data: scaledData,
-            smooth: true,
+            smooth: false,
             showSymbol: false,
             color: colorPalette[index % colorPalette.length],
             lineStyle: { width: 1 },
@@ -73,7 +73,7 @@ export default function PriceChart({ closes, indicators = {} }) {
             left: isSmall ? 10 : 15,
             right: 10,
             top: "14%",
-            bottom: "16%",
+            bottom: "6%",
         },
 
         dataZoom: [
@@ -115,9 +115,9 @@ export default function PriceChart({ closes, indicators = {} }) {
                 smooth: true,
                 showSymbol: false,
                 color: "#2563eb",
-                lineStyle: { width: 2.2 },
+                lineStyle: { width: 2 },
                 areaStyle: {
-                    opacity: 0.25,
+                    opacity: 0.21,
                     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                         { offset: 0, color: "rgba(37,99,235,0.32)" },
                         { offset: 1, color: "rgba(37,99,235,0.03)" },
@@ -133,7 +133,7 @@ export default function PriceChart({ closes, indicators = {} }) {
     return (
         <ReactECharts
             option={option}
-            style={{ height: "500px", width: "100%" }}
+            style={{ height: "650px", width: "100%" }}
             notMerge={true}
             lazyUpdate={true}
         />

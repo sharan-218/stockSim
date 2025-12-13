@@ -5,6 +5,7 @@ import ModelSelect from "../components/ModelSelect";
 import Chart from "../components/Chart";
 import SignalsCard from "../components/SignalsCard";
 import HeatMap from "../components/HeatMap";
+import FloatImg from "../components/FloatImg";
 import axios from 'axios'
 
 import { TrendingUpDown, BadgePercent, ChartSpline } from "lucide-react";
@@ -13,8 +14,8 @@ const modeIcons = {
     paths: <TrendingUpDown size={18} />,
     percentiles: <BadgePercent size={18} />,
     average: <ChartSpline size={18} />,
-};
 
+}
 const MODEL_INFO = [
     {
         id: "gbm",
@@ -106,7 +107,7 @@ export default function Home() {
     const fetchData = async (symbol) => {
         setState((prev) => ({ ...prev, loading: true, error: null }));
 
-        const dataUrl = `${import.meta.env.VITE_SERVER_DATA}/${symbol}?interval=1d&limit=800`;
+        const dataUrl = `${import.meta.env.VITE_SERVER_DATA}/${symbol}?interval=1d&limit=1000`;
         const simUrl = import.meta.env.VITE_SERVER_SIMULATE;
 
         try {
@@ -146,55 +147,76 @@ export default function Home() {
 
     return (
         <div className="home">
+            <section className="relative py-28 overflow-visible flex flex-col items-center text-center">
+                <FloatImg imgSrc="/assets/fc.png" alt="crypto" />
 
-            <section className="relative py-20 flex flex-col items-center text-center">
-                <div className="absolute inset-0 flex items-center justify-center -z-10">
-                    <div className="w-[420px] h-[420px] md:w-[580px] md:h-[580px] rounded-full  bg-gradient-to-br from-[var(--color-accent)]/20 to-transparent  blur-3xl opacity-20 animate-pulse">
-                    </div>
+                <div className="absolute inset-0 -z-20">
+                    <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] 
+            bg-gradient-to-br from-indigo-500/20 via-purple-500/10 to-transparent 
+            rounded-full blur-3xl opacity-60 animate-pulse"></div>
+
+                    <div className="absolute bottom-10 right-10 w-[300px] h-[300px] 
+            bg-gradient-to-br from-emerald-400/20 to-transparent 
+            rounded-full blur-2xl opacity-40"></div>
                 </div>
 
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 
-               font-extrabold tracking-tight leading-tight mb-6">
+                {/* <div className="absolute inset-0 -z-10 opacity-[0.09]">
+                    <svg width="100%" height="100%">
+                        <defs>
+                            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" strokeWidth="0.7" />
+                            </pattern>
+                        </defs>
+                        <rect width="100%" height="100%" fill="url(#grid)" />
+                    </svg>
+                </div> */}
+
+
+
+                <h1 className="text-5xl sm:text-7xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-tight mb-6 
+        drop-shadow-[0_0px_30px_rgba(0,0,0,0.2)]">
                     <span className="bg-gradient-to-r from-[var(--color-text-primary)] 
-                     via-[var(--color-accent-muted)] 
-                     to-[var(--color-text-tertiary)] 
-                     bg-clip-text text-transparent">
+        via-[var(--color-accent-muted)] to-[var(--color-text-tertiary)] 
+        bg-clip-text text-transparent animate-gradient-x">
                         Crypseer
                     </span>
                 </h1>
 
-
-
-                <p className="text-base sm:text-lg md:text-xl  text-[var(--color-text-secondary)] max-w-xl mx-auto font-light mb-10 leading-relaxed">
-                    Turning financial uncertainty into actionable insights.<br />
+                <p className="text-base sm:text-lg md:text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto 
+       font-light mb-10 leading-relaxed relative animate-fade-in">
+                    Turning financial uncertainty into actionable insights.
+                    <br />
                     <span className="text-[var(--color-text-tertiary)] text-sm sm:text-base md:text-lg">
-                        The data knows, you just have to listen.
+                        The market whispers, let the data translate it.
                     </span>
                 </p>
 
-
-
-                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mt-4">
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mt-4 animate-fade-up">
 
                     <Link
                         to="/backtest"
-                        className="px-10 py-4 text-lg rounded-2xl bg-[var(--color-accent)] text-white font-semibold shadow-lg shadow-[rgba(0,0,0,0.1)]
-                       hover:bg-[var(--color-accent-muted)] active:scale-[0.97] transition-all duration-300"
+                        className="px-12 py-4 text-lg rounded-2xl bg-[var(--color-accent)] text-white 
+            font-semibold shadow-lg shadow-[rgba(0,0,0,0.15)]
+            hover:bg-[var(--color-accent-muted)] hover:shadow-[0_0_25px_rgba(0,0,0,0.2)]
+            active:scale-[0.97] transition-all duration-200 
+            backdrop-blur-xl"
                     >
                         Launch Backtester
                     </Link>
 
                     <a
                         href="#models"
-                        className="px-10 py-4 text-lg rounded-2xl border border-[var(--color-border-secondary)]
-                       bg-white/60 backdrop-blur-xl text-[var(--color-text-primary)]
-                       hover:bg-[var(--color-hover)] active:scale-[0.97] transition-all duration-300"
+                        className="px-12 py-4 text-lg rounded-2xl 
+                       border border-[var(--color-border-secondary)]
+            bg-white/30 backdrop-blur-md text-[var(--color-text-primary)]
+            hover:bg-white/40 hover:shadow-[0_0_20px_rgba(0,0,0,0.1)]
+            active:scale-[0.97] transition-all duration-200"
                     >
                         Explore Models
                     </a>
                 </div>
-
             </section>
+
 
 
             <div className="section-padding max-w-7xl mx-auto w-full flex-grow">
