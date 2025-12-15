@@ -25,7 +25,7 @@ export default function SymbolInput({ onSubmit }) {
         type="submit"
         className="btn-modern"
       >
-        Fetch
+        Run
       </Button>
     </form>
   );

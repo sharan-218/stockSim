@@ -134,10 +134,8 @@ export default function BacktestChart({ returns }) {
                     name: "Portfolio Equity",
                     type: "line",
                     data,
-                    smooth: true,
+                    smooth: false,
                     showSymbol: false,
-                    symbolSize: 6,
-
                     color: "#10b981",
 
                     lineStyle: {

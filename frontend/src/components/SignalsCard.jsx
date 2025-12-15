@@ -45,7 +45,7 @@ export default function SignalsCard({ signals }) {
         <div className="glass-modern mb-20 p-8 md:p-12 rounded-3xl space-y-16">
 
             <div className="text-center max-w-2xl mx-auto">
-                <h2 className="text-4xl md:text-5xl font-extrabold gradient-text-modern mb-3">
+                <h2 className="text-4xl md:text-5xl font-bold gradient-text-modern ">
                     Simulation Signals
                 </h2>
                 <p className="text-sm md:text-base text-[var(--color-text-secondary)]">
@@ -138,7 +138,7 @@ export default function SignalsCard({ signals }) {
 
                     <div className="flex items-center justify-between">
                         <p className="text-xl font-bold">
-                            ${signals.prob_checks?.add?.target?.toLocaleString()}
+                            ${signals.prob_checks?.add?.target?.toFixed(1).toLocaleString()}
                         </p>
 
                         <p className="text-3xl font-bold text-[var(--color-accent)]">
@@ -171,7 +171,7 @@ export default function SignalsCard({ signals }) {
                         const isReduce = label === "reduce";
 
                         const borderColor = isAdd
-                            ? "border-emerald-400/60"
+                            ? "border-emerald-600/60"
                             : isReduce
                                 ? "border-rose-400/60"
                                 : "border-amber-400/60";
@@ -194,9 +194,9 @@ export default function SignalsCard({ signals }) {
                                 key={label}
                                 className={`flex-auto p-6 rounded-2xl shadow-sm transition-all hover:shadow-md border
                                 ${label === "add"
-                                        ? "bg-emerald-100/20 border-emerald-100"
+                                        ? "bg-emerald-200/50 border-emerald-100"
                                         : label === "reduce"
-                                            ? "bg-rose-100/60 border-rose-100"
+                                            ? "bg-rose-200/50 border-rose-100"
                                             : "bg-[var(--color-bg-secondary)] border-[var(--color-border-primary)]"
                                     }`}
                             >
@@ -211,7 +211,7 @@ export default function SignalsCard({ signals }) {
                                 </p>
 
                                 <p className="text-lg font-bold mt-2 text-[var(--color-text-primary)]">
-                                    Probability: {(info.prob * 100).toFixed(0)}%
+                                    Probability: {(info.prob * 100).toFixed(1)}%
                                 </p>
                             </div>
                         );

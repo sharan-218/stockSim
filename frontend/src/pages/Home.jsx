@@ -156,18 +156,7 @@ export default function Home() {
     return (
         <div className="home">
             <section className="relative py-28 overflow-visible flex flex-col items-center text-center">
-                <FloatImg imgSrc="/assets/fc.png" alt="crypto" />
-
-                <div className="absolute inset-0 -z-20">
-                    <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] 
-            bg-gradient-to-br from-indigo-500/20 via-purple-500/10 to-transparent 
-            rounded-full blur-3xl opacity-60 animate-pulse"></div>
-
-                    <div className="absolute bottom-10 right-10 w-[300px] h-[300px] 
-            bg-gradient-to-br from-emerald-400/20 to-transparent 
-            rounded-full blur-2xl opacity-40"></div>
-                </div>
-
+                <FloatImg imgSrc="/assets/bg.png" alt="crypto" />
                 <h1 className="text-5xl sm:text-7xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-tight mb-6 drop-shadow-[0_0px_30px_rgba(0,0,0,0.2)]">
                     <span className="bg-gradient-to-r from-[var(--color-text-primary)] via-[var(--color-accent-muted)] to-[var(--color-text-tertiary)] bg-clip-text text-transparent animate-gradient-x">
                         Crypseer
@@ -186,7 +175,7 @@ export default function Home() {
 
                     <Link
                         to="/backtest"
-                        className="px-12 py-4 text-lg rounded-2xl bg-[var(--color-accent)] text-white  font-semibold shadow-lg shadow-[rgba(0,0,0,0.15)] hover:bg-[var(--color-accent-muted)] hover:shadow-[0_0_25px_rgba(0,0,0,0.2)] active:scale-[0.97] transition-all duration-200  backdrop-blur-xl"
+                        className="px-12 py-4 text-lg rounded-2xl bg-[var(--color-accent)]/90 text-white font-semibold shadow-lg shadow-[rgba(0,0,0,0.15)] hover:bg-[var(--color-accent-muted)] hover:shadow-[0_0_10px_rgba(0,0,0,0.2)] active:scale-[0.97] transition-all duration-200 backdrop-blur-sm "
                     >
                         Launch Backtester
                     </Link>
@@ -194,7 +183,7 @@ export default function Home() {
                     <a
                         href="#models"
                         className="px-12 py-4 text-lg rounded-2xl 
-                       border border-[var(--color-border-secondary)] bg-white/30 backdrop-blur-md text-[var(--color-text-primary)] hover:bg-white/40 hover:shadow-[0_0_20px_rgba(0,0,0,0.1)] active:scale-[0.97] transition-all duration-200"
+                       border border-[var(--color-border-secondary)] bg-white/30 backdrop-blur-md text-[var(--color-text-primary)] hover:bg-white/40 hover:shadow-[0_0_10px_rgba(0,0,0,0.1)] active:scale-[0.97] transition-all duration-200"
                     >
                         Explore Models
                     </a>
@@ -284,7 +273,7 @@ export default function Home() {
                 {state.signals && <SignalsCard signals={state.signals} simulated={state.simulated} />}
 
                 {state.simulated.length > 0 && (
-                    <div className="rounded-2xl p-3 mt-10 mb-20 bg-transparent h-[55vh] md:h-[65vh] lg:h-[70vh]">
+                    <div className="p-3 mt-10 mb-20 bg-transparent h-[55vh] md:h-[65vh] lg:h-[70vh]">
                         <HeatMap simulatedPaths={state.simulated} />
                     </div>
                 )}
@@ -301,12 +290,12 @@ export default function Home() {
                     </div>
 
 
-                    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-4">
                         {MODEL_INFO.map((m) => (
                             <div
                                 key={m.id}
                                 onClick={() => setState((p) => ({ ...p, model: m.id }))}
-                                className={`group cursor-pointer rounded-2xl p-6 backdrop-blur-sm bg-[var(--color-bg-secondary)]/60 border border-[var(--color-border-primary)]  shadow-sm transition-all duration-250  hover:shadow-[0_0_10px_rgba(0,0,0,0.25)] hover:-translate-y-1 flex flex-col gap-3 
+                                className={`group cursor-pointer rounded-2xl p-6 bg-[var(--color-bg-secondary)]/80 border border-[var(--color-border-primary)] shadow-xs transition-all duration-250  hover:shadow-[0_0_8px_rgba(0,0,0,0.2)] hover:-translate-y-1 flex flex-col gap-3 
                                     ${state.model === m.id ? "ring-2 ring-[var(--color-accent)] ring-offset-2" : ""}`}
                             >
                                 <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br from-[var(--color-text-primary)]/70 to-[var(--color-accent)]/100 shadow-inner group-hover:scale-105 transition-transform">
@@ -333,7 +322,7 @@ export default function Home() {
 
 
             <footer className="bg-[var(--color-bg-primary)] mt-10">
-                <p className="text-center text-xs text-[var(--color-text-tertiary)] py-4">
+                <p className="text-center text-xs text-[var(--color-text-tertiary)] my-auto py-6">
                     Developed by{" "}
                     <a
                         href="https://yskfolio.netlify.app"

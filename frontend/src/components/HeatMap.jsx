@@ -63,7 +63,7 @@ export default function HeatMap({ simulatedPaths, bucketCount = 40 }) {
 
         grid: {
             top: 20,
-            left: 55,
+            left: 5,
             right: 20,
             bottom: 70,
             containLabel: true,
@@ -123,6 +123,7 @@ export default function HeatMap({ simulatedPaths, bucketCount = 40 }) {
 
     return (
         <div className="w-full">
+            <h3 className="text-center font-bold text-3xl gradient-text-modern">Heat Map</h3>
             <ReactECharts
                 option={options}
                 style={{ width: "100%", height: "450px" }}

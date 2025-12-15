@@ -8,6 +8,11 @@ import {
 export default function Chart({ historical, simulatedPaths = [], mode = "paths" }) {
   if (!historical?.length) return null;
 
+  const baseColors = [
+    "#3C7CDC", "#2CA97E", "#A616CA", "#E45B5B", "#8C6ADE",
+    "#E07B39", "#D6619C", "#28B3A7", "#6673E0", "#3658F0",
+  ];
+
   const {
     labels,
     historicalSeries,
@@ -17,10 +22,7 @@ export default function Chart({ historical, simulatedPaths = [], mode = "paths" 
     yMin,
     yMax,
   } = useMemo(() => {
-    const baseColors = [
-      "#3C7CDC", "#2CA97E", "#A616CA", "#E45B5B", "#8C6ADE",
-      "#E07B39", "#D6619C", "#28B3A7", "#6673E0", "#3658F0",
-    ];
+
 
     const HIST_WINDOW = 20;
     const slicedHistorical = historical.slice(-HIST_WINDOW);
@@ -29,7 +31,6 @@ export default function Chart({ historical, simulatedPaths = [], mode = "paths" 
       h.open_time.split("T")[0]
     );
     const historicalData = slicedHistorical.map((h) => h.close);
-
 
     const maxLen = Math.max(0, ...simulatedPaths.map((p) => p.length));
     const EXTRA = 1;
@@ -44,8 +45,8 @@ export default function Chart({ historical, simulatedPaths = [], mode = "paths" 
 
     const labels = [...historicalLabels, ...futureLabels];
 
-    const futureFlattened = simulatedPaths.flat().filter((v) => Number.isFinite(v));
-    const allValues = [...historicalData, ...futureFlattened];
+    const futureValues = simulatedPaths.flat().filter((v) => Number.isFinite(v));
+    const allValues = [...historicalData, ...futureValues];
 
     const min = Math.min(...allValues);
     const max = Math.max(...allValues);
@@ -63,25 +64,34 @@ export default function Chart({ historical, simulatedPaths = [], mode = "paths" 
       smooth: true,
       sampling: "lttb",
       symbol: "none",
+      color: baseColors[0],
       lineStyle: { width: 2.2, color: baseColors[0] },
       data: historicalData,
     };
 
     const simulatedSeries =
       mode === "paths"
-        ? simulatedPaths.slice(0, 2000).map((path, idx) => ({
-          name: `Sim ${idx + 1}`,
-          type: "line",
-          smooth: true,
-          symbol: "none",
-          sampling: "lttb",
-          lineStyle: {
-            width: 1,
-            opacity: 0.7,
-            color: baseColors[(idx + 1) % baseColors.length],
-          },
-          data: [...padArray, ...path],
-        }))
+        ? simulatedPaths.slice(0, 2000).map((path, idx) => {
+          const c = baseColors[idx % baseColors.length];
+
+          return {
+            name: idx + 1,
+            type: "line",
+            smooth: true,
+            symbol: "none",
+            sampling: "lttb",
+
+            color: c,
+
+            lineStyle: {
+              width: 1,
+              opacity: 0.7,
+              color: c,
+            },
+
+            data: [...padArray, ...path],
+          };
+        })
         : [];
 
     let percentileSeries = [];
@@ -97,6 +107,7 @@ export default function Chart({ historical, simulatedPaths = [], mode = "paths" 
           name: "5–95%",
           type: "line",
           lineStyle: { opacity: 0 },
+          color: baseColors[1],
           areaStyle: { color: "rgba(44,169,125,0.18)" },
           data: [...padArray, ...p95],
           symbol: "circle",
@@ -105,8 +116,8 @@ export default function Chart({ historical, simulatedPaths = [], mode = "paths" 
           name: "25–75%",
           type: "line",
           lineStyle: { opacity: 0 },
-          color: baseColors[2],
           symbol: "circle",
+          color: baseColors[2],
           areaStyle: { color: "rgba(166,22,202,0.18)" },
           data: [...padArray, ...p75],
         },
@@ -130,6 +141,7 @@ export default function Chart({ historical, simulatedPaths = [], mode = "paths" 
             smooth: true,
             symbol: "none",
             sampling: "lttb",
+            color: baseColors[1],
             lineStyle: { width: 3, color: baseColors[1] },
             data: [...padArray, ...computeAveragePath(simulatedPaths)],
           },
@@ -146,6 +158,7 @@ export default function Chart({ historical, simulatedPaths = [], mode = "paths" 
       yMax,
     };
   }, [historical, simulatedPaths, mode]);
+
   const option = useMemo(
     () => ({
       backgroundColor: "transparent",
@@ -165,29 +178,25 @@ export default function Chart({ historical, simulatedPaths = [], mode = "paths" 
           let html = `<strong>${filtered[0].axisValue}</strong><br/>`;
 
           filtered.forEach((p) => {
-            const color =
-              typeof p.color === "string"
-                ? p.color
-                : p.color?.colorStops?.[0]?.color || "#fff";
+            const color = p.color;
 
             html += `
-        <div style="margin:2px 0; display:flex; align-items:center; gap:6px;">
-            <span style="
-                display:inline-block;
-                width:10px;
-                height:10px;
-                border-radius:50%;
-                background:${color};
-            "></span>
-            <span><b>${p.seriesName}</b>: ${Number(p.data).toFixed(4)}</span>
-        </div>
-      `;
+              <div style="margin:2px 0; display:flex; align-items:center; gap:6px;">
+                <span style="
+                  display:inline-block;
+                  width:10px;
+                  height:10px;
+                  border-radius:50%;
+                  background:${color};
+                "></span>
+                <span><b>${p.seriesName}</b>: ${Number(p.data).toFixed(2)}</span>
+              </div>
+            `;
           });
 
           return `<div style="padding:6px 10px;">${html}</div>`;
         },
       },
-
 
       animation: false,
 
