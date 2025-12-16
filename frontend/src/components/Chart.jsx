@@ -52,7 +52,7 @@ export default function Chart({ historical, simulatedPaths = [], mode = "paths" 
     const max = Math.max(...allValues);
     const pad = (max - min) * 0.15;
 
-    const yMin = min - pad;
+    const yMin = Math.max(0, min - pad);
     const yMax = max + pad;
 
     const padArray = Array(historicalData.length - 1).fill(null);
@@ -126,6 +126,7 @@ export default function Chart({ historical, simulatedPaths = [], mode = "paths" 
           type: "line",
           smooth: true,
           symbol: "none",
+          color: "#E45B5B",
           lineStyle: { width: 3, color: "#E45B5B" },
           data: [...padArray, ...p50],
         },
@@ -179,7 +180,6 @@ export default function Chart({ historical, simulatedPaths = [], mode = "paths" 
 
           filtered.forEach((p) => {
             const color = p.color;
-
             html += `
               <div style="margin:2px 0; display:flex; align-items:center; gap:6px;">
                 <span style="
